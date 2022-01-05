@@ -1,3 +1,4 @@
 import Home from './Home';
+import MainInventory from './MainInventory';
 
-export { Home };
+export { Home, MainInventory };
