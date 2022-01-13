@@ -1,7 +1,88 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-export default function MainInventory() {
+// airtable configuration
+// const Airtable = require('airtable');
+
+// const airtableConfig = {
+//   apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
+//   baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
+// };
+
+// const base = new Airtable({ apiKey: airtableConfig.apiKey })
+//   .base(airtableConfig.baseKey);
+
+const MainInventory = function () {
+  const [rows, setRows] = useState([]);
+
+  const getInventory = () => {
+    // base('Inventory').select({ view: 'Grid view' }).all()
+    //   .then((records) => {
+    //     setRows(records);
+    //   });
+    setRows([
+      {
+        id: 'recdSsNu3GksmtYY0',
+        fields: {
+          'Client Name': 'Shoes That Fit Warehouse',
+          'Location Name': 'STF Warehouse',
+          'Bin Name': 'Area 51',
+          'Part Name': 'B1',
+          'Part Description': 'B1',
+          Quantity: 78,
+        },
+        createdTime: '2022-01-13T04:35:45.000Z',
+      },
+      {
+        id: 'recBDHujkX5A8zeCb',
+        fields: {
+          'Client Name': 'Shoes That Fit Warehouse',
+          'Location Name': 'STF Warehouse',
+          'Bin Name': 'Area 51',
+          'Part Name': 'B1.5',
+          'Part Description': 'B1.5',
+          Quantity: 69,
+        },
+        createdTime: '2022-01-13T04:35:45.000Z',
+      },
+      {
+        id: 'recexWd0kcC0GMXXl',
+        fields: {
+          'Client Name': 'Shoes That Fit Warehouse',
+          'Location Name': 'STF Warehouse',
+          'Bin Name': 'Area 51',
+          'Part Name': 'B10',
+          'Part Description': 'B10',
+          Quantity: 24,
+        },
+        createdTime: '2022-01-13T04:35:45.000Z',
+      },
+    ]);
+  };
+
+  useEffect(getInventory, []);
+
   return (
-    <div />
+    <table>
+      <tr>
+        <th>Client</th>
+        <th>Location</th>
+        <th>Bin</th>
+        <th>Part Name</th>
+        <th>Part Description</th>
+        <th>Quantity</th>
+      </tr>
+      {rows.map((row) => (
+        <tr>
+          <td>{row.fields['Client Name']}</td>
+          <td>{row.fields['Location Name']}</td>
+          <td>{row.fields['Bin Name']}</td>
+          <td>{row.fields['Part Name']}</td>
+          <td>{row.fields['Part Description']}</td>
+          <td>{row.fields.Quantity}</td>
+        </tr>
+      ))}
+    </table>
   );
-}
+};
+
+export default MainInventory;
