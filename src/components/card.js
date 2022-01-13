@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function Card({
-  school, first_name, last_name, email, phone, shoes,
+function Card({
+  school, firstName, lastName, email, phone, shoes,
 }) {
   return (
     <>
@@ -12,11 +12,11 @@ export default function Card({
       <br />
       First Name:
       {' '}
-      {first_name}
+      {firstName}
       <br />
       Last Name:
       {' '}
-      {last_name}
+      {lastName}
       <br />
       Email:
       {' '}
@@ -28,7 +28,24 @@ export default function Card({
       <br />
       Shoes:
       {' '}
-      {shoes}
+      {shoes.map((order) => (
+        <p>
+          {order.shoeBrand}
+          <br />
+          {order.shoeSize.map((size, i) => (
+            <>
+              size
+              {' '}
+              {size}
+              :
+              {order.quantity[i]}
+              {' '}
+              shoes
+              <br />
+            </>
+          ))}
+        </p>
+      ))}
       <br />
     </>
   );
@@ -36,9 +53,11 @@ export default function Card({
 
 Card.propTypes = {
   school: PropTypes.string.isRequired,
-  first_name: PropTypes.string.isRequired,
-  last_name: PropTypes.string.isRequired,
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   phone: PropTypes.string.isRequired,
   shoes: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
+
+export default Card;

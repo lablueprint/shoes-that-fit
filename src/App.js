@@ -6,7 +6,7 @@ import Card from './components/card';
 import { Home, MainInventory } from './pages';
 
 function App() {
-  // const shoes = [{ shoe_brand: 'Adidas' }];
+  const shoes = [{ shoeBrand: 'Adidas', shoeSize: [3, 4, 6, 7], quantity: [10, 15, 10, 5] }, { shoeBrand: 'New Balance', shoeSize: [4, 6, 7], quantity: [20, 5, 5] }];
   return (
     <div className="App">
       <Header />
@@ -16,11 +16,11 @@ function App() {
       </Routes>
       <Card
         school="UCLA"
-        first_name="Gene"
-        last_name="Block"
+        firstName="Gene"
+        lastName="Block"
         email="abc@gmail.com"
         phone="1234567890"
-        shoes="[{test}]"
+        shoes={shoes}
       />
     </div>
   );
