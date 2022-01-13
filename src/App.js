@@ -2,7 +2,7 @@ import React from 'react';
 import './styles/App.css';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components';
-import { Home, MainInventory } from './pages';
+import { Home, MainInventory, NewShoeForm } from './pages';
 
 function App() {
   return (
@@ -11,7 +11,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/inventory" element={<MainInventory />} />
+        <Route path="/newshoeform" element={<NewShoeForm />} />
       </Routes>
+      <NewShoeForm />
     </div>
   );
 }
