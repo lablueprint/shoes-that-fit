@@ -11,8 +11,12 @@ import React, { useState, useEffect } from 'react';
 // const base = new Airtable({ apiKey: airtableConfig.apiKey })
 //   .base(airtableConfig.baseKey);
 
-const MainInventory = function () {
+function MainInventory() {
   const [rows, setRows] = useState([]);
+  const [items, setItems] = useState([]);
+  // eslint-disable-next-line no-unused-vars
+  const [category, setCategory] = useState('all');
+  const [value, setValue] = useState('');
 
   const getInventory = () => {
     // base('Inventory').select({ view: 'Grid view' }).all()
@@ -58,31 +62,78 @@ const MainInventory = function () {
       },
     ]);
   };
+  const handleFilterChange = (e, filterType) => {
+    // changes state
+    e.preventDefault();
+    switch (filterType) {
+      case 'category':
+        setCategory(e.target.value);
+        break;
+      case 'value':
+        setValue(e.target.value);
+        break;
+      default: break;
+    }
+  };
+  const handleSubmission = (e) => {
+    e.preventDefault();
+  };
 
   useEffect(getInventory, []);
+  useEffect(() => {
+    let filteredProducts = rows;
+    if (value !== '') {
+      if (category !== 'all' && category !== 'Quantity') {
+        // eslint-disable-next-line max-len
+        filteredProducts = filteredProducts.filter((item) => (item.fields[category].toLowerCase()).includes(value.toLowerCase()));
+      } else if (category === 'Quantity') {
+        // eslint-disable-next-line max-len
+        filteredProducts = filteredProducts.filter((item) => (String(item.fields.Quantity).toLowerCase()).includes(String(value)));
+      }
+    }
+    setItems(filteredProducts);
+  }, [category, value, items, rows]);
 
   return (
-    <table>
-      <tr>
-        <th>Client</th>
-        <th>Location</th>
-        <th>Bin</th>
-        <th>Part Name</th>
-        <th>Part Description</th>
-        <th>Quantity</th>
-      </tr>
-      {rows.map((row) => (
+    <>
+      <div>
+        <form className="filter" onSubmit={(e) => handleSubmission(e)}>
+
+          <select name="category" id="category" onChange={(e) => handleFilterChange(e, 'category')}>
+            <option value="all">All</option>
+            <option value="Client Name">Client Name</option>
+            <option value="Location Name">Location Name</option>
+            <option value="Bin Name">Bin Name</option>
+            <option value="Part Name">Part Name</option>
+            <option value="Part Description">Part Description</option>
+            <option value="Quantity">Quantity</option>
+
+          </select>
+          <input name="value" onChange={(e) => handleFilterChange(e, 'value')} placeholder="Search For" />
+        </form>
+      </div>
+      <table>
         <tr>
-          <td>{row.fields['Client Name']}</td>
-          <td>{row.fields['Location Name']}</td>
-          <td>{row.fields['Bin Name']}</td>
-          <td>{row.fields['Part Name']}</td>
-          <td>{row.fields['Part Description']}</td>
-          <td>{row.fields.Quantity}</td>
+          <th>Client</th>
+          <th>Location</th>
+          <th>Bin</th>
+          <th>Part Name</th>
+          <th>Part Description</th>
+          <th>Quantity</th>
         </tr>
-      ))}
-    </table>
+        {items.map((row) => (
+          <tr>
+            <td>{row.fields['Client Name']}</td>
+            <td>{row.fields['Location Name']}</td>
+            <td>{row.fields['Bin Name']}</td>
+            <td>{row.fields['Part Name']}</td>
+            <td>{row.fields['Part Description']}</td>
+            <td>{row.fields.Quantity}</td>
+          </tr>
+        ))}
+      </table>
+    </>
   );
-};
+}
 
 export default MainInventory;
