@@ -14,7 +14,6 @@ const base = new Airtable({ apiKey: airtableConfig.apiKey })
 function MainInventory() {
   const [rows, setRows] = useState([]);
   const [items, setItems] = useState([]);
-  // eslint-disable-next-line no-unused-vars
   const [category, setCategory] = useState('all');
   const [value, setValue] = useState('');
 
@@ -23,44 +22,6 @@ function MainInventory() {
       .then((records) => {
         setRows(records);
       });
-    // setRows([
-    //   {
-    //     id: 'recdSsNu3GksmtYY0',
-    //     fields: {
-    //       'Client Name': 'Shoes That Fit Warehouse',
-    //       'Location Name': 'STF Warehouse',
-    //       'Bin Name': 'Area 51',
-    //       'Part Name': 'B1',
-    //       'Part Description': 'B1',
-    //       Quantity: 78,
-    //     },
-    //     createdTime: '2022-01-13T04:35:45.000Z',
-    //   },
-    //   {
-    //     id: 'recBDHujkX5A8zeCb',
-    //     fields: {
-    //       'Client Name': 'Shoes That Fit Warehouse',
-    //       'Location Name': 'STF Warehouse',
-    //       'Bin Name': 'Area 51',
-    //       'Part Name': 'B1.5',
-    //       'Part Description': 'B1.5',
-    //       Quantity: 69,
-    //     },
-    //     createdTime: '2022-01-13T04:35:45.000Z',
-    //   },
-    //   {
-    //     id: 'recexWd0kcC0GMXXl',
-    //     fields: {
-    //       'Client Name': 'Shoes That Fit Warehouse',
-    //       'Location Name': 'STF Warehouse',
-    //       'Bin Name': 'Area 51',
-    //       'Part Name': 'B10',
-    //       'Part Description': 'B10',
-    //       Quantity: 24,
-    //     },
-    //     createdTime: '2022-01-13T04:35:45.000Z',
-    //   },
-    // ]);
   };
   const handleFilterChange = (e, filterType) => {
     e.preventDefault();
@@ -87,7 +48,7 @@ function MainInventory() {
         filteredProducts = filteredProducts.filter((item) => (String(item.fields[category]).toLowerCase()).includes((String(value)).toLowerCase()));
       } else if (category === 'Quantity') {
         // eslint-disable-next-line max-len
-        filteredProducts = filteredProducts.filter((item) => (String(item.fields.Quantity).toLowerCase()).includes(String(value)));
+        filteredProducts = filteredProducts.filter((item) => ((item.fields.Quantity)) >= ((value)));
       }
     }
     console.log(filteredProducts);
