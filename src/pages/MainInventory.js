@@ -63,7 +63,6 @@ function MainInventory() {
     // ]);
   };
   const handleFilterChange = (e, filterType) => {
-    // changes state
     e.preventDefault();
     switch (filterType) {
       case 'category':
@@ -85,14 +84,15 @@ function MainInventory() {
     if (value !== '') {
       if (category !== 'all' && category !== 'Quantity') {
         // eslint-disable-next-line max-len
-        filteredProducts = filteredProducts.filter((item) => (item.fields[category].toLowerCase()).includes(value.toLowerCase()));
+        filteredProducts = filteredProducts.filter((item) => (String(item.fields[category]).toLowerCase()).includes((String(value)).toLowerCase()));
       } else if (category === 'Quantity') {
         // eslint-disable-next-line max-len
         filteredProducts = filteredProducts.filter((item) => (String(item.fields.Quantity).toLowerCase()).includes(String(value)));
       }
     }
+    console.log(filteredProducts);
     setItems(filteredProducts);
-  }, [category, value, items, rows]);
+  }, [category, value, rows]);
 
   return (
     <>
