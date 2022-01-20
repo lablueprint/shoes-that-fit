@@ -3,7 +3,7 @@ import './styles/App.css';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components';
 // import Card from './components/card';
-import { Home, MainInventory } from './pages';
+import { Home, MainInventory, NewShoeForm } from './pages';
 import OrderForm from './components/orderform';
 
 function App() {
@@ -16,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/inventory" element={<MainInventory />} />
+        <Route path="/newshoeform" element={<NewShoeForm />} />
       </Routes>
       {/* <Card
         school="UCLA"
