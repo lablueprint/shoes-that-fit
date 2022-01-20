@@ -48,7 +48,7 @@ function MainInventory() {
         filteredProducts = filteredProducts.filter((item) => (String(item.fields[category]).toLowerCase()).includes((String(value)).toLowerCase()));
       } else if (category === 'Quantity') {
         // eslint-disable-next-line max-len
-        filteredProducts = filteredProducts.filter((item) => ((item.fields.Quantity)) >= ((value)));
+        filteredProducts = filteredProducts.filter((item) => (item.fields.Quantity >= value));
       }
     }
     console.log(filteredProducts);
