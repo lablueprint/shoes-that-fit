@@ -13,7 +13,6 @@ function App() {
         <Route path="/inventory" element={<MainInventory />} />
         <Route path="/newshoeform" element={<NewShoeForm />} />
       </Routes>
-      <NewShoeForm />
     </div>
   );
 }
