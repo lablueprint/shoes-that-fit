@@ -3,16 +3,17 @@ import './styles/App.css';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components';
 import { Home, MainInventory } from './pages';
-import Orderform from './components/orderform';
+import OrderForm from './components/orderform';
 
 function App() {
   return (
     <div className="App">
       <Header />
-      <Orderform />
+      <OrderForm />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/inventory" element={<MainInventory />} />
+        <Route path="/newshoeform" element={<NewShoeForm />} />
       </Routes>
     </div>
 
