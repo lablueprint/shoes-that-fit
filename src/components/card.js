@@ -2,52 +2,56 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function Card({
-  school, firstName, lastName, email, phone, shoes,
+  school, firstName, lastName, email, phone, shoeBrand, shoeSize, quantity,
 }) {
+  const cardStyle = {
+    'text-align': 'left',
+    'padding-left': '40%',
+    'padding-right': '40%',
+  };
   return (
-    <>
-      School:
-      {' '}
-      {school}
-      <br />
-      First Name:
-      {' '}
-      {firstName}
-      <br />
-      Last Name:
-      {' '}
-      {lastName}
-      <br />
-      Email:
-      {' '}
-      {email}
-      <br />
-      Phone:
-      {' '}
-      {phone}
-      <br />
-      Shoes:
-      {' '}
-      {shoes.map((order) => (
-        <p>
-          {order.shoeBrand}
-          <br />
-          {order.shoeSize.map((size, i) => (
-            <>
-              size
-              {' '}
-              {size}
-              :
-              {order.quantity[i]}
-              {' '}
-              shoes
-              <br />
-            </>
-          ))}
-        </p>
-      ))}
-      <br />
-    </>
+    <div style={cardStyle}>
+      <div>
+        School:
+        {' '}
+        {school}
+      </div>
+      <div>
+        First Name:
+        {' '}
+        {firstName}
+      </div>
+      <div>
+        Last Name:
+        {' '}
+        {lastName}
+      </div>
+      <div>
+        Email:
+        {' '}
+        {email}
+      </div>
+      <div>
+        Phone:
+        {' '}
+        {phone}
+      </div>
+      <div>
+        Shoe Brand:
+        {' '}
+        {shoeBrand}
+      </div>
+      <div>
+        Shoe Size:
+        {' '}
+        {shoeSize}
+      </div>
+      <div>
+        Quantity:
+        {' '}
+        {quantity}
+      </div>
+    </div>
   );
 }
 
@@ -57,7 +61,9 @@ Card.propTypes = {
   lastName: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   phone: PropTypes.string.isRequired,
-  shoes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  shoeBrand: PropTypes.string.isRequired,
+  shoeSize: PropTypes.number.isRequired,
+  quantity: PropTypes.number.isRequired,
 };
 
 export default Card;
