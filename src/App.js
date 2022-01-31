@@ -2,7 +2,7 @@ import React from 'react';
 import './styles/App.css';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components';
-import { Home, MainInventory } from './pages';
+import { Home, MainInventory, NewShoeForm } from './pages';
 import OrderForm from './components/orderform';
 
 function App() {

@@ -65,6 +65,7 @@ export default function OrderForm() {
           'Shoe Brand': shoeBrand,
           'Shoe Size': size,
           Quantity: quant,
+          Active: 'y',
         },
       },
     ], (err, records) => {
