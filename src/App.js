@@ -14,6 +14,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/inventory" element={<MainInventory />} />
         <Route path="/newshoeform" element={<NewShoeForm />} />
+        <Route path="/orderform" element={<OrderForm />} />
       </Routes>
     </div>
 
