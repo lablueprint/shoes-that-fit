@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from './card';
 
 const Airtable = require('airtable');
@@ -22,7 +22,7 @@ export default function OrderForm() {
     console.log(cards);
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     getCards();
   }, []);
 
