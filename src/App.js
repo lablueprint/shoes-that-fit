@@ -11,6 +11,7 @@ import MainInventory from './pages/MainInventory';
 import NewShoeForm from './pages/NewShoeForm';
 import OrderForm from './components/orderform';
 
+
 function App() {
   return (
     <div className="App">
@@ -22,6 +23,7 @@ function App() {
         <Route exact path="/inventory" element={<MainInventory />} />
         <Route exact path="/newshoeform" element={<NewShoeForm />} />
         <Route exact path="/orderform" element={<OrderForm />} />
+
       </Routes>
     </div>
 
