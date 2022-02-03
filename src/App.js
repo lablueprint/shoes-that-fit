@@ -2,7 +2,6 @@ import React from 'react';
 import './styles/App.css';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components';
-// import Card from './components/card';
 import { Home, MainInventory, NewShoeForm } from './pages';
 
 function App() {
@@ -13,6 +12,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/inventory" element={<MainInventory />} />
         <Route path="/newshoeform" element={<NewShoeForm />} />
+        <Route path="/orderform" element={<OrderForm />} />
       </Routes>
     </div>
 
