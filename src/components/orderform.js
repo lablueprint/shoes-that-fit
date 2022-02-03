@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+// import reactDom from 'react-dom';
 import Card from './card';
 
 const Airtable = require('airtable');
@@ -13,6 +14,7 @@ const base = new Airtable({ apiKey: airtableConfig.apiKey })
 
 export default function OrderForm() {
   const [cards, setCards] = useState([]);
+  const [error, setError] = useState();
 
   const getCards = () => {
     base('Orders').select({ view: 'Grid view' }).all()
@@ -71,6 +73,12 @@ export default function OrderForm() {
     ], (err, records) => {
       if (err) {
         console.error(err);
+        setError(
+          <p>
+            {err.message}
+          </p>,
+        );
+        console.error(error);
         return;
       }
       records.forEach((record) => {
@@ -83,70 +91,103 @@ export default function OrderForm() {
 
   const orderformStyle = {
     'text-align': 'left',
-    'padding-left': '40%',
-    'padding-right': '40%',
+    'padding-left': '30%',
+    'padding-right': '30%',
   };
+
+  const errorStyle = {
+    color: 'red',
+  };
+
   return (
     <div>
       <h1>Submit your order here: </h1>
       <form style={orderformStyle} onSubmit={shoeUpdate}>
-        <div>
-          <label htmlFor="school">
-            School:
-            <input type="text" id="school" name="school" />
-          </label>
+        <div className="flex-container">
+          <div className="flex-child label">
+            <label htmlFor="school">
+              School:
+              {' '}
+            </label>
+          </div>
+          <input required type="text" id="school" name="school" />
         </div>
 
-        <div>
-          <label htmlFor="firstName">
-            First name:
-            <input type="text" id="firstName" name="firstName" />
-          </label>
+        <div className="flex-container">
+          <div className="flex-child label">
+            <label htmlFor="firstName">
+              First name:
+              {' '}
+            </label>
+          </div>
+          <input required type="text" id="firstName" name="firstName" />
         </div>
 
-        <div>
-          <label htmlFor="lastName">
-            Last name:
-            <input type="text" id="lastName" name="lname" />
-          </label>
+        <div className="flex-container">
+          <div className="flex-child label">
+            <label htmlFor="lastName">
+              Last name:
+              {' '}
+            </label>
+          </div>
+          <input required type="text" id="lastName" name="lname" />
         </div>
 
-        <div>
-          <label htmlFor="email">
-            Email:
-            <input type="text" id="email" name="email" />
-          </label>
+        <div className="flex-container">
+          <div className="flex-child label">
+            <label htmlFor="email">
+              Email:
+              {' '}
+            </label>
+          </div>
+          <input required type="text" id="email" name="email" />
         </div>
 
-        <div>
-          <label htmlFor="phone">
-            Phone:
-            <input type="text" id="phone" name="phone" />
-          </label>
+        <div className="flex-container">
+          <div className="flex-child label">
+            <label htmlFor="phone">
+              Phone:
+              {' '}
+            </label>
+          </div>
+          <input required type="text" id="phone" name="phone" />
         </div>
 
-        <div>
-          <label htmlFor="shoeBrand">
-            Shoe Brand:
-            <input type="text" id="shoeBrand" name="shoeBrand" />
-          </label>
+        <div className="flex-container">
+          <div className="flex-child label">
+            <label htmlFor="shoeBrand">
+              Shoe Brand:
+              {' '}
+            </label>
+          </div>
+          <input required type="text" id="shoeBrand" name="shoeBrand" />
         </div>
 
-        <div>
-          <label htmlFor="shoeSize">
-            Shoe Size:
-            <input type="text" id="shoeSize" name="shoeSize" />
-          </label>
+        <div className="flex-container">
+          <div className="flex-child label">
+            <label htmlFor="shoeSize">
+              Shoe Size:
+              {' '}
+            </label>
+          </div>
+          <input required type="text" id="shoeSize" name="shoeSize" />
         </div>
 
-        <div>
-          <label htmlFor="quantity">
-            Quantity:
-            <input type="integer" id="quantity" name="quantity" />
-          </label>
+        <div className="flex-container">
+          <div className="flex-child label">
+            <label htmlFor="quantity">
+              Quantity:
+              {' '}
+            </label>
+          </div>
+          <input required type="number" id="quantity" name="quantity" min="1" />
         </div>
         <input type="submit" id="submit" name="submit" />
       </form>
+
+      <div style={errorStyle}>
+        {error}
+      </div>
 
       <h1>Active orders: </h1>
       {cards.filter((card) => (card.fields.Active === 'y')).map((card, index) => (

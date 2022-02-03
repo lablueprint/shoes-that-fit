@@ -6,8 +6,8 @@ function Card({
 }) {
   const cardStyle = {
     'text-align': 'left',
-    'padding-left': '40%',
-    'padding-right': '40%',
+    'padding-left': '30%',
+    'padding-right': '30%',
   };
   return (
     <div style={cardStyle}>
