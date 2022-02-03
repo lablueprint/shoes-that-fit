@@ -1,20 +1,27 @@
 import React from 'react';
 import './styles/App.css';
-import { Routes, Route } from 'react-router-dom';
+import {
+  Routes, Route,
+} from 'react-router-dom';
 import Header from './components';
+import Nav from './components/nav';
 // import Card from './components/card';
-import { Home, MainInventory, NewShoeForm } from './pages';
+import Home from './pages/Home';
+import MainInventory from './pages/MainInventory';
+import NewShoeForm from './pages/NewShoeForm';
 import OrderForm from './components/orderform';
 
 function App() {
   return (
     <div className="App">
       <Header />
-      <OrderForm />
+      <Nav />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/inventory" element={<MainInventory />} />
-        <Route path="/newshoeform" element={<NewShoeForm />} />
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="/home" element={<Home />} />
+        <Route exact path="/inventory" element={<MainInventory />} />
+        <Route exact path="/newshoeform" element={<NewShoeForm />} />
+        <Route exact path="/orderform" element={<OrderForm />} />
       </Routes>
     </div>
 
