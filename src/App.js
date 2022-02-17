@@ -1,16 +1,10 @@
 import React from 'react';
 import './styles/App.css';
+import { Routes, Route } from 'react-router-dom';
+import { Header, OrderForm } from './components';
 import {
-  Routes, Route,
-} from 'react-router-dom';
-import Header from './components';
-import Nav from './components/nav';
-// import Card from './components/card';
-import Home from './pages/Home';
-import MainInventory from './pages/MainInventory';
-import NewShoeForm from './pages/NewShoeForm';
-import OrderForm from './components/orderform';
-
+  Home, MainInventory, NewShoeForm,
+} from './pages';
 
 function App() {
   return (
