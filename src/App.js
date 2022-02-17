@@ -10,11 +10,14 @@ function App() {
   return (
     <div className="App">
       <Header />
+      <Nav />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/inventory" element={<MainInventory />} />
-        <Route path="/newshoeform" element={<NewShoeForm />} />
-        <Route path="/orderform" element={<OrderForm />} />
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="/home" element={<Home />} />
+        <Route exact path="/inventory" element={<MainInventory />} />
+        <Route exact path="/newshoeform" element={<NewShoeForm />} />
+        <Route exact path="/orderform" element={<OrderForm />} />
+
       </Routes>
     </div>
 
