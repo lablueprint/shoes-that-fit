@@ -74,40 +74,11 @@ function MainInventory() {
       default: break;
     }
   };
-  useEffect(() => {
-    let filteredProducts = rows;
-    if (binOptionsSelected.length !== null && binOptionsSelected.length > 0) {
-      filteredProducts = filteredProducts.filter((item) => {
-        let include = false;
-        binOptionsSelected.forEach((option) => {
-          // eslint-disable-next-line max-len
-          include = include || (String(item.fields['Bin Name']).toLowerCase()).includes((String(option.value)).toLowerCase());
-        });
-        return include;
-      });
-    }
-    setItems(filteredProducts);
-  }, [binOptionsSelected]);
   const handleSubmission = (e) => {
     e.preventDefault();
   };
 
   useEffect(getInventory, []);
-  useEffect(() => {
-    let filteredProducts = rows;
-    if (value !== '') {
-      if (category !== 'all' && category !== 'Quantity') {
-        // eslint-disable-next-line max-len
-        filteredProducts = filteredProducts.filter((item) => (String(item.fields[category]).toLowerCase()).includes((String(value)).toLowerCase()));
-      } else if (category === 'Quantity') {
-        // eslint-disable-next-line max-len
-        filteredProducts = filteredProducts.filter((item) => (item.fields.Quantity >= value));
-      }
-    }
-    // console.log(filteredProducts);
-    setItems(filteredProducts);
-  }, [category, value, rows]);
-
   useEffect(() => {
     const counts = {};
     for (let i = 0; i < rows.length; i += 1) {
@@ -124,6 +95,35 @@ function MainInventory() {
     }));
     setBinOptions(optionList);
   }, [binCounts]);
+
+  useEffect(() => {
+    let filteredProducts = rows;
+    if (value !== '') {
+      if (category !== 'all' && category !== 'Quantity') {
+        // eslint-disable-next-line max-len
+        filteredProducts = filteredProducts.filter((item) => (String(item.fields[category]).toLowerCase()).includes((String(value)).toLowerCase()));
+      } else if (category === 'Quantity') {
+        // eslint-disable-next-line max-len
+        filteredProducts = filteredProducts.filter((item) => (item.fields.Quantity >= value));
+      }
+    }
+    // console.log(filteredProducts);
+    setItems(filteredProducts);
+  }, [category, value, rows]);
+  useEffect(() => {
+    let filteredProducts = rows;
+    if (binOptionsSelected.length !== null && binOptionsSelected.length > 0) {
+      filteredProducts = filteredProducts.filter((item) => {
+        let include = false;
+        binOptionsSelected.forEach((option) => {
+          // eslint-disable-next-line max-len
+          include = include || (String(item.fields['Bin Name']).toLowerCase()).includes((String(option.value)).toLowerCase());
+        });
+        return include;
+      });
+    }
+    setItems(filteredProducts);
+  }, [binOptionsSelected]);
 
   useEffect(() => {
     let sum = 0;
