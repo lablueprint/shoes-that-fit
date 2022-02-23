@@ -75,23 +75,17 @@ function MainInventory() {
     }
   };
   useEffect(() => {
-    console.log(binOptionsSelected);
     let filteredProducts = rows;
     if (binOptionsSelected.length !== null && binOptionsSelected.length > 0) {
       filteredProducts = filteredProducts.filter((item) => {
         let include = false;
-        console.log(String(item.fields['Bin Name']).toLowerCase());
         binOptionsSelected.forEach((option) => {
-          console.log(option.value);
           // eslint-disable-next-line max-len
           include = include || (String(item.fields['Bin Name']).toLowerCase()).includes((String(option.value)).toLowerCase());
         });
-        // eslint-disable-next-line max-len
-        console.log(include);
         return include;
       });
     }
-    console.log(filteredProducts);
     setItems(filteredProducts);
   }, [binOptionsSelected]);
   const handleSubmission = (e) => {
