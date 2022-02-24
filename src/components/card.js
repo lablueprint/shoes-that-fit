@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function Card({
-  school, firstName, lastName, email, phone, shoeBrand, shoeSize, quantity,
+  name, gender, wideWidth, size, age, school,
 }) {
   const cardStyle = {
     'text-align': 'left',
@@ -12,58 +12,50 @@ function Card({
   return (
     <div style={cardStyle}>
       <div>
-        School:
+        First Name and Last Initial:
         {' '}
-        {school}
+        {name}
       </div>
       <div>
-        First Name:
+        gender:
         {' '}
-        {firstName}
+        {gender}
       </div>
       <div>
-        Last Name:
+        Wide Width:
         {' '}
-        {lastName}
-      </div>
-      <div>
-        Email:
-        {' '}
-        {email}
-      </div>
-      <div>
-        Phone:
-        {' '}
-        {phone}
-      </div>
-      <div>
-        Shoe Brand:
-        {' '}
-        {shoeBrand}
+        {wideWidth}
       </div>
       <div>
         Shoe Size:
         {' '}
-        {shoeSize}
+        {size}
       </div>
       <div>
-        Quantity:
+        Age:
         {' '}
-        {quantity}
+        {age}
+      </div>
+      <div>
+        School:
+        {' '}
+        {school}
       </div>
     </div>
   );
 }
 
 Card.propTypes = {
-  school: PropTypes.string.isRequired,
-  firstName: PropTypes.string.isRequired,
-  lastName: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  phone: PropTypes.string.isRequired,
-  shoeBrand: PropTypes.string.isRequired,
-  shoeSize: PropTypes.number.isRequired,
-  quantity: PropTypes.number.isRequired,
+  school: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  gender: PropTypes.string.isRequired,
+  wideWidth: PropTypes.string.isRequired,
+  size: PropTypes.number.isRequired,
+  age: PropTypes.number.isRequired,
+};
+
+Card.defaultProps = {
+  school: 'UCLA',
 };
 
 export default Card;

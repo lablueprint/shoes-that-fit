@@ -32,41 +32,33 @@ export default function OrderForm() {
     evt.preventDefault();
     const card = {};
 
-    const size = parseInt(document.getElementById('shoeSize').value, 10);
-    card.shoeSize = size;
+    const name = document.getElementById('name').value;
+    card.name = name;
 
-    const quant = parseInt(document.getElementById('quantity').value, 10);
-    card.quantity = quant;
+    const gender = document.getElementById('gender').value;
+    card.gender = gender;
 
-    const shoeBrand = document.getElementById('shoeBrand').value;
-    card.shoeBrand = shoeBrand;
+    const wideWidth = parseInt(document.getElementById('wideWidth'), 10);
+    card.wideWidth = wideWidth;
 
-    const schoolCard = document.getElementById('school').value;
-    card.school = schoolCard;
+    const size = parseInt(document.getElementById('size'), 10);
+    card.size = size;
 
-    const firstNameCard = document.getElementById('firstName').value;
-    card.firstName = firstNameCard;
+    const age = parseInt(document.getElementById('age'), 10);
+    card.age = age;
 
-    const lastNameCard = document.getElementById('lastName').value;
-    card.lastName = lastNameCard;
-
-    const emailCard = document.getElementById('email').value;
-    card.email = emailCard;
-
-    const phoneCard = document.getElementById('phone').value;
-    card.phone = phoneCard;
+    const school = document.getElementById('school').value;
+    card.school = school;
 
     base('Orders').create([
       {
         fields: {
-          School: schoolCard,
-          'First Name': firstNameCard,
-          'Last Name': lastNameCard,
-          Email: emailCard,
-          Phone: phoneCard,
-          'Shoe Brand': shoeBrand,
-          'Shoe Size': size,
-          Quantity: quant,
+          Name: name,
+          Size: size,
+          'Teacher/School': school,
+          Age: age,
+          Gender: gender,
+          Wide: wideWidth,
           Active: 'y',
         },
       },
@@ -115,72 +107,62 @@ export default function OrderForm() {
 
         <div className="flex-container">
           <div className="flex-child label">
-            <label htmlFor="firstName">
-              First name:
+            <label htmlFor="name">
+              First Name and Last Initial:
               {' '}
             </label>
           </div>
-          <input required type="text" id="firstName" name="firstName" />
+          <input required type="text" id="name" name="name" />
         </div>
 
         <div className="flex-container">
           <div className="flex-child label">
-            <label htmlFor="lastName">
-              Last name:
+            <label htmlFor="gender">
+              Gender:
               {' '}
             </label>
           </div>
-          <input required type="text" id="lastName" name="lname" />
+          <input required type="text" id="gender" name="gender" />
         </div>
 
         <div className="flex-container">
           <div className="flex-child label">
-            <label htmlFor="email">
-              Email:
+            <label htmlFor="wideWidth">
+              Wide Width:
               {' '}
             </label>
           </div>
-          <input required type="text" id="email" name="email" />
+          <input required type="boolean" id="wideWidth" name="wideWidth" />
         </div>
 
         <div className="flex-container">
           <div className="flex-child label">
-            <label htmlFor="phone">
-              Phone:
+            <label htmlFor="size">
+              Size:
               {' '}
             </label>
           </div>
-          <input required type="text" id="phone" name="phone" />
+          <input required type="number" id="size" name="size" />
         </div>
 
         <div className="flex-container">
           <div className="flex-child label">
-            <label htmlFor="shoeBrand">
-              Shoe Brand:
+            <label htmlFor="age">
+              Age:
               {' '}
             </label>
           </div>
-          <input required type="text" id="shoeBrand" name="shoeBrand" />
+          <input required type="text" id="age" name="age" />
         </div>
 
         <div className="flex-container">
           <div className="flex-child label">
-            <label htmlFor="shoeSize">
-              Shoe Size:
+            <label htmlFor="school">
+              School or Teacher:
               {' '}
             </label>
           </div>
-          <input required type="text" id="shoeSize" name="shoeSize" />
-        </div>
-
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="quantity">
-              Quantity:
-              {' '}
-            </label>
-          </div>
-          <input required type="number" id="quantity" name="quantity" min="1" />
+          <input required type="string" id="school" name="school" min="1" />
         </div>
         <input type="submit" id="submit" name="submit" />
       </form>
@@ -195,14 +177,13 @@ export default function OrderForm() {
         <div key={index}>
           <p />
           <Card
-            school={card.fields.School}
-            firstName={card.fields['First Name']}
-            lastName={card.fields['Last Name']}
-            email={card.fields.Email}
-            phone={card.fields.Phone}
-            shoeBrand={card.fields['Shoe Brand']}
-            shoeSize={card.fields['Shoe Size']}
-            quantity={card.fields.Quantity}
+            name={card.fields.nAME}
+            gender={card.fields.Gender}
+            wideWidth={card.fields.Wide}
+            size={card.fields.Size}
+            age={card.fields.Age}
+            school={card.fields['Teacher/School']}
+            shoeSize={card.fields.Active}
           />
         </div>
       ))}
@@ -213,14 +194,13 @@ export default function OrderForm() {
         <div key={index}>
           <p />
           <Card
-            school={card.fields.School}
-            firstName={card.fields['First Name']}
-            lastName={card.fields['Last Name']}
-            email={card.fields.Email}
-            phone={card.fields.Phone}
-            shoeBrand={card.fields['Shoe Brand']}
-            shoeSize={card.fields['Shoe Size']}
-            quantity={card.fields.Quantity}
+            name={card.fields.nAME}
+            gender={card.fields.Gender}
+            wideWidth={card.fields.Wide}
+            size={card.fields.Size}
+            age={card.fields.Age}
+            school={card.fields['Teacher/School']}
+            shoeSize={card.fields.Active}
           />
         </div>
       ))}
