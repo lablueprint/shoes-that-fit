@@ -13,13 +13,32 @@ const airtableConfig = {
 const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(airtableConfig.baseKey);
 
 export default function LoginPage() {
+  const [error, setError] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [hasAccount, setHasAccount] = useState(false);
 
   const handleSignup = async (e) => {
+    setError('');
     e.preventDefault();
+    if (username.length === 0) {
+      setError('Error: username cannot be empty.');
+      return;
+    }
+    if (password.length === 0) {
+      setError('Error: password cannot be empty.');
+      return;
+    }
+    if (confirmPassword.length === 0) {
+      setError('Error: must confirm password.');
+      return;
+    }
+    if (role.length === 0) {
+      setError('Error: must choose a role.');
+      return;
+    }
     if (password === confirmPassword) {
       base('Users').create(
         [
@@ -27,6 +46,7 @@ export default function LoginPage() {
             fields: {
               Username: username,
               Password: password,
+              Role: role,
               // Role: role,
             },
           }],
@@ -40,6 +60,11 @@ export default function LoginPage() {
           });
         },
       );
+      setPassword('');
+      setUsername('');
+      setConfirmPassword('');
+      setRole('');
+      setError('');
     } else {
       console.log("passwords don't match");
     }
@@ -56,16 +81,17 @@ export default function LoginPage() {
       <form>
         <label>
           <p>Username</p>
-          <input type="text" onChange={(e) => setUsername(e.target.value)} />
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
         </label>
         <label>
           <p>Password</p>
-          <input type="password" onChange={(e) => setPassword(e.target.value)} />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </label>
         <label>
           <p>Confirm Password</p>
-          <input type="password" onChange={(e) => setConfirmPassword(e.target.value)} />
+          <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
         </label>
+        {error.length > 0 && <div><p>{error}</p></div>}
         <div>
           {hasAccount ? (
             <>
@@ -83,6 +109,11 @@ export default function LoginPage() {
             </>
           ) : (
             <>
+              <select value={role} onClick={(e) => setRole(e.target.value)}>
+                <option> Educator</option>
+                <option> Administrator</option>
+              </select>
+              <br />
               <button type="button" onClick={handleSignup}> Sign up</button>
               <p className="accountStatusParagraph">
                 {' '}
