@@ -5,9 +5,9 @@ function Card({
   name, gender, wideWidth, size, age, school,
 }) {
   const cardStyle = {
-    'text-align': 'left',
-    'padding-left': '30%',
-    'padding-right': '30%',
+    textAlign: 'left',
+    paddingLeft: '30%',
+    paddingRight: '30%',
   };
   return (
     <div style={cardStyle}>
@@ -17,14 +17,14 @@ function Card({
         {name}
       </div>
       <div>
-        gender:
+        Gender:
         {' '}
         {gender}
       </div>
       <div>
         Wide Width:
         {' '}
-        {wideWidth}
+        {wideWidth ? 'True' : 'False'}
       </div>
       <div>
         Shoe Size:
@@ -49,13 +49,14 @@ Card.propTypes = {
   school: PropTypes.string,
   name: PropTypes.string.isRequired,
   gender: PropTypes.string.isRequired,
-  wideWidth: PropTypes.string.isRequired,
+  wideWidth: PropTypes.bool,
   size: PropTypes.number.isRequired,
   age: PropTypes.number.isRequired,
 };
 
 Card.defaultProps = {
   school: 'UCLA',
+  wideWidth: false,
 };
 
 export default Card;

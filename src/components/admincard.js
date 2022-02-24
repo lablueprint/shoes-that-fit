@@ -18,20 +18,20 @@ function AdminCard({
   shoeSize,
 }) {
   const cardStyle = {
-    'border-style': 'solid',
-    'text-align': 'left',
-    'padding-left': '30%',
-    'padding-right': '30%',
+    borderStyle: 'solid',
+    textAlign: 'left',
+    paddingLeft: '30%',
+    paddingRight: '30%',
     cursor: 'pointer',
   };
 
   const bigcardStyle = {
-    'border-style': 'solid',
-    'text-align': 'left',
-    'padding-top': '5%',
-    'padding-bottom': '5%',
-    'padding-left': '30%',
-    'padding-right': '30%',
+    borderStyle: 'solid',
+    textAlign: 'left',
+    paddingTop: '5%',
+    paddingBottom: '5%',
+    paddingLeft: '30%',
+    paddingRight: '30%',
     cursor: 'pointer',
   };
 
