@@ -28,22 +28,6 @@ Airtable.configure({
 const base = Airtable.base(process.env.REACT_APP_AIRTABLE_BASE_KEY);
 // */
 
-// function Option(props) {
-//   return (
-//     <div>
-//       <components.Option {...props}>
-//         <input
-//           type="checkbox"
-//           checked={props.isSelected}
-//           onChange={() => null}
-//         />
-//         {' '}
-//         { /* eslint-disable-next-line jsx-a11y/label-has-associated-control */ }
-//         <label>{props.label}</label>
-//       </components.Option>
-//     </div>
-//   );
-// }
 function MainInventory() {
   const [rows, setRows] = useState([]);
   const [items, setItems] = useState([]);
@@ -73,22 +57,6 @@ function MainInventory() {
 
   const categories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description', 'Quantity'];
   const filterableCategories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description'];
-  // setCategoryOptions({
-  //   'Client Name': [],
-  //   'Location Name': [],
-  //   'Bin Name': [],
-  //   'Part Name': [],
-  //   'Part Description': [],
-  //   Quantity: [],
-  // });
-  // setOptionsSelected({
-  //   'Client Name': [],
-  //   'Location Name': [],
-  //   'Bin Name': [],
-  //   'Part Name': [],
-  //   'Part Description': [],
-  //   Quantity: [],
-  // });
 
   const getInventory = () => {
     base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
