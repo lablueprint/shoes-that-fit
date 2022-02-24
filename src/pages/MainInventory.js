@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import PageLengthForm from '../components/PageLengthForm';
+import TableFooter from '../components/TableFooter';
 
 // airtable configuration
 const Airtable = require('airtable');
@@ -11,17 +13,35 @@ const airtableConfig = {
 const base = new Airtable({ apiKey: airtableConfig.apiKey })
   .base(airtableConfig.baseKey);
 
+const calculateRange = (tableData, numRows) => {
+  const range = [];
+  const num = Math.ceil(tableData.length / numRows);
+  for (let i = 1; i <= num; i += 1) {
+    range.push(i);
+  }
+  return range;
+};
+
+// eslint-disable-next-line max-len
+const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * numRows, page * numRows);
+
 function MainInventory() {
   const [rows, setRows] = useState([]);
   const [items, setItems] = useState([]);
   const [category, setCategory] = useState('all');
   const [value, setValue] = useState('');
+  const [page, setPage] = useState(1);
+  const [numRows, setNumRows] = useState(10);
+
+  const [slice, setSlice] = useState([]);
+  const [tableRange, setTableRange] = useState([]);
 
   const getInventory = () => {
     base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
       .then((records) => {
         setRows(records);
       });
+    setCategory('all');
   };
   const handleFilterChange = (e, filterType) => {
     e.preventDefault();
@@ -47,16 +67,22 @@ function MainInventory() {
         // eslint-disable-next-line max-len
         filteredProducts = filteredProducts.filter((item) => (String(item.fields[category]).toLowerCase()).includes((String(value)).toLowerCase()));
       } else if (category === 'Quantity') {
-        // eslint-disable-next-line max-len
         filteredProducts = filteredProducts.filter((item) => (item.fields.Quantity >= value));
       }
     }
-    console.log(filteredProducts);
+
     setItems(filteredProducts);
-  }, [category, value, rows]);
+    const singleslice = sliceRows(items, page, numRows);
+    setSlice([...singleslice]);
+
+    const range = calculateRange(items, numRows);
+    console.log(range);
+    setTableRange(range);
+  }, [category, value, rows, items, page, numRows, setSlice, setTableRange]);
 
   return (
     <>
+      <PageLengthForm setNumRows={setNumRows} />
       <div>
         <form className="filter" onSubmit={(e) => handleSubmission(e)}>
 
@@ -82,7 +108,7 @@ function MainInventory() {
           <th>Part Description</th>
           <th>Quantity</th>
         </tr>
-        {items.map((row) => (
+        {slice.map((row) => (
           <tr>
             <td>{row.fields['Client Name']}</td>
             <td>{row.fields['Location Name']}</td>
@@ -93,6 +119,7 @@ function MainInventory() {
           </tr>
         ))}
       </table>
+      <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} />
     </>
   );
 }
