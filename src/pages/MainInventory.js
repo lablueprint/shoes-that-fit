@@ -76,7 +76,6 @@ function MainInventory() {
     setSlice([...singleslice]);
 
     const range = calculateRange(items, numRows);
-    console.log(range);
     setTableRange(range);
   }, [category, value, rows, items, page, numRows, setSlice, setTableRange]);
 
