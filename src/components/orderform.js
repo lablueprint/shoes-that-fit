@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import print from 'print-js';
 // import reactDom from 'react-dom';
 import Card from './card';
 
@@ -14,6 +15,7 @@ const base = new Airtable({ apiKey: airtableConfig.apiKey })
 
 export default function OrderForm() {
   const [cards, setCards] = useState([]);
+  const [curcards, setcurCards] = useState([]);
   const [error, setError] = useState();
 
   const getCards = () => {
@@ -21,7 +23,6 @@ export default function OrderForm() {
       .then((records) => {
         setCards(records);
       });
-    console.log(cards);
   };
 
   useEffect(() => {
@@ -38,61 +39,78 @@ export default function OrderForm() {
     const gender = document.getElementById('gender').value;
     card.gender = gender;
 
-    const wideWidth = parseInt(document.getElementById('wideWidth'), 10);
+    let wideWidth = document.getElementById('wideWidth');
+    if (wideWidth === 'y' || wideWidth === 'Y' || wideWidth === 'yes' || wideWidth === 'YES') {
+      wideWidth = true;
+    } else {
+      wideWidth = false;
+    }
     card.wideWidth = wideWidth;
 
-    const size = parseInt(document.getElementById('size'), 10);
+    const size = parseInt(document.getElementById('size').value, 10);
     card.size = size;
 
-    const age = parseInt(document.getElementById('age'), 10);
+    const age = parseInt(document.getElementById('age').value, 10);
     card.age = age;
 
     const school = document.getElementById('school').value;
     card.school = school;
-
-    base('Orders').create([
-      {
-        fields: {
-          Name: name,
-          Size: size,
-          'Teacher/School': school,
-          Age: age,
-          Gender: gender,
-          Wide: wideWidth,
-          Active: 'y',
-        },
-      },
-    ], (err, records) => {
-      if (err) {
-        console.error(err);
-        setError(
-          <p>
-            {err.message}
-          </p>,
-        );
-        console.error(error);
-        return;
-      }
-      records.forEach((record) => {
-        console.log(record.getId());
-      });
-    });
-
-    getCards();
+    curcards.push(card);
+    setcurCards(curcards);
   };
 
+  function pushToAirtable() {
+    curcards.map((card) => {
+      base('Orders').create([
+        {
+          fields: {
+            Name: card.name,
+            Size: card.size,
+            'Teacher/School': card.school,
+            Age: card.age,
+            Gender: card.gender,
+            Wide: card.wideWidth,
+            Active: 'y',
+          },
+        },
+      ], (err, records) => {
+        if (err) {
+          console.error(err);
+          setError(
+            <p>
+              {err.message}
+            </p>,
+          );
+          console.error(error);
+          return;
+        }
+        records.forEach((record) => {
+          console.log(record.getId());
+        });
+      });
+      return 0;
+    });
+    setcurCards([]);
+    getCards();
+  }
+
   const orderformStyle = {
-    'text-align': 'left',
-    'padding-left': '30%',
-    'padding-right': '30%',
+    textAlign: 'left',
+    paddingLeft: '30%',
+    paddingRight: '30%',
   };
 
   const errorStyle = {
     color: 'red',
   };
 
+  function printForm() {
+    print({ printable: 'orders', type: 'html' });
+  }
+
   return (
     <div>
+      <script src="print.js" />
       <h1>Submit your order here: </h1>
       <form style={orderformStyle} onSubmit={shoeUpdate}>
         <div className="flex-container">
@@ -128,7 +146,7 @@ export default function OrderForm() {
         <div className="flex-container">
           <div className="flex-child label">
             <label htmlFor="wideWidth">
-              Wide Width:
+              Wide Width (y/n):
               {' '}
             </label>
           </div>
@@ -152,7 +170,7 @@ export default function OrderForm() {
               {' '}
             </label>
           </div>
-          <input required type="text" id="age" name="age" />
+          <input required type="number" id="age" name="age" />
         </div>
 
         <div className="flex-container">
@@ -167,43 +185,50 @@ export default function OrderForm() {
         <input type="submit" id="submit" name="submit" />
       </form>
 
+      <button type="submit" id="bigSubmit" name="bigsubmit" onClick={pushToAirtable}> Submit all orders </button>
+
       <div style={errorStyle}>
         {error}
       </div>
 
-      <h1>Active orders: </h1>
-      {cards.filter((card) => (card.fields.Active === 'y')).map((card, index) => (
+      <button type="button" onClick={printForm}>
+        Print Form
+      </button>
+      <div id="orders">
+        <h1>Active orders: </h1>
+        {cards.filter((card) => (card.fields.Active === 'y')).map((card, index) => (
         // eslint-disable-next-line react/no-array-index-key
-        <div key={index}>
-          <p />
-          <Card
-            name={card.fields.nAME}
-            gender={card.fields.Gender}
-            wideWidth={card.fields.Wide}
-            size={card.fields.Size}
-            age={card.fields.Age}
-            school={card.fields['Teacher/School']}
-            shoeSize={card.fields.Active}
-          />
-        </div>
-      ))}
+          <div key={index}>
+            <p />
+            <Card
+              name={card.fields.Name}
+              gender={card.fields.Gender}
+              wideWidth={card.fields.Wide}
+              size={card.fields.Size}
+              age={card.fields.Age}
+              school={card.fields['Teacher/School']}
+              shoeSize={card.fields.Active}
+            />
+          </div>
+        ))}
 
-      <h1>Archived orders: </h1>
-      {cards.filter((card) => (card.fields.Active === 'n')).map((card, index) => (
+        <h1>Archived orders: </h1>
+        {cards.filter((card) => (card.fields.Active === 'n')).map((card, index) => (
         // eslint-disable-next-line react/no-array-index-key
-        <div key={index}>
-          <p />
-          <Card
-            name={card.fields.nAME}
-            gender={card.fields.Gender}
-            wideWidth={card.fields.Wide}
-            size={card.fields.Size}
-            age={card.fields.Age}
-            school={card.fields['Teacher/School']}
-            shoeSize={card.fields.Active}
-          />
-        </div>
-      ))}
+          <div key={index}>
+            <p />
+            <Card
+              name={card.fields.Name}
+              gender={card.fields.Gender}
+              wideWidth={card.fields.Wide}
+              size={card.fields.Size}
+              age={card.fields.Age}
+              school={card.fields['Teacher/School']}
+              shoeSize={card.fields.Active}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

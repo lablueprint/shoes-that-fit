@@ -24,7 +24,7 @@ function Card({
       <div>
         Wide Width:
         {' '}
-        {wideWidth}
+        {wideWidth ? 'True' : 'False'}
       </div>
       <div>
         Shoe Size:
@@ -49,13 +49,14 @@ Card.propTypes = {
   school: PropTypes.string,
   name: PropTypes.string.isRequired,
   gender: PropTypes.string.isRequired,
-  wideWidth: PropTypes.string.isRequired,
+  wideWidth: PropTypes.bool,
   size: PropTypes.number.isRequired,
   age: PropTypes.number.isRequired,
 };
 
 Card.defaultProps = {
   school: 'UCLA',
+  wideWidth: false,
 };
 
 export default Card;
