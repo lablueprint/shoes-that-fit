@@ -1,9 +1,9 @@
 import React from 'react';
 import './styles/App.css';
 import { Routes, Route } from 'react-router-dom';
-import { Header, OrderForm } from './components';
+import Header from './components/header';
 import {
-  Home, MainInventory, NewShoeForm, OrderListAdmin,
+  Home, MainInventory, NewShoeForm, AdminList, OrderForm,
 } from './pages';
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
         <Route path="/inventory" element={<MainInventory />} />
         <Route path="/newshoeform" element={<NewShoeForm />} />
         <Route path="/orderform" element={<OrderForm />} />
-        <Route path="/ordersadmin" element={<OrderListAdmin />} />
+        <Route path="/adminlist" element={<AdminList />} />
       </Routes>
     </div>
 

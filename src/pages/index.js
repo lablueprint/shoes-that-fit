@@ -1,8 +1,9 @@
 import Home from './Home';
 import MainInventory from './MainInventory';
 import NewShoeForm from './NewShoeForm';
-import OrderListAdmin from './OrderListAdmin';
+import AdminList from './AdminList';
+import OrderForm from './OrderForm';
 
 export {
-  Home, MainInventory, NewShoeForm, OrderListAdmin,
+  Home, MainInventory, NewShoeForm, AdminList, OrderForm,
 };
