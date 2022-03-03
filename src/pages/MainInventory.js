@@ -118,20 +118,24 @@ function MainInventory() {
   // Applies a filter when a bin option is selected
   useEffect(() => {
     let filteredProducts = rows;
-    filterableCategories.forEach((category) => {
-      if (optionsSelected[category].length > 0) {
-        filteredProducts = filteredProducts.filter((item) => {
-          let include = false;
+    filteredProducts = filteredProducts.filter((item) => {
+      let include = true;
+      filterableCategories.forEach((category) => {
+        if (optionsSelected[category].length > 0) {
+          let satisfiesCategory = false;
           optionsSelected[category].forEach((option) => {
             // eslint-disable-next-line max-len
-            include = include || (String(item.fields[category]).toLowerCase()).localeCompare((String(option.value)).toLowerCase()) === 0;
+            satisfiesCategory = satisfiesCategory || (String(item.fields[category])).localeCompare((String(option.value))) === 0;
           });
-          return include;
-        });
-      }
+          include = include && satisfiesCategory;
+        }
+      });
+      // eslint-disable-next-line max-len
+      include = include && (item.fields.Quantity >= quantityMin && (!quantityMax || item.fields.Quantity <= quantityMax));
+      return include;
     });
     // eslint-disable-next-line max-len
-    filteredProducts = filteredProducts.filter((item) => item.fields.Quantity >= quantityMin && (!quantityMax || item.fields.Quantity <= quantityMax));
+    // filteredProducts = filteredProducts.filter((item) => item.fields.Quantity >= quantityMin && (!quantityMax || item.fields.Quantity <= quantityMax));
     setItems(filteredProducts);
   }, [quantityMin, quantityMax, optionsSelected, rows, updateFilter]);
 
