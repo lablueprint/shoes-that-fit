@@ -32,6 +32,8 @@ function MainInventory() {
   const [rows, setRows] = useState([]);
   const [items, setItems] = useState([]);
   const [inventoryTotal, setInventoryTotal] = useState(0);
+  const [quantityMin, setQuantityMin] = useState(0);
+  const [quantityMax, setQuantityMax] = useState(null);
   const [updateFilter, setUpdateFilter] = useState(false);
   const [categoryOptions, setCategoryOptions] = useState({
     'Client Name': [],
@@ -68,6 +70,14 @@ function MainInventory() {
     setOptionsSelected(optionsSelected);
     setUpdateFilter(!updateFilter);
   };
+  const handleQuantityFilterChange = (e, min) => {
+    e.preventDefault();
+    if (min) {
+      setQuantityMin(e.target.value);
+    } else {
+      setQuantityMax(e.target.value);
+    }
+  };
 
   useEffect(getInventory, []);
 
@@ -103,8 +113,10 @@ function MainInventory() {
         });
       }
     });
+    // eslint-disable-next-line max-len
+    filteredProducts = filteredProducts.filter((item) => item.fields.Quantity >= quantityMin && (!quantityMax || item.fields.Quantity <= quantityMax));
     setItems(filteredProducts);
-  }, [optionsSelected, rows, updateFilter]);
+  }, [quantityMin, quantityMax, optionsSelected, rows, updateFilter]);
 
   useEffect(() => {
     let sum = 0;
@@ -130,7 +142,15 @@ function MainInventory() {
                 />
               </th>
             ))}
-            <th>Quantity</th>
+            <th>
+              Quantity
+              <form className="filter" onSubmit={(e) => e.preventDefault()}>
+                Min
+                <input type="number" onChange={(e) => handleQuantityFilterChange(e, true)} min="0" />
+                Max
+                <input type="number" onChange={(e) => handleQuantityFilterChange(e, false)} min="0" />
+              </form>
+            </th>
           </tr>
         </thead>
         <tbody>
