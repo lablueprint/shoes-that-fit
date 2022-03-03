@@ -133,7 +133,6 @@ function MainInventory() {
     // eslint-disable-next-line max-len
     filteredProducts = filteredProducts.filter((item) => item.fields.Quantity >= quantityMin && (!quantityMax || item.fields.Quantity <= quantityMax));
     setItems(filteredProducts);
-  // eslint-disable-next-line max-len
   }, [quantityMin, quantityMax, optionsSelected, rows, updateFilter]);
 
   useEffect(() => {
