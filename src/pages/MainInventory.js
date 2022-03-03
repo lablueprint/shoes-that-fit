@@ -49,6 +49,10 @@ function MainInventory() {
   const [quantityMin, setQuantityMin] = useState(0);
   const [quantityMax, setQuantityMax] = useState(null);
   const [updateFilter, setUpdateFilter] = useState(false);
+  const [page, setPage] = useState(1);
+  const [numRows, setNumRows] = useState(10);
+  const [slice, setSlice] = useState([]);
+  const [tableRange, setTableRange] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState({
     'Client Name': [],
     'Location Name': [],
@@ -65,21 +69,14 @@ function MainInventory() {
     'Part Description': [],
     Quantity: [],
   });
-
   const categories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description', 'Quantity'];
   const filterableCategories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description'];
-  const [page, setPage] = useState(1);
-  const [numRows, setNumRows] = useState(10);
-
-  const [slice, setSlice] = useState([]);
-  const [tableRange, setTableRange] = useState([]);
 
   const getInventory = () => {
     base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
       .then((records) => {
         setRows(records);
       });
-    setCategory('all');
   };
   const createOptions = (category, optionList) => {
     categoryOptions[category] = optionList;
@@ -141,6 +138,7 @@ function MainInventory() {
 
     const range = calculateRange(items, numRows);
     setTableRange(range);
+  // eslint-disable-next-line max-len
   }, [quantityMin, quantityMax, optionsSelected, rows, items, updateFilter, page, numRows, setSlice, setTableRange]);
 
   useEffect(() => {
@@ -153,32 +151,8 @@ function MainInventory() {
   return (
     <>
       <PageLengthForm setNumRows={setNumRows} />
-      <div>
-        <form className="filter" onSubmit={(e) => handleSubmission(e)}>
-
-          <select name="category" id="category" onChange={(e) => handleFilterChange(e, 'category')}>
-            <option value="all">All</option>
-            <option value="Client Name">Client Name</option>
-            <option value="Location Name">Location Name</option>
-            <option value="Bin Name">Bin Name</option>
-            <option value="Part Name">Part Name</option>
-            <option value="Part Description">Part Description</option>
-            <option value="Quantity">Quantity</option>
-
-          </select>
-          <input name="value" onChange={(e) => handleFilterChange(e, 'value')} placeholder="Search For" />
-        </form>
-      </div>
       <table>
-        <tr>
-          <th>Client</th>
-          <th>Location</th>
-          <th>Bin</th>
-          <th>Part Name</th>
-          <th>Part Description</th>
-          <th>Quantity</th>
-        </tr>
-        {slice.map((row) => (
+        <thead>
           <tr>
             {filterableCategories.map((category) => (
               <th>
@@ -203,7 +177,7 @@ function MainInventory() {
           </tr>
         </thead>
         <tbody>
-          {items.map((row) => (
+          {slice.map((row) => (
             <tr>
               {categories.map((category) => (
                 <td>{row.fields[category]}</td>
