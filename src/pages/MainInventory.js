@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import ReactSelect from 'react-select';
+// import { base } from 'airlock-example/index.ts';
+// import Airtable from '@calblueprint/airlock';
 import PageLengthForm from '../components/PageLengthForm';
 import TableFooter from '../components/TableFooter';
 
-// airtable configuration
+//*
+// airtable configurationcs
 const Airtable = require('airtable');
 
 const airtableConfig = {
@@ -10,8 +14,21 @@ const airtableConfig = {
   baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
 };
 
-const base = new Airtable({ apiKey: airtableConfig.apiKey })
+const base = new Airtable({
+  apiKey: airtableConfig.apiKey,
+  endpointURL: 'http://localhost:3000',
+})
   .base(airtableConfig.baseKey);
+// */
+
+/*
+Airtable.configure({
+  apiKey: process.env.REACT_APP_AIRTABLE_API_KEY,
+  endpointURL: 'http://localhost:8000',
+});
+
+const base = Airtable.base(process.env.REACT_APP_AIRTABLE_BASE_KEY);
+// */
 
 const calculateRange = (tableData, numRows) => {
   const range = [];
@@ -28,8 +45,29 @@ const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * num
 function MainInventory() {
   const [rows, setRows] = useState([]);
   const [items, setItems] = useState([]);
-  const [category, setCategory] = useState('all');
-  const [value, setValue] = useState('');
+  const [inventoryTotal, setInventoryTotal] = useState(0);
+  const [quantityMin, setQuantityMin] = useState(0);
+  const [quantityMax, setQuantityMax] = useState(null);
+  const [updateFilter, setUpdateFilter] = useState(false);
+  const [categoryOptions, setCategoryOptions] = useState({
+    'Client Name': [],
+    'Location Name': [],
+    'Bin Name': [],
+    'Part Name': [],
+    'Part Description': [],
+    Quantity: [],
+  });
+  const [optionsSelected, setOptionsSelected] = useState({
+    'Client Name': [],
+    'Location Name': [],
+    'Bin Name': [],
+    'Part Name': [],
+    'Part Description': [],
+    Quantity: [],
+  });
+
+  const categories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description', 'Quantity'];
+  const filterableCategories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description'];
   const [page, setPage] = useState(1);
   const [numRows, setNumRows] = useState(10);
 
@@ -43,42 +81,75 @@ function MainInventory() {
       });
     setCategory('all');
   };
-  const handleFilterChange = (e, filterType) => {
-    e.preventDefault();
-    switch (filterType) {
-      case 'category':
-        setCategory(e.target.value);
-        break;
-      case 'value':
-        setValue(e.target.value);
-        break;
-      default: break;
-    }
+  const createOptions = (category, optionList) => {
+    categoryOptions[category] = optionList;
+    setCategoryOptions(categoryOptions);
   };
-  const handleSubmission = (e) => {
+  const handleOptionSelection = (e, category) => {
+    optionsSelected[category] = e;
+    setOptionsSelected(optionsSelected);
+    setUpdateFilter(!updateFilter);
+  };
+  const handleQuantityFilterChange = (e, min) => {
     e.preventDefault();
+    if (min) {
+      setQuantityMin(e.target.value);
+    } else {
+      setQuantityMax(e.target.value);
+    }
   };
 
   useEffect(getInventory, []);
+
+  // Retrieves number of entries for each bin and
+  useEffect(() => {
+    categories.forEach((category) => {
+      const counts = {};
+      for (let i = 0; i < rows.length; i += 1) {
+        counts[rows[i].fields[category]] = 1 + (counts[rows[i].fields[category]] || 0);
+      }
+      const optionList = [];
+      Object.keys(counts).forEach((key) => optionList.push({
+        value: key,
+        label: key,
+        // label: (`${key} - ${counts[key]}`),
+      }));
+      createOptions(category, optionList);
+    });
+  }, [rows]);
+
+  // Applies a filter when a bin option is selected
   useEffect(() => {
     let filteredProducts = rows;
-    if (value !== '') {
-      if (category !== 'all' && category !== 'Quantity') {
-        // eslint-disable-next-line max-len
-        filteredProducts = filteredProducts.filter((item) => (String(item.fields[category]).toLowerCase()).includes((String(value)).toLowerCase()));
-      } else if (category === 'Quantity') {
-        filteredProducts = filteredProducts.filter((item) => (item.fields.Quantity >= value));
+    filterableCategories.forEach((category) => {
+      if (optionsSelected[category].length > 0) {
+        filteredProducts = filteredProducts.filter((item) => {
+          let include = false;
+          optionsSelected[category].forEach((option) => {
+            // eslint-disable-next-line max-len
+            include = include || (String(item.fields[category]).toLowerCase()).localeCompare((String(option.value)).toLowerCase()) === 0;
+          });
+          return include;
+        });
       }
-    }
-
+    });
+    // eslint-disable-next-line max-len
+    filteredProducts = filteredProducts.filter((item) => item.fields.Quantity >= quantityMin && (!quantityMax || item.fields.Quantity <= quantityMax));
     setItems(filteredProducts);
     const singleslice = sliceRows(items, page, numRows);
     setSlice([...singleslice]);
 
     const range = calculateRange(items, numRows);
     setTableRange(range);
-  }, [category, value, rows, items, page, numRows, setSlice, setTableRange]);
+  }, [quantityMin, quantityMax, optionsSelected, rows, items, updateFilter, page, numRows, setSlice, setTableRange]);
 
+  useEffect(() => {
+    let sum = 0;
+    for (let i = 0; i < items.length; i += 1) {
+      sum += (items[i].fields.Quantity || 0);
+    }
+    setInventoryTotal(sum);
+  }, [items]);
   return (
     <>
       <PageLengthForm setNumRows={setNumRows} />
@@ -109,16 +180,45 @@ function MainInventory() {
         </tr>
         {slice.map((row) => (
           <tr>
-            <td>{row.fields['Client Name']}</td>
-            <td>{row.fields['Location Name']}</td>
-            <td>{row.fields['Bin Name']}</td>
-            <td>{row.fields['Part Name']}</td>
-            <td>{row.fields['Part Description']}</td>
-            <td>{row.fields.Quantity}</td>
+            {filterableCategories.map((category) => (
+              <th>
+                {category}
+                <ReactSelect
+                  isMulti
+                  onChange={(e) => handleOptionSelection(e, category)}
+                  options={categoryOptions[category]}
+                  placeholder={category}
+                />
+              </th>
+            ))}
+            <th>
+              Quantity
+              <form className="filter" onSubmit={(e) => e.preventDefault()}>
+                Min
+                <input type="number" onChange={(e) => handleQuantityFilterChange(e, true)} min="0" />
+                Max
+                <input type="number" onChange={(e) => handleQuantityFilterChange(e, false)} min="0" />
+              </form>
+            </th>
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {items.map((row) => (
+            <tr>
+              {categories.map((category) => (
+                <td>{row.fields[category]}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
       </table>
       <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} />
+      <span>
+        {' '}
+        Total Item Inventory:
+        {' '}
+        {inventoryTotal}
+      </span>
     </>
   );
 }
