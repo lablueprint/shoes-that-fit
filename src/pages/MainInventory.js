@@ -170,6 +170,7 @@ function MainInventory() {
               <form className="filter" onSubmit={(e) => e.preventDefault()}>
                 Min
                 <input type="number" onChange={(e) => handleQuantityFilterChange(e, true)} min="0" />
+                <br />
                 Max
                 <input type="number" onChange={(e) => handleQuantityFilterChange(e, false)} min="0" />
               </form>
