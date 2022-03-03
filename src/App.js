@@ -3,7 +3,7 @@ import './styles/App.css';
 import { Routes, Route } from 'react-router-dom';
 import { Header, OrderForm } from './components';
 import {
-  Home, MainInventory, NewShoeForm,
+  Home, MainInventory, NewShoeForm, OrderListAdmin,
 } from './pages';
 
 function App() {
@@ -13,11 +13,10 @@ function App() {
       <Nav />
       <Routes>
         <Route exact path="/" element={<Home />} />
-        <Route exact path="/home" element={<Home />} />
-        <Route exact path="/inventory" element={<MainInventory />} />
-        <Route exact path="/newshoeform" element={<NewShoeForm />} />
-        <Route exact path="/orderform" element={<OrderForm />} />
-
+        <Route path="/inventory" element={<MainInventory />} />
+        <Route path="/newshoeform" element={<NewShoeForm />} />
+        <Route path="/orderform" element={<OrderForm />} />
+        <Route path="/ordersadmin" element={<OrderListAdmin />} />
       </Routes>
     </div>
 
