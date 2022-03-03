@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactSelect from 'react-select';
 // import { base } from 'airlock-example/index.ts';
 // import Airtable from '@calblueprint/airlock';
-import PageLengthForm from '../components/PageLengthForm';
-import TableFooter from '../components/TableFooter';
+import { TableFooter, PageLengthForm } from '../components';
 
 //*
 // airtable configurationcs

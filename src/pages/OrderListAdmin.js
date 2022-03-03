@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import AdminCard from '../components/admincard';
+import { AdminCard } from '../components';
 
 const Airtable = require('airtable');
 
