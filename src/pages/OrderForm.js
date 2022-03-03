@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import print from 'print-js';
 // import reactDom from 'react-dom';
-import Card from './card';
+import Card from '../components/card';
 
 const Airtable = require('airtable');
 
@@ -13,10 +13,12 @@ const airtableConfig = {
 const base = new Airtable({ apiKey: airtableConfig.apiKey })
   .base(airtableConfig.baseKey);
 
-export default function OrderForm() {
+function OrderForm() {
   const [cards, setCards] = useState([]);
   const [curcards, setcurCards] = useState([]);
   const [error, setError] = useState();
+  let uniqueActive = [];
+  let uniqueInactive = [];
 
   const getCards = () => {
     base('Orders').select({ view: 'Grid view' }).all()
@@ -108,8 +110,14 @@ export default function OrderForm() {
     print({ printable: 'orders', type: 'html' });
   }
 
+  const getId = () => {
+    uniqueActive = [...new Set(cards.filter((card) => (card.fields.Active === 'y')).map((card) => card.fields.Time))];
+    uniqueInactive = [...new Set(cards.filter((card) => (card.fields.Active === 'n')).map((card) => card.fields.Time))];
+  };
+
   return (
     <div>
+      {getId()}
       <script src="print.js" />
       <h1>Submit your order here: </h1>
       <form style={orderformStyle} onSubmit={shoeUpdate}>
@@ -196,39 +204,79 @@ export default function OrderForm() {
       </button>
       <div id="orders">
         <h1>Active orders: </h1>
-        {cards.filter((card) => (card.fields.Active === 'y')).map((card, index) => (
-        // eslint-disable-next-line react/no-array-index-key
-          <div key={index}>
-            <p />
-            <Card
-              name={card.fields.Name}
-              gender={card.fields.Gender}
-              wideWidth={card.fields.Wide}
-              size={card.fields.Size}
-              age={card.fields.Age}
-              school={card.fields['Teacher/School']}
-              shoeSize={card.fields.Active}
-            />
+        {uniqueActive.map((value) => (
+          <div>
+            <h2>
+              <text>
+                ID:
+                {'\n\n\n\n'}
+                {new Date(Date.parse(value)).toLocaleString('en-US')}
+              </text>
+              <text>
+                {'\n\n\n\n'}
+                Quantity:
+                {cards.filter((card) => card.fields.Time === `${value}`).length}
+              </text>
+            </h2>
+
+            <div>
+              {cards.filter((card) => card.fields.Time === `${value}`).map((card, index) => (
+              // eslint-disable-next-line react/no-array-index-key
+                <div key={index}>
+                  <p />
+                  <Card
+                    name={card.fields.Name}
+                    gender={card.fields.Gender}
+                    wideWidth={card.fields.Wide}
+                    size={card.fields.Size}
+                    age={card.fields.Age}
+                    school={card.fields['Teacher/School']}
+                    shoeSize={card.fields.Active}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         ))}
 
         <h1>Archived orders: </h1>
-        {cards.filter((card) => (card.fields.Active === 'n')).map((card, index) => (
-        // eslint-disable-next-line react/no-array-index-key
-          <div key={index}>
-            <p />
-            <Card
-              name={card.fields.Name}
-              gender={card.fields.Gender}
-              wideWidth={card.fields.Wide}
-              size={card.fields.Size}
-              age={card.fields.Age}
-              school={card.fields['Teacher/School']}
-              shoeSize={card.fields.Active}
-            />
+        {uniqueInactive.map((value) => (
+          <div>
+            <h2>
+              <text>
+                ID:
+                {'\n\n\n\n'}
+                {new Date(Date.parse(value)).toLocaleString('en-US')}
+              </text>
+              <text>
+                {'\n\n\n\n'}
+                Quantity:
+                {cards.filter((card) => card.fields.Time === `${value}`).length}
+              </text>
+            </h2>
+
+            <div>
+              {cards.filter((card) => card.fields.Time === `${value}`).map((card, index) => (
+              // eslint-disable-next-line react/no-array-index-key
+                <div key={index}>
+                  <p />
+                  <Card
+                    name={card.fields.Name}
+                    gender={card.fields.Gender}
+                    wideWidth={card.fields.Wide}
+                    size={card.fields.Size}
+                    age={card.fields.Age}
+                    school={card.fields['Teacher/School']}
+                    shoeSize={card.fields.Active}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
     </div>
   );
 }
+
+export default OrderForm;

@@ -31,8 +31,6 @@ function AdminList() {
 
   const getId = () => {
     unique = [...new Set(cards.map((card) => card.fields.Time))];
-    console.log('unique', unique);
-    console.log(unique.length);
   };
 
   return (
@@ -46,7 +44,7 @@ function AdminList() {
               <text>
                 ID:
                 {'\n\n\n\n'}
-                {value}
+                {new Date(Date.parse(value)).toLocaleString('en-US')}
               </text>
               <text>
                 {'\n\n\n\n'}
