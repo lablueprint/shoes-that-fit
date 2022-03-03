@@ -133,13 +133,16 @@ function MainInventory() {
     // eslint-disable-next-line max-len
     filteredProducts = filteredProducts.filter((item) => item.fields.Quantity >= quantityMin && (!quantityMax || item.fields.Quantity <= quantityMax));
     setItems(filteredProducts);
+  // eslint-disable-next-line max-len
+  }, [quantityMin, quantityMax, optionsSelected, rows, updateFilter]);
+
+  useEffect(() => {
     const singleslice = sliceRows(items, page, numRows);
     setSlice([...singleslice]);
 
     const range = calculateRange(items, numRows);
     setTableRange(range);
-  // eslint-disable-next-line max-len
-  }, [quantityMin, quantityMax, optionsSelected, rows, items, updateFilter, page, numRows, setSlice, setTableRange]);
+  }, [items, page, numRows, setSlice, setTableRange]);
 
   useEffect(() => {
     let sum = 0;
