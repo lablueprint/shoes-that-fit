@@ -31,12 +31,7 @@ const base = Airtable.base(process.env.REACT_APP_AIRTABLE_BASE_KEY);
 function MainInventory() {
   const [rows, setRows] = useState([]);
   const [items, setItems] = useState([]);
-  // const [c, setCategory] = useState('all');
-  // const [v, setValue] = useState('');
-  // const [binCounts, setBinCounts] = useState({});
-  // const [binOptions, setBinOptions] = useState([]);
   const [inventoryTotal, setInventoryTotal] = useState(0);
-  // const [binOptionsSelected, setBinOptionsSelected] = useState([]);
   const [updateFilter, setUpdateFilter] = useState(false);
   const [categoryOptions, setCategoryOptions] = useState({
     'Client Name': [],
@@ -73,26 +68,10 @@ function MainInventory() {
     setOptionsSelected(optionsSelected);
     setUpdateFilter(!updateFilter);
   };
-  // const handleFilterChange = (e, filterType) => {
-  //   e.preventDefault();
-  //   switch (filterType) {
-  //     case 'category':
-  //       setCategory(e.target.value);
-  //       break;
-  //     case 'value':
-  //       setValue(e.target.value);
-  //       break;
-  //     default: break;
-  //   }
-  // };
-  // const handleSubmission = (e) => {
-  //   e.preventDefault();
-  // };
 
   useEffect(getInventory, []);
 
   // Retrieves number of entries for each bin and
-  // Processes the binCounts into a list of options to be selected on the frontend
   useEffect(() => {
     categories.forEach((category) => {
       const counts = {};
@@ -102,26 +81,12 @@ function MainInventory() {
       const optionList = [];
       Object.keys(counts).forEach((key) => optionList.push({
         value: key,
-        label: (`${key} - ${counts[key]}`),
+        label: key,
+        // label: (`${key} - ${counts[key]}`),
       }));
       createOptions(category, optionList);
     });
   }, [rows]);
-
-  // useEffect(() => {
-  //   let filteredProducts = rows;
-  //   if (v !== '') {
-  //     if (c !== 'all' && c !== 'Quantity') {
-  // eslint-disable-next-line max-len
-  //       filteredProducts = filteredProducts.filter((item) => (String(item.fields[c]).toLowerCase()).includes((String(v)).toLowerCase()));
-  //     } else if (c === 'Quantity') {
-  //       // eslint-disable-next-line max-len
-  //       filteredProducts = filteredProducts.filter((item) => (item.fields.Quantity >= v));
-  //     }
-  //   }
-  //   // console.log(filteredProducts);
-  //   setItems(filteredProducts);
-  // }, [c, v, rows]);
 
   // Applies a filter when a bin option is selected
   useEffect(() => {
@@ -151,17 +116,6 @@ function MainInventory() {
 
   return (
     <>
-      {/* <div>
-        <form className="filter" onSubmit={(e) => handleSubmission(e)}>
-          <select name="category" id="category" onChange={(e) => handleFilterChange(e, 'category')}>
-            <option value="all">All</option>
-            {categories.map((category) => (
-              <option value={category}>{category}</option>
-            ))}
-          </select>
-    <input name="value" onChange={(e) => handleFilterChange(e, 'value')} placeholder="Search For" />
-        </form>
-      </div> */}
       <table>
         <thead>
           <tr>
