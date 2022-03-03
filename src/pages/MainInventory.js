@@ -180,7 +180,7 @@ function MainInventory() {
           {slice.map((row) => (
             <tr>
               {categories.map((category) => (
-                <td>{row.fields[category]}</td>
+                <td contentEditable="true">{row.fields[category]}</td>
               ))}
             </tr>
           ))}
