@@ -11,7 +11,6 @@ import MainInventory from './pages/MainInventory';
 import NewShoeForm from './pages/NewShoeForm';
 import OrderForm from './components/orderform';
 
-
 function App() {
   return (
     <div className="App">

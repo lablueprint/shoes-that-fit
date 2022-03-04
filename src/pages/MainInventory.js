@@ -1,22 +1,37 @@
 import React, { useState, useEffect } from 'react';
-
+import base from '../lib/airtable';
 // airtable configuration
-const Airtable = require('airtable');
+// const Airtable = require('airtable');
 
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
+// const airtableConfig = {
+//   apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
+//   baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
+// };
+
+// const base = new Airtable({ apiKey: airtableConfig.apiKey })
+//   .base(airtableConfig.baseKey);
+
+const loginUser = async (email, password) => {
+  try {
+    const res = await base.login({ username: email, password });
+    if (!res.body.success) {
+      return { match: false, found: false };
+    }
+    return { match: true, found: true };
+  } catch (err) {
+    if (err.error === 'AUTHENTICATION_REQUIRED') {
+      return { match: false, found: true };
+    }
+    return { match: false, found: false };
+  }
 };
 
-const base = new Airtable({ apiKey: airtableConfig.apiKey })
-  .base(airtableConfig.baseKey);
-
 function MainInventory() {
+  console.log(base);
   const [rows, setRows] = useState([]);
   const [items, setItems] = useState([]);
   const [category, setCategory] = useState('all');
   const [value, setValue] = useState('');
-
   const getInventory = () => {
     base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
       .then((records) => {
@@ -38,6 +53,11 @@ function MainInventory() {
   const handleSubmission = (e) => {
     e.preventDefault();
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line max-len
+    console.log(loginUser(process.env.REACT_APP_AIRTABLE_EMAIL, process.env.REACT_APP_AIRTABLE_PASSWORD));
+  }, []);
 
   useEffect(getInventory, []);
   useEffect(() => {
