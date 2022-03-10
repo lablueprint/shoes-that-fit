@@ -52,6 +52,7 @@ function MainInventory() {
   const [page, setPage] = useState(1);
   const [numRows, setNumRows] = useState(10);
   const [slice, setSlice] = useState([]);
+  const [highlightedRow, setHighlightedRow] = useState(0);
   const [tableRange, setTableRange] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState({
     'Client Name': [],
@@ -142,6 +143,7 @@ function MainInventory() {
   useEffect(() => {
     const singleslice = sliceRows(items, page, numRows);
     setSlice([...singleslice]);
+    setHighlightedRow(0);
 
     const range = calculateRange(items, numRows);
     setTableRange(range);
@@ -183,13 +185,19 @@ function MainInventory() {
           </tr>
         </thead>
         <tbody>
-          {slice.map((row) => (
-            <tr>
-              {categories.map((category) => (
-                <td contentEditable="true">{row.fields[category]}</td>
-              ))}
-            </tr>
-          ))}
+          {slice.map((row, index) => {
+            let tempClassName = 'tableRow';
+            if (index === highlightedRow) {
+              tempClassName = 'highlightedTableRow';
+            }
+            return (
+              <tr className={tempClassName}>
+                {categories.map((category) => (
+                  <td contentEditable="true">{row.fields[category]}</td>
+                ))}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
       <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} />
