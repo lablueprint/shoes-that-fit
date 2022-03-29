@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ReactSelect from 'react-select';
 // import { base } from 'airlock-example/index.ts';
 // import Airtable from '@calblueprint/airlock';
@@ -96,6 +96,29 @@ function MainInventory() {
       setQuantityMax(e.target.value);
     }
   };
+  const handleKeyDown = useCallback((e) => {
+    const { key } = e;
+    switch (key) {
+      case 'ArrowUp':
+        // Move up a row
+        if (highlightedRow === -1) {
+          setHighlightedRow(0);
+        } else if (highlightedRow > 0) {
+          setHighlightedRow((currHRow) => (currHRow - 1));
+        }
+        break;
+      case 'ArrowDown':
+        // Move down a row
+        if (highlightedRow === -1) {
+          setHighlightedRow(0);
+        } else if (highlightedRow < slice.length - 1) {
+          setHighlightedRow((currHRow) => (currHRow + 1));
+        }
+        break;
+      default:
+        break;
+    }
+  }, [highlightedRow]);
 
   useEffect(getInventory, []);
 
@@ -135,15 +158,13 @@ function MainInventory() {
       include = include && (item.fields.Quantity >= quantityMin && (!quantityMax || item.fields.Quantity <= quantityMax));
       return include;
     });
-    // eslint-disable-next-line max-len
-    // filteredProducts = filteredProducts.filter((item) => item.fields.Quantity >= quantityMin && (!quantityMax || item.fields.Quantity <= quantityMax));
     setItems(filteredProducts);
   }, [quantityMin, quantityMax, optionsSelected, rows, updateFilter]);
 
   useEffect(() => {
     const singleslice = sliceRows(items, page, numRows);
     setSlice([...singleslice]);
-    setHighlightedRow(0);
+    setHighlightedRow(-1);
 
     const range = calculateRange(items, numRows);
     setTableRange(range);
@@ -156,6 +177,14 @@ function MainInventory() {
     }
     setInventoryTotal(sum);
   }, [items]);
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
   return (
     <>
       <PageLengthForm setNumRows={setNumRows} />
@@ -186,17 +215,33 @@ function MainInventory() {
         </thead>
         <tbody>
           {slice.map((row, index) => {
-            let tempClassName = 'tableRow';
+            // let tempClassName = 'tableRow';
+            // if (index === highlightedRow) {
+            //   tempClassName = 'highlightedTableRow';
+            // }
             if (index === highlightedRow) {
-              tempClassName = 'highlightedTableRow';
+              return (
+                <tr style={{ color: 'red' }}>
+                  {categories.map((category) => (
+                    <td>{row.fields[category]}</td>
+                  ))}
+                </tr>
+              );
             }
             return (
-              <tr className={tempClassName}>
+              <tr>
                 {categories.map((category) => (
-                  <td contentEditable="true">{row.fields[category]}</td>
+                  <td>{row.fields[category]}</td>
                 ))}
               </tr>
             );
+            // return (
+            //   <tr className={tempClassName}>
+            //     {categories.map((category) => (
+            //       <td>{row.fields[category]}</td>
+            //     ))}
+            //   </tr>
+            // );
           })}
         </tbody>
       </table>
