@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import print from 'print-js';
 // import reactDom from 'react-dom';
 import Card from '../components/card';
+import './OrderForm.css';
 
 const Airtable = require('airtable');
 
@@ -96,12 +97,6 @@ function OrderForm() {
     getCards();
   }
 
-  const orderformStyle = {
-    textAlign: 'left',
-    paddingLeft: '30%',
-    paddingRight: '30%',
-  };
-
   const errorStyle = {
     color: 'red',
   };
@@ -116,164 +111,165 @@ function OrderForm() {
   };
 
   return (
-    <div>
+    <div className="row">
       {getId()}
       <script src="print.js" />
-      <h1>Submit your order here: </h1>
-      <form style={orderformStyle} onSubmit={shoeUpdate}>
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="school">
-              School:
-              {' '}
-            </label>
-          </div>
-          <input required type="text" id="school" name="school" />
-        </div>
-
-        <div className="flex-container">
-          <div className="flex-child label">
+      <div className="column-left">
+        <div className="left-column">
+          <h1>Add Order: </h1>
+          <form onSubmit={shoeUpdate}>
             <label htmlFor="name">
-              First Name and Last Initial:
-              {' '}
+              Student&apos;s First Name & Last Initial:
             </label>
-          </div>
-          <input required type="text" id="name" name="name" />
-        </div>
+            <div />
+            <input className="full" required type="text" id="name" name="name" />
+            <div className="space" />
 
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="gender">
-              Gender:
-              {' '}
-            </label>
-          </div>
-          <input required type="text" id="gender" name="gender" />
-        </div>
+            <div className="flex-container">
+              <div className="flex-child label">
+                <label htmlFor="age">
+                  Age:
+                  {' '}
+                </label>
+                <div />
+                <input className="half" required type="number" id="age" name="age" />
+              </div>
+              <div className="flex-child label">
+                <label htmlFor="gender">
+                  Gender:
+                  {' '}
+                </label>
+                <div />
+                <input className="half" required type="text" id="gender" name="gender" />
+              </div>
+            </div>
+            <div className="space" />
 
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="wideWidth">
-              Wide Width (y/n):
-              {' '}
-            </label>
-          </div>
-          <input required type="boolean" id="wideWidth" name="wideWidth" />
-        </div>
+            <div className="flex-container">
+              <div className="flex-child label">
+                <label htmlFor="size">
+                  Size:
+                  {' '}
+                </label>
+                <div />
+                <input className="half" required type="number" id="size" name="size" />
+              </div>
+              <div className="flex-child label">
+                <label htmlFor="wideWidth">
+                  Wide Width?:
+                  {' '}
+                </label>
+                <div />
+                <input className="half" required type="boolean" id="wideWidth" name="wideWidth" />
+              </div>
+            </div>
+            <div className="space" />
 
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="size">
-              Size:
-              {' '}
-            </label>
-          </div>
-          <input required type="number" id="size" name="size" />
-        </div>
-
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="age">
-              Age:
-              {' '}
-            </label>
-          </div>
-          <input required type="number" id="age" name="age" />
-        </div>
-
-        <div className="flex-container">
-          <div className="flex-child label">
             <label htmlFor="school">
-              School or Teacher:
+              Teacher / School (if applicable)
               {' '}
             </label>
+            <input className="full" required type="string" id="school" name="school" />
+            <div className="space" />
+
+            <label htmlFor="notes">
+              Notes
+              {' '}
+            </label>
+            <input className="full" required type="string" id="notes" name="notes" />
+            <div className="space" />
+            <input type="submit" id="submit" name="submit" value="Add Request" />
+          </form>
+
+          <button type="submit" id="bigSubmit" name="bigsubmit" onClick={pushToAirtable}> Submit all orders </button>
+
+          <div style={errorStyle}>
+            {error}
           </div>
-          <input required type="string" id="school" name="school" min="1" />
+
+          <button type="button" onClick={printForm}>
+            Print Form
+          </button>
         </div>
-        <input type="submit" id="submit" name="submit" />
-      </form>
-
-      <button type="submit" id="bigSubmit" name="bigsubmit" onClick={pushToAirtable}> Submit all orders </button>
-
-      <div style={errorStyle}>
-        {error}
       </div>
 
-      <button type="button" onClick={printForm}>
-        Print Form
-      </button>
-      <div id="orders">
-        <h1>Active orders: </h1>
-        {uniqueActive.map((value) => (
-          <div>
-            <h2>
-              <text>
-                ID:
-                {'\n\n\n\n'}
-                {new Date(Date.parse(value)).toLocaleString('en-US')}
-              </text>
-              <text>
-                {'\n\n\n\n'}
-                Quantity:
-                {cards.filter((card) => card.fields.Time === `${value}`).length}
-              </text>
-            </h2>
+      <div className="column-right">
+        <div className="right-column">
 
-            <div>
-              {cards.filter((card) => card.fields.Time === `${value}`).map((card, index) => (
-              // eslint-disable-next-line react/no-array-index-key
-                <div key={index}>
-                  <p />
-                  <Card
-                    name={card.fields.Name}
-                    gender={card.fields.Gender}
-                    wideWidth={card.fields.Wide}
-                    size={card.fields.Size}
-                    age={card.fields.Age}
-                    school={card.fields['Teacher/School']}
-                    shoeSize={card.fields.Active}
-                  />
+          <div id="orders">
+            <h1>Active orders: </h1>
+            {uniqueActive.map((value) => (
+              <div>
+                <h2>
+                  <text>
+                    ID:
+                    {'\n\n\n\n'}
+                    {new Date(Date.parse(value)).toLocaleString('en-US')}
+                  </text>
+                  <text>
+                    {'\n\n\n\n'}
+                    Quantity:
+                    {cards.filter((card) => card.fields.Time === `${value}`).length}
+                  </text>
+                </h2>
+
+                <div>
+                  {cards.filter((card) => card.fields.Time === `${value}`).map((card, index) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                    <div key={index}>
+                      <p />
+                      <Card
+                        name={card.fields.Name}
+                        gender={card.fields.Gender}
+                        wideWidth={card.fields.Wide}
+                        size={card.fields.Size}
+                        age={card.fields.Age}
+                        school={card.fields['Teacher/School']}
+                        shoeSize={card.fields.Active}
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-        ))}
+              </div>
+            ))}
 
-        <h1>Archived orders: </h1>
-        {uniqueInactive.map((value) => (
-          <div>
-            <h2>
-              <text>
-                ID:
-                {'\n\n\n\n'}
-                {new Date(Date.parse(value)).toLocaleString('en-US')}
-              </text>
-              <text>
-                {'\n\n\n\n'}
-                Quantity:
-                {cards.filter((card) => card.fields.Time === `${value}`).length}
-              </text>
-            </h2>
+            <h1>Archived orders: </h1>
+            {uniqueInactive.map((value) => (
+              <div>
+                <h2>
+                  <text>
+                    ID:
+                    {'\n\n\n\n'}
+                    {new Date(Date.parse(value)).toLocaleString('en-US')}
+                  </text>
+                  <text>
+                    {'\n\n\n\n'}
+                    Quantity:
+                    {cards.filter((card) => card.fields.Time === `${value}`).length}
+                  </text>
+                </h2>
 
-            <div>
-              {cards.filter((card) => card.fields.Time === `${value}`).map((card, index) => (
-              // eslint-disable-next-line react/no-array-index-key
-                <div key={index}>
-                  <p />
-                  <Card
-                    name={card.fields.Name}
-                    gender={card.fields.Gender}
-                    wideWidth={card.fields.Wide}
-                    size={card.fields.Size}
-                    age={card.fields.Age}
-                    school={card.fields['Teacher/School']}
-                    shoeSize={card.fields.Active}
-                  />
+                <div>
+                  {cards.filter((card) => card.fields.Time === `${value}`).map((card, index) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                    <div key={index}>
+                      <p />
+                      <Card
+                        name={card.fields.Name}
+                        gender={card.fields.Gender}
+                        wideWidth={card.fields.Wide}
+                        size={card.fields.Size}
+                        age={card.fields.Age}
+                        school={card.fields['Teacher/School']}
+                        shoeSize={card.fields.Active}
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );
