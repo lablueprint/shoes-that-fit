@@ -74,7 +74,8 @@ function MainInventory() {
   const filterableCategories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description'];
 
   const getInventory = () => {
-    base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
+    // base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
+    base('table editing test').select({ view: 'Grid view' }).all()
       .then((records) => {
         setRows(records);
       });
@@ -119,6 +120,29 @@ function MainInventory() {
         break;
     }
   }, [highlightedRow]);
+  const editTableEntryQuantity = ((val, index) => {
+    const row = items[(page - 1) * numRows + index];
+    if (!(/^\d+$/.test(val))) {
+      console.error('Invalid Input: Quantity should be a number');
+      return;
+    }
+    base('table editing test').update([
+      {
+        id: row.id,
+        fields: {
+          Quantity: parseInt(val, 10),
+        },
+      },
+    ], (err, records) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      records.forEach((record) => {
+        console.log(`Edited entry at row ${(page - 1) * numRows + index}: ${record.get('Client Name')}, ${record.get('Location Name')}, ${record.get('Bin Name')}, ${record.get('Part Name')}, ${record.get('Part Description')}`);
+      });
+    });
+  });
 
   useEffect(getInventory, []);
 
@@ -185,6 +209,22 @@ function MainInventory() {
     };
   }, [handleKeyDown]);
 
+  useEffect(() => {
+    const quantityTDElement = document.getElementById('editableQuantity');
+    if (!quantityTDElement) {
+      console.log('Waiting for selected row');
+      return null;
+    }
+    quantityTDElement.addEventListener('input', () => {
+      editTableEntryQuantity(quantityTDElement.innerHTML, highlightedRow);
+    });
+    return () => {
+      quantityTDElement.removeEventListener('input', () => {
+        editTableEntryQuantity(quantityTDElement.innerHTML, highlightedRow);
+      });
+    };
+  });
+
   return (
     <>
       <PageLengthForm setNumRows={setNumRows} />
@@ -219,12 +259,26 @@ function MainInventory() {
             // if (index === highlightedRow) {
             //   tempClassName = 'highlightedTableRow';
             // }
+            // return (
+            //   <tr className={tempClassName}>
+            //     {categories.map((category) => (
+            //       <td>{row.fields[category]}</td>
+            //     ))}
+            //   </tr>
+            // );
             if (index === highlightedRow) {
               return (
                 <tr style={{ color: 'red' }}>
-                  {categories.map((category) => (
-                    <td>{row.fields[category]}</td>
-                  ))}
+                  {categories.map((category) => {
+                    if (category === 'Quantity') {
+                      return (
+                        <td contentEditable="true" id="editableQuantity">{row.fields[category]}</td>
+                      );
+                    }
+                    return (
+                      <td>{row.fields[category]}</td>
+                    );
+                  })}
                 </tr>
               );
             }
@@ -235,13 +289,6 @@ function MainInventory() {
                 ))}
               </tr>
             );
-            // return (
-            //   <tr className={tempClassName}>
-            //     {categories.map((category) => (
-            //       <td>{row.fields[category]}</td>
-            //     ))}
-            //   </tr>
-            // );
           })}
         </tbody>
       </table>
