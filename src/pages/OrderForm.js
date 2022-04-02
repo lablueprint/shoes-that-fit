@@ -114,7 +114,7 @@ function OrderForm() {
     <div className="row">
       {getId()}
       <script src="print.js" />
-      <div className="column-left">
+      <div className="column left">
         <div className="left-column">
           <h1>Add Order: </h1>
           <form onSubmit={shoeUpdate}>
@@ -193,7 +193,7 @@ function OrderForm() {
         </div>
       </div>
 
-      <div className="column-right">
+      <div className="column right">
         <div className="right-column">
 
           <div id="orders">
