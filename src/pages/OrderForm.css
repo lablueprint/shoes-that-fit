@@ -1,0 +1,19 @@
+table {
+    border: 1px solid black;
+    width: 1009px;
+    height: 31px;
+    border-collapse: collapse;
+    font-size: 12px;
+    table-layout: fixed;
+
+  }
+    
+  th {
+    border: 1px solid black;
+    background: #AEECFF;
+  }
+    
+  td {
+    text-align: center;
+    border: 1px solid black;
+  }
