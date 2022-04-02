@@ -9,8 +9,8 @@ import {
 function App() {
   return (
     <div className="App">
+      <NewShoeForm />
       <Header />
-      <Nav />
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/inventory" element={<MainInventory />} />
