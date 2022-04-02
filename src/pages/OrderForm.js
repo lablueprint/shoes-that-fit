@@ -213,22 +213,34 @@ function OrderForm() {
                   </text>
                 </h2>
 
-                <div>
-                  {cards.filter((card) => card.fields.Time === `${value}`).map((card, index) => (
-                  // eslint-disable-next-line react/no-array-index-key
-                    <div key={index}>
-                      <p />
-                      <Card
-                        name={card.fields.Name}
-                        gender={card.fields.Gender}
-                        wideWidth={card.fields.Wide}
-                        size={card.fields.Size}
-                        age={card.fields.Age}
-                        school={card.fields['Teacher/School']}
-                        shoeSize={card.fields.Active}
-                      />
-                    </div>
-                  ))}
+                <div className="container">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Student&apos;s First Name and Last Name</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Shoe Size</th>
+                        <th>Wide Width?</th>
+                        <th>Teacher or school?</th>
+                        <th>Notes or Comment</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {cards.filter((card) => card.fields.Time === `${value}`).map((card, index) => (
+                        // eslint-disable-next-line react/no-array-index-key
+                        <tr key={index}>
+                          <td>{card.fields.Name}</td>
+                          <td>{card.fields.Age}</td>
+                          <td>{card.fields.Gender}</td>
+                          <td>{card.fields.Size}</td>
+                          <td>{card.fields.Wide}</td>
+                          <td>{card.fields['Teacher/School']}</td>
+                          <td>{card.fields.Active}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             ))}
