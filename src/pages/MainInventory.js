@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useRef, useState, useEffect, useCallback,
+} from 'react';
 import ReactSelect from 'react-select';
 // import { base } from 'airlock-example/index.ts';
 // import Airtable from '@calblueprint/airlock';
@@ -43,6 +45,8 @@ const calculateRange = (tableData, numRows) => {
 const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * numRows, page * numRows);
 
 function MainInventory() {
+  // eslint-disable-next-line no-unused-vars
+  const [cellNum, setCellNum] = useState(0);
   const [rows, setRows] = useState([]);
   const [items, setItems] = useState([]);
   const [inventoryTotal, setInventoryTotal] = useState(0);
@@ -72,7 +76,10 @@ function MainInventory() {
   });
   const categories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description', 'Quantity'];
   const filterableCategories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description'];
-
+  // eslint-disable-next-line no-unused-vars
+  const tableContents = useRef(); // For setting/ unsetting navigation
+  // eslint-disable-next-line no-unused-vars
+  const inputRefs = useRef([]); // For setting / unsetting input focus
   const getInventory = () => {
     base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
       .then((records) => {
@@ -96,6 +103,7 @@ function MainInventory() {
       setQuantityMax(e.target.value);
     }
   };
+
   const handleKeyDown = useCallback((e) => {
     const { key } = e;
     switch (key) {
@@ -119,6 +127,20 @@ function MainInventory() {
         break;
     }
   }, [highlightedRow]);
+
+  const handleMouseDown = useCallback(
+    (e) => {
+      if (tableContents.current && tableContents.current.contains(e.target)) {
+        if ((e.target.className) <= numRows) {
+          setHighlightedRow(parseInt(e.target.className, 10));
+          console.log(highlightedRow);
+        }
+      } else {
+        console.log(typeof e.target.className);
+      }
+    },
+    [tableContents, highlightedRow],
+  );
 
   useEffect(getInventory, []);
 
@@ -179,11 +201,12 @@ function MainInventory() {
   }, [items]);
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
-
+    window.addEventListener('mousedown', handleMouseDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('mousedown', handleMouseDown);
     };
-  }, [handleKeyDown]);
+  }, [handleKeyDown, handleMouseDown]);
 
   return (
     <>
@@ -213,35 +236,25 @@ function MainInventory() {
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody ref={tableContents}>
           {slice.map((row, index) => {
-            // let tempClassName = 'tableRow';
-            // if (index === highlightedRow) {
-            //   tempClassName = 'highlightedTableRow';
-            // }
             if (index === highlightedRow) {
               return (
-                <tr style={{ color: 'red' }}>
+                <tr className={index} style={{ color: 'red' }}>
                   {categories.map((category) => (
-                    <td>{row.fields[category]}</td>
+                    <td className={index} classID="tableData">{row.fields[category]}</td>
                   ))}
                 </tr>
               );
             }
             return (
-              <tr>
+              <tr className={index}>
                 {categories.map((category) => (
-                  <td>{row.fields[category]}</td>
+                  <td className={index} classID="tableData">{row.fields[category]}</td>
+
                 ))}
               </tr>
             );
-            // return (
-            //   <tr className={tempClassName}>
-            //     {categories.map((category) => (
-            //       <td>{row.fields[category]}</td>
-            //     ))}
-            //   </tr>
-            // );
           })}
         </tbody>
       </table>
