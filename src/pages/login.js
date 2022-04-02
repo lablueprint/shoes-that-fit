@@ -16,62 +16,84 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState('Educator');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [hasAccount, setHasAccount] = useState(false);
 
+  const clearState = (errorMsg) => {
+    setError(errorMsg);
+    setPassword('');
+    setUsername('');
+    setConfirmPassword('');
+    setRole('Educator');
+  };
+
   const handleSignup = async (e) => {
+    let curError = '';
     setError('');
+    console.log(role);
     e.preventDefault();
     if (username.length === 0) {
-      setError('Error: username cannot be empty.');
+      curError = 'Error: username cannot be empty.';
+      setError(curError);
       return;
     }
     if (password.length === 0) {
-      setError('Error: password cannot be empty.');
+      curError = 'Error: password cannot be empty.';
+      setError(curError);
       return;
     }
     if (confirmPassword.length === 0) {
-      setError('Error: must confirm password.');
+      curError = 'Error: must confirm password.';
+      setError(curError);
       return;
     }
     if (role.length === 0) {
-      setError('Error: must choose a role.');
+      console.log(role);
+      curError = 'Error: must choose a role.';
+      setError(curError);
       return;
     }
-    if (password === confirmPassword) {
-      base('Users').create(
-        [
-          {
-            fields: {
-              Username: username,
-              Password: password,
-              Role: role,
-              // Role: role,
+
+    base('Users').select({ filterByFormula: `Username = "${username}"` }).all().then((res) => {
+      if (res.length !== 0) {
+        curError = 'Error: Username already exists';
+        clearState(curError);
+      } else if (curError.length === 0) {
+        if (password === confirmPassword) {
+          base('Users').create(
+            [
+              {
+                fields: {
+                  Username: username,
+                  Password: password,
+                  Role: role,
+                  // Role: role,
+                },
+              }],
+            (err, records) => {
+              if (err) {
+                console.error(err);
+                return;
+              }
+              records.forEach((record) => {
+                console.log(record.getId());
+              });
             },
-          }],
-        (err, records) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
-          records.forEach((record) => {
-            console.log(record.getId());
-          });
-        },
-      );
-      setPassword('');
-      setUsername('');
-      setConfirmPassword('');
-      setRole('');
-      setError('');
-    } else {
-      console.log("passwords don't match");
-    }
+          );
+          clearState('');
+        } else {
+          console.log("passwords don't match");
+        }
+      }
+    });
   };
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+    base('Users').select({ filterByFormula: `Username = "${username}"` }).all().then((res) => {
+      console.log(res);
+    });
   };
 
   return (
@@ -109,7 +131,7 @@ export default function LoginPage() {
             </>
           ) : (
             <>
-              <select value={role} onClick={(e) => setRole(e.target.value)}>
+              <select value={role} onChange={(e) => setRole(e.target.value)}>
                 <option> Educator</option>
                 <option> Administrator</option>
               </select>
