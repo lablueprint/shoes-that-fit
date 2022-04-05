@@ -4,7 +4,7 @@ import DashboardOrders from '../components/DashboardOrders';
 function AdminDashboard() {
   return (
     <>
-      <p>Hello there?</p>
+      <h1>Welcome Back, Admin</h1>
       <DashboardOrders />
     </>
   );
