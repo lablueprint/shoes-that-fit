@@ -1,33 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import base from '../lib/airtable';
 import ReactSelect from 'react-select';
-// import { base } from 'airlock-example/index.ts';
-// import Airtable from '@calblueprint/airlock';
 import { TableFooter, PageLengthForm } from '../components';
-
-//*
-// airtable configurationcs
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
 
 const base = new Airtable({
   apiKey: airtableConfig.apiKey,
   endpointURL: 'http://localhost:3000',
-})
-  .base(airtableConfig.baseKey);
-// */
+}).base(airtableConfig.baseKey);
 
-/*
-Airtable.configure({
-  apiKey: process.env.REACT_APP_AIRTABLE_API_KEY,
-  endpointURL: 'http://localhost:8000',
-});
-
-const base = Airtable.base(process.env.REACT_APP_AIRTABLE_BASE_KEY);
-// */
+// const loginUser = async (email, password) => {
+//   try {
+//     const res = await base.login({ username: email, password });
+//     if (!res.body.success) {
+//       return { match: false, found: false };
+//     }
+//     return { match: true, found: true };
+//   } catch (err) {
+//     if (err.error === 'AUTHENTICATION_REQUIRED') {
+//       return { match: false, found: true };
+//     }
+//     return { match: false, found: false };
+//   }
+// };
 
 const calculateRange = (tableData, numRows) => {
   const range = [];
@@ -42,8 +36,11 @@ const calculateRange = (tableData, numRows) => {
 const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * numRows, page * numRows);
 
 function MainInventory() {
+  console.log(base);
   const [rows, setRows] = useState([]);
   const [items, setItems] = useState([]);
+  const [category, setCategory] = useState('all');
+  const [value, setValue] = useState('');
   const [inventoryTotal, setInventoryTotal] = useState(0);
   const [quantityMin, setQuantityMin] = useState(0);
   const [quantityMax, setQuantityMax] = useState(null);
@@ -94,6 +91,11 @@ function MainInventory() {
       setQuantityMax(e.target.value);
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line max-len
+    console.log(loginUser(process.env.REACT_APP_AIRTABLE_EMAIL, process.env.REACT_APP_AIRTABLE_PASSWORD));
+  }, []);
 
   useEffect(getInventory, []);
 
