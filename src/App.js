@@ -1,9 +1,9 @@
 import React from 'react';
 import './styles/App.css';
 import { Routes, Route } from 'react-router-dom';
-import { Header, OrderForm } from './components';
+import { Header, Nav } from './components';
 import {
-  Home, MainInventory, NewShoeForm,
+  Home, MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage,
 } from './pages';
 import Nav from './components/nav';
 
@@ -14,14 +14,13 @@ function App() {
       <Nav />
       <Routes>
         <Route exact path="/" element={<Home />} />
-        <Route exact path="/home" element={<Home />} />
-        <Route exact path="/inventory" element={<MainInventory />} />
-        <Route exact path="/newshoeform" element={<NewShoeForm />} />
-        <Route exact path="/orderform" element={<OrderForm />} />
-
+        <Route path="/inventory" element={<MainInventory />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/newshoeform" element={<NewShoeForm />} />
+        <Route path="/orderform" element={<OrderForm />} />
+        <Route path="/adminlist" element={<AdminList />} />
       </Routes>
     </div>
-
   );
 }
 
