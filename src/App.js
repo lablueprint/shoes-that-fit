@@ -3,7 +3,7 @@ import './styles/App.css';
 import { Routes, Route } from 'react-router-dom';
 import { Header, Nav } from './components';
 import {
-  Home, MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage
+  Home, MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage,
 } from './pages';
 
 function App() {
@@ -20,7 +20,6 @@ function App() {
         <Route path="/adminlist" element={<AdminList />} />
       </Routes>
     </div>
-
   );
 }
 

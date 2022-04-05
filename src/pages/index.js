@@ -6,5 +6,5 @@ import AdminList from './AdminList';
 import OrderForm from './OrderForm';
 
 export {
-  Home, MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage
+  Home, MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage,
 };
