@@ -5,7 +5,6 @@ import { Header, Nav } from './components';
 import {
   Home, MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage,
 } from './pages';
-import Nav from './components/nav';
 
 function App() {
   return (

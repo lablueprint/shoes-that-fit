@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import base from '../lib/airtable';
 import ReactSelect from 'react-select';
+import base from '../lib/airtable';
 import { TableFooter, PageLengthForm } from '../components';
 
-const base = new Airtable({
-  apiKey: airtableConfig.apiKey,
-  endpointURL: 'http://localhost:3000',
-}).base(airtableConfig.baseKey);
+// const Airtable = require('airtable');
+
+// const airtableConfig = {
+//   apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
+//   baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
+// };
+
+// const base = new Airtable({
+//   apiKey: airtableConfig.apiKey,
+//   endpointURL: 'http://localhost:3000',
+// }).base(airtableConfig.baseKey);
 
 // const loginUser = async (email, password) => {
 //   try {
@@ -39,8 +46,6 @@ function MainInventory() {
   console.log(base);
   const [rows, setRows] = useState([]);
   const [items, setItems] = useState([]);
-  const [category, setCategory] = useState('all');
-  const [value, setValue] = useState('');
   const [inventoryTotal, setInventoryTotal] = useState(0);
   const [quantityMin, setQuantityMin] = useState(0);
   const [quantityMax, setQuantityMax] = useState(null);
@@ -94,7 +99,7 @@ function MainInventory() {
 
   useEffect(() => {
     // eslint-disable-next-line max-len
-    console.log(loginUser(process.env.REACT_APP_AIRTABLE_EMAIL, process.env.REACT_APP_AIRTABLE_PASSWORD));
+    // console.log(loginUser(process.env.REACT_APP_AIRTABLE_EMAIL, process.env.REACT_APP_AIRTABLE_PASSWORD));
   }, []);
 
   useEffect(getInventory, []);
