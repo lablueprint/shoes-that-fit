@@ -1,3 +1,12 @@
+.inventory {
+    background: #FFFFFF;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.09);
+    border-radius: 20px;
+    max-width: 700px;
+    border: 2px solid black;
+    margin-right: 50px;
+}
+
 .inventoryDashboardHeader {
     display: flex;
     justify-content: space-between;
@@ -9,23 +18,61 @@
 }
 
 .inventoryDashboardQuantity {
+    width: 165px;
+    height: 165px;
     background: #DFF2FF;
     box-shadow: 0px 4px 20px rgba(108, 138, 155, 0.24);
     border-radius: 20px;
+    margin-left: 15px;
+    margin-right: 50px;
 }
 
 .inventoryDashboardShipped {
-background: rgba(255, 228, 196, 0.72);
-box-shadow: 0px 4px 20px rgba(200, 140, 72, 0.2);
-border-radius: 20px;
-
+    width: 165px;
+    height: 165px;
+    background: rgba(255, 228, 196, 0.72);
+    box-shadow: 0px 4px 20px rgba(200, 140, 72, 0.2);
+    border-radius: 20px;
+    margin-right: 15px;
 }
 
+.title
+{
+    display: flex;
+    justify-content: space-between;
+}
 
-.heading{   
-    float: left;
+h2 {
+    margin-left: 25px;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 30px;
+}
+
+h3 {
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 23px;
+
+    color: #000000;
+}
+
+p {
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 35px;
 }
 
 .link {
-    float: right;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    text-align: right;
+    color: #000000;
 }
