@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import styles from './DashboardOrders.module.css';
 
 const Airtable = require('airtable');
 
@@ -38,8 +39,8 @@ function DashboardOrders() {
   }, []);
 
   return (
-    <div>
-      <div>
+    <div className={styles.orderDashboardComponent}>
+      <div className={styles.orderDashboardHeader}>
         <h2>Orders</h2>
         <Link to="/adminlist">View All &gt;</Link>
       </div>

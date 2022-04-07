@@ -45,24 +45,27 @@ function InventorySummary() {
 
   // console.log(rows.length);
   return (
-    <>
-      <div>
+    <div>
+      <div className={styles.inventoryDashboardHeader}>
         <div className={styles.das}>
-          <h1 className="title">Inventory</h1>
+          <h2 className="title">Inventory</h2>
         </div>
         <div className="link">
           <Link to="/inventory">See Full Inventory</Link>
         </div>
       </div>
 
-      <div>
-        <h3>Total Quantity Fullfilled</h3>
-        <p>{rows.length}</p>
-        <h3>Quantity Shipped</h3>
-        <p>{quantityFulfilled}</p>
-
+      <div className={styles.inventoryDashboardBody}>
+        <div className={styles.inventoryDashboardQuantity}>
+          <h3>Total Quantity Fullfilled</h3>
+          <p>{rows.length}</p>
+        </div>
+        <div className={styles.inventoryDashboardShipped}>
+          <h3>Quantity Shipped</h3>
+          <p>{quantityFulfilled}</p>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 

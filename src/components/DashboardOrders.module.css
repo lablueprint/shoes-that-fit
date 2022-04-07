@@ -1,0 +1,25 @@
+.orderDashboardHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
+.orderDashboardComponent {
+    max-width: 500px;
+    border: 2px solid black;
+}
+
+table {
+    background-color: #F3F3F3;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+}
+  
+thead {
+    border-bottom: 2px solid black;
+}
+
+Link { 
+    text-decoration: none; 
+}
