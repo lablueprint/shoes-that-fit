@@ -4,12 +4,14 @@ table {
     border-collapse: collapse;
     font-size: 12px;
     table-layout: fixed;
-
   }
     
   th {
     border: 1px solid black;
     background: #AEECFF;
+    overflow: hidden;
+    padding-left: 3px;
+    padding-right: 3px;
   }
     
   td {
@@ -30,7 +32,7 @@ body {
 
     color: #000000;
 
-    /* text-align: 'left';
+    /*text-align: 'left';
     padding-left: '30%';
     padding-right: '30%'; */
 }
@@ -67,11 +69,14 @@ label {
     flex-basis: 100%;
     flex: 1;
     float: left; */
-    width: 35%;
-
+    width: 25%;
+    padding-left: 2.5%;
+    margin-top: 75px;
     /* text-align: left; */
     /* padding-left: 15%;
     padding-right: 15%; */
+    border-right: 1px solid black;
+    padding-right: 2.5%;
 }
 
 .right {
@@ -79,19 +84,29 @@ label {
     float: right;
     flex-direction: column;
     flex-basis: 100%;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
     flex: 1;
+    margin-top: 75px;
+
 }
 
 .full {
     width: 95%;
+    padding: 2px 1px; 
+    line-height: 28px;
 }
 
 .half {
     width: 90%;
+    padding: 2px 1px; 
+    line-height: 28px;
 }
   
 .left-column {
     height: 100%;
+    text-align: left;
+
 }
 
 .right-column {
@@ -99,14 +114,75 @@ label {
 }
   
 .space {
-    height: 10px;
+    height: 30px;
 }
 
 .flex-container {
     display: flex;
     width: 100%;
+    text-align: left;
+
 }
   
 .flex-child.label {
     width: 50%;
 } 
+
+button {
+    color: black;
+    padding: 5px 30px;
+    text-align: center;
+    display: inline-block;
+    font-size: 20px;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 1000;
+}
+
+#print {
+    background-color:  white;
+    border-color: #00B1FF;
+    border-width: 3px;
+    border-style: solid;
+    margin-left: 1%;
+}
+
+input {
+    color: black;
+    padding: 5px 30px;
+    text-align: center;
+    display: inline-block;
+    font-size: 20px;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 1000;
+}
+
+#bigSubmit {
+    background-color:  rgba(174, 236, 255, 0.5);
+    border-color: rgba(174, 236, 255, 0.5);
+    border-width: 3px;
+    border-style: solid;
+}
+
+#submit {
+    background-color:  rgba(255, 167, 62, 0.5);
+    border: none;
+    color: black;
+    padding: 5px 30px;
+    text-align: center;
+    display: inline-block;
+    font-size: 20px;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 1000;
+    margin-left: 20%;
+
+} 
+
+.michael {
+    display: flex; 
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 40%;
+}
