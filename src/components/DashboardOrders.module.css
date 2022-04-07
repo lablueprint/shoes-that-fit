@@ -49,17 +49,26 @@
 .orderTableTHead {
     border-bottom: 2px solid black;
 }
+.orderTableTR {
+    border-bottom: 0.25px solid #000000;
+
+}
 
 .orderTableData {
     height: 50px;
-    width: 100px
+    width: 100px;
+    justify-content: center;
 }
 
 .incompleteBox {
-    /* Accent/Light Orange */
+    display: flex;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
     background: #FFA73E;
     border-radius: 31px;
-    height: 20px;
+    height: 25px;
+    width: 80px
 }
 
 .LinkStyles { 
@@ -71,5 +80,4 @@
     font-size: 20px;
     line-height: 23px;
     color: #24275E;
-    vertical-align: middle;
 }
