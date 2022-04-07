@@ -6,7 +6,7 @@ import styles from './AdminDashboard.module.css';
 function AdminDashboard() {
   return (
     <>
-      <h1>Welcome Back, Admin</h1>
+      <h1 className={styles.welcome}>Welcome Back, Admin</h1>
       <div className={styles.topComponents}>
         <DashboardOrders />
         <InventorySummary />

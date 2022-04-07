@@ -44,23 +44,22 @@ function InventorySummary() {
   useEffect(getQuantityFulfilled, [rows]);
 
   // console.log(rows.length);
+  // {styles.dashboardComponent} instead of styles.inventory
   return (
-    <div className={styles.inventory}>
+    <div className={styles.dashboardComponent}>
       <div className={styles.inventoryDashboardHeader}>
-        <span className={styles.title}>
-          <h2>Inventory</h2>
-          <Link to="/inventory">See Full Inventory &gt;</Link>
-        </span>
+        <h2 className={styles.inventory}>Inventory</h2>
+        <Link to="/inventory" className={styles.LinkStyles}>See Full Inventory &gt;</Link>
       </div>
 
       <div className={styles.inventoryDashboardBody}>
         <div className={styles.inventoryDashboardQuantity}>
-          <h3>Total Quantity</h3>
-          <p>{rows.length}</p>
+          <h3 className={styles.minorTitle}>Total Quantity</h3>
+          <p className={styles.minorTitleData}>{rows.length}</p>
         </div>
         <div className={styles.inventoryDashboardShipped}>
-          <h3>Quantity Shipped</h3>
-          <p>{quantityFulfilled}</p>
+          <h3 className={styles.minorTitle}>Quantity Shipped</h3>
+          <p className={styles.minorTitleData}>{quantityFulfilled}</p>
         </div>
       </div>
     </div>
