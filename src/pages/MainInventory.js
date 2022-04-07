@@ -3,6 +3,7 @@ import ReactSelect from 'react-select';
 // import { base } from 'airlock-example/index.ts';
 // import Airtable from '@calblueprint/airlock';
 import { TableFooter, PageLengthForm } from '../components';
+import styles from './MainInventory.module.css';
 
 //*
 // airtable configurationcs
@@ -156,8 +157,8 @@ function MainInventory() {
   return (
     <>
       <PageLengthForm setNumRows={setNumRows} />
-      <table>
-        <thead>
+      <table className={styles.inventoryTable}>
+        <thead className={styles.inventoryHeader}>
           <tr>
             {filterableCategories.map((category) => (
               <th>
@@ -183,13 +184,19 @@ function MainInventory() {
           </tr>
         </thead>
         <tbody>
-          {slice.map((row) => (
-            <tr>
-              {categories.map((category) => (
-                <td>{row.fields[category]}</td>
-              ))}
-            </tr>
-          ))}
+          {slice.map((row, index) => {
+            let trClassName = 'evenRow';
+            if (index % 2 === 1) {
+              trClassName = 'oddRow';
+            }
+            return (
+              <tr className={styles[trClassName]}>
+                {categories.map((category) => (
+                  <td>{row.fields[category]}</td>
+                ))}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
       <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} />
