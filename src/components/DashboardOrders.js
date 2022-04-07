@@ -54,14 +54,22 @@ function DashboardOrders() {
           </tr>
         </thead>
         <tbody>
-          {displayedCards.map((card) => (
-            <tr>
-              <td className={styles.orderTableData}>{`${card.fields.Time.slice(5, 7)}/${card.fields.Time.slice(8, 10)}/${card.fields.Time.slice(2, 4)}`}</td>
-              <td className={styles.orderTableData}>{card.fields.Name}</td>
-              <td className={styles.orderTableData}>{card.fields['Teacher/School']}</td>
-              <td className={styles.incompleteBox}>Incomplete</td>
-            </tr>
-          ))}
+          {displayedCards.map((card, index) => {
+            let trClassName = styles.orderTableTR;
+            if (index === displayedCards.length - 1) {
+              trClassName = 'null';
+            }
+            return (
+              <tr className={trClassName}>
+                <td className={styles.orderTableData}>{`${card.fields.Time.slice(5, 7)}/${card.fields.Time.slice(8, 10)}/${card.fields.Time.slice(2, 4)}`}</td>
+                <td className={styles.orderTableData}>{card.fields.Name}</td>
+                <td className={styles.orderTableData}>{card.fields['Teacher/School']}</td>
+                <td className={styles.orderTableData}>
+                  <span className={styles.incompleteBox}>Incomplete</span>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
