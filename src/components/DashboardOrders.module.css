@@ -1,25 +1,75 @@
+.dashboardComponent {
+    max-width: 700px;
+
+    background: #FFFFFF;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.09);
+    border-radius: 20px;
+
+}
+
 .orderDashboardHeader {
     display: flex;
     justify-content: space-between;
+    align-items: end;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
-.orderDashboardComponent {
-    max-width: 500px;
-    border: 2px solid black;
-}
-
-table {
+.orderDashboardTable {
     background-color: #F3F3F3;
     border-collapse: collapse;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
     border-radius: 20px;
+
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+
+    color: #313131;
+
+    border-spacing: 5px;
+}
+
+.adminDashboardH2 {
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 35px;
+    /* identical to box height */
+
+    color: #000000;
+
 }
   
-thead {
+.orderTableTHead {
     border-bottom: 2px solid black;
 }
 
-Link { 
-    text-decoration: none; 
+.orderTableData {
+    height: 50px;
+    width: 100px
+}
+
+.incompleteBox {
+    /* Accent/Light Orange */
+    background: #FFA73E;
+    border-radius: 31px;
+    height: 20px;
+}
+
+.LinkStyles { 
+    text-decoration: none;
+
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 23px;
+    color: #24275E;
+    vertical-align: middle;
 }

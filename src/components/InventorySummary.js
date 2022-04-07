@@ -45,7 +45,7 @@ function InventorySummary() {
 
   // console.log(rows.length);
   return (
-    <div>
+    <div className={styles.dashboardComponent}>
       <div className={styles.inventoryDashboardHeader}>
         <div className={styles.das}>
           <h2 className="title">Inventory</h2>

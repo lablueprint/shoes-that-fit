@@ -39,27 +39,27 @@ function DashboardOrders() {
   }, []);
 
   return (
-    <div className={styles.orderDashboardComponent}>
+    <div className={styles.dashboardComponent}>
       <div className={styles.orderDashboardHeader}>
-        <h2>Orders</h2>
-        <Link to="/adminlist">View All &gt;</Link>
+        <h2 className={styles.adminDashboardH2}>Orders</h2>
+        <Link to="/adminlist" className={styles.LinkStyles}>View All &gt;</Link>
       </div>
-      <table>
-        <thead>
+      <table className={styles.orderDashboardTable}>
+        <thead className={styles.orderTableTHead}>
           <tr>
-            <th>Date</th>
-            <th>Name</th>
-            <th>School</th>
-            <th>Status</th>
+            <th className={styles.orderTableData}>Date</th>
+            <th className={styles.orderTableData}>Name</th>
+            <th className={styles.orderTableData}>School</th>
+            <th className={styles.orderTableData}>Status</th>
           </tr>
         </thead>
         <tbody>
           {displayedCards.map((card) => (
             <tr>
-              <td>{`${card.fields.Time.slice(5, 7)}/${card.fields.Time.slice(8, 10)}/${card.fields.Time.slice(2, 4)}`}</td>
-              <td>{card.fields.Name}</td>
-              <td>{card.fields['Teacher/School']}</td>
-              <td>Incomplete</td>
+              <td className={styles.orderTableData}>{`${card.fields.Time.slice(5, 7)}/${card.fields.Time.slice(8, 10)}/${card.fields.Time.slice(2, 4)}`}</td>
+              <td className={styles.orderTableData}>{card.fields.Name}</td>
+              <td className={styles.orderTableData}>{card.fields['Teacher/School']}</td>
+              <td className={styles.incompleteBox}>Incomplete</td>
             </tr>
           ))}
         </tbody>
