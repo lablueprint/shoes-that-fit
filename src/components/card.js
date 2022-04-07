@@ -1,62 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styles from './card.module.css';
 
 function Card({
-  name, gender, wideWidth, size, age, school,
+  schoolDistrict,
+  time,
+  fulfilled,
 }) {
-  const cardStyle = {
-    'text-align': 'left',
-    'padding-left': '30%',
-    'padding-right': '30%',
-  };
   return (
-    <div style={cardStyle}>
-      <div>
-        First Name and Last Initial:
-        {' '}
-        {name}
+    <div className={styles.cardBackground}>
+      <div className={styles.leftText}>
+        <div className={styles.schoolDistrict}>{schoolDistrict}</div>
+        <div className={styles.order}>
+          Order placed on
+          {' '}
+          {new Date(Date.parse(time)).toLocaleString('en-US', {
+            year: 'numeric', month: 'long', day: 'numeric',
+          })}
+        </div>
+
+        <div className={styles.status}>
+          {fulfilled ? <div className={styles.statusChildInProgress}>In Progress</div>
+            : <div className={styles.statusChildFulfilled}>Fulfilled</div>}
+        </div>
       </div>
-      <div>
-        gender:
-        {' '}
-        {gender}
-      </div>
-      <div>
-        Wide Width:
-        {' '}
-        {wideWidth ? 'True' : 'False'}
-      </div>
-      <div>
-        Shoe Size:
-        {' '}
-        {size}
-      </div>
-      <div>
-        Age:
-        {' '}
-        {age}
-      </div>
-      <div>
-        School:
-        {' '}
-        {school}
-      </div>
+      <button type="button" className={styles.delete}> Delete </button>
+      <button type="button" className={styles.viewForm}> View Form</button>
     </div>
   );
 }
 
 Card.propTypes = {
-  school: PropTypes.string,
-  name: PropTypes.string.isRequired,
-  gender: PropTypes.string.isRequired,
-  wideWidth: PropTypes.bool,
-  size: PropTypes.number.isRequired,
-  age: PropTypes.number.isRequired,
+  schoolDistrict: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired,
+  fulfilled: PropTypes.bool,
 };
 
 Card.defaultProps = {
-  school: 'UCLA',
-  wideWidth: false,
+  fulfilled: false,
 };
 
 export default Card;

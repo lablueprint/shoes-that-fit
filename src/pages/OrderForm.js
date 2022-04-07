@@ -1,8 +1,11 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable max-len */
+
 import React, { useState, useEffect } from 'react';
 import print from 'print-js';
 // import reactDom from 'react-dom';
 import Card from '../components/card';
-import './OrderForm.css';
+import styles from './OrderForm.module.css';
 
 const Airtable = require('airtable');
 
@@ -111,36 +114,41 @@ function OrderForm() {
   };
 
   return (
-    <div className="row">
+    <div className={styles.row}>
       {getId()}
       <script src="print.js" />
-      <div className="column-left">
-        <div className="left-column">
+      <div className={[styles.column, styles.left]}>
+        <div className={styles.leftColumn}>
           <h1>Add Order: </h1>
-          <form onSubmit={shoeUpdate}>
+          <form onSubmit={styles.shoeUpdate}>
             <label htmlFor="name">
               Student&apos;s First Name & Last Initial:
             </label>
             <div />
-            <input className="full" required type="text" id="name" name="name" />
-            <div className="space" />
+            <input className={styles.full} required type="text" id="name" name="name" />
+            <div className={styles.space} />
 
-            <div className="flex-container">
-              <div className="flex-child label">
+            <div className={styles.flexContainer}>
+              <div className={[styles.flexChild, styles.label]}>
                 <label htmlFor="age">
-                  Age:
+                  Age
                   {' '}
                 </label>
                 <div />
-                <input className="half" required type="number" id="age" name="age" />
+                <input className={styles.half} required type="number" id="age" name="age" />
               </div>
-              <div className="flex-child label">
+              <div className={[styles.flexChild, styles.label]}>
                 <label htmlFor="gender">
-                  Gender:
+                  Gender
                   {' '}
                 </label>
                 <div />
-                <input className="half" required type="text" id="gender" name="gender" />
+                <input className={styles.half} required type="text" id="gender" name="gender" list="genders" />
+                <datalist id="genders">
+                  <option value="Male"> </option>
+                  <option value="Female"> </option>
+                  <option value="Other"> </option>
+                </datalist>
               </div>
             </div>
             <div className="space" />
@@ -148,19 +156,102 @@ function OrderForm() {
             <div className="flex-container">
               <div className="flex-child label">
                 <label htmlFor="size">
-                  Size:
+                  Size
                   {' '}
                 </label>
                 <div />
-                <input className="half" required type="number" id="size" name="size" />
+                <input className="half" required type="text" id="size" name="size" list="sizes" />
+                <datalist id="sizes">
+                  <option value="Young Child 4"> </option>
+                  <option value="Young Child 4.5"> </option>
+                  <option value="Young Child 5"> </option>
+                  <option value="Young Child 5.5"> </option>
+                  <option value="Young Child 6"> </option>
+                  <option value="Young Child 6.5"> </option>
+                  <option value="Young Child 7"> </option>
+                  <option value="Young Child 7.5"> </option>
+                  <option value="Young Child 8"> </option>
+                  <option value="Young Child 8.5"> </option>
+                  <option value="Young Child 9"> </option>
+                  <option value="Young Child 9.5"> </option>
+                  <option value="Young Child 10"> </option>
+                  <option value="Young Child 10.5"> </option>
+                  <option value="Young Child 11"> </option>
+                  <option value="Young Child 11.5"> </option>
+                  <option value="Young Child 12"> </option>
+                  <option value="Young Child 12.5"> </option>
+                  <option value="Young Child 13"> </option>
+                  <option value="Young Child 13.5"> </option>
+                  <option value="Youth 1"> </option>
+                  <option value="Youth 1"> </option>
+                  <option value="Youth 1.5"> </option>
+                  <option value="Youth 1.5"> </option>
+                  <option value="Youth 2"> </option>
+                  <option value="Youth 2"> </option>
+                  <option value="Youth 2.5"> </option>
+                  <option value="Youth 2.5"> </option>
+                  <option value="Youth 3"> </option>
+                  <option value="Youth 3"> </option>
+                  <option value="Youth 3.5"> </option>
+                  <option value="Youth 3.5"> </option>
+                  <option value="Youth 4"> </option>
+                  <option value="Youth 4"> </option>
+                  <option value="Youth 4.5"> </option>
+                  <option value="Youth 4.5"> </option>
+                  <option value="Adult 5"> </option>
+                  <option value="Adult 5"> </option>
+                  <option value="Adult 5.5"> </option>
+                  <option value="Adult 5.5"> </option>
+                  <option value="Adult 6"> </option>
+                  <option value="Adult 6"> </option>
+                  <option value="Adult 6.5"> </option>
+                  <option value="Adult 6.5"> </option>
+                  <option value="Adult 7"> </option>
+                  <option value="Adult 7"> </option>
+                  <option value="Adult 7.5"> </option>
+                  <option value="Adult 7.5"> </option>
+                  <option value="Adult 8"> </option>
+                  <option value="Adult 8"> </option>
+                  <option value="Adult 8.5"> </option>
+                  <option value="Adult 8.5"> </option>
+                  <option value="Adult 9"> </option>
+                  <option value="Adult 9"> </option>
+                  <option value="Adult 9.5"> </option>
+                  <option value="Adult 9.5"> </option>
+                  <option value="Adult 10"> </option>
+                  <option value="Adult 10"> </option>
+                  <option value="Adult 10.5"> </option>
+                  <option value="Adult 10.5"> </option>
+                  <option value="Adult 11"> </option>
+                  <option value="Adult 11"> </option>
+                  <option value="Adult 11.5"> </option>
+                  <option value="Adult 11.5"> </option>
+                  <option value="Adult 12"> </option>
+                  <option value="Adult 12"> </option>
+                  <option value="Adult 12.5"> </option>
+                  <option value="Adult 12.5"> </option>
+                  <option value="Adult 13"> </option>
+                  <option value="Adult 13"> </option>
+                  <option value="Adult 13.5"> </option>
+                  <option value="Adult 13.5"> </option>
+                  <option value="Adult 14"> </option>
+                  <option value="Adult 14"> </option>
+                  <option value="Adult 15"> </option>
+                  <option value="Adult 15"> </option>
+                </datalist>
               </div>
+              {' '}
               <div className="flex-child label">
                 <label htmlFor="wideWidth">
-                  Wide Width?:
+                  Wide Width?
                   {' '}
                 </label>
                 <div />
-                <input className="half" required type="boolean" id="wideWidth" name="wideWidth" />
+                <input className="half" required type="boolean" id="wideWidth" name="wideWidth" list="yesorno" />
+                <datalist id="yesorno">
+                  <option value="Yes"> </option>
+                  <option value="No"> </option>
+                </datalist>
               </div>
             </div>
             <div className="space" />
@@ -172,12 +263,6 @@ function OrderForm() {
             <input className="full" required type="string" id="school" name="school" />
             <div className="space" />
 
-            <label htmlFor="notes">
-              Notes
-              {' '}
-            </label>
-            <input className="full" required type="string" id="notes" name="notes" />
-            <div className="space" />
             <input type="submit" id="submit" name="submit" value="Add Request" />
           </form>
 
@@ -193,7 +278,7 @@ function OrderForm() {
         </div>
       </div>
 
-      <div className="column-right">
+      <div className="column right">
         <div className="right-column">
 
           <div id="orders">

@@ -3,7 +3,8 @@ import MainInventory from './MainInventory';
 import NewShoeForm from './NewShoeForm';
 import AdminList from './AdminList';
 import OrderForm from './OrderForm';
+import OrderHistory from './OrderHistory';
 
 export {
-  Home, MainInventory, NewShoeForm, AdminList, OrderForm,
+  Home, MainInventory, NewShoeForm, AdminList, OrderForm, OrderHistory,
 };
