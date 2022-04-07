@@ -1,3 +1,15 @@
+.welcome {
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 42px;
+    /* identical to box height */
+
+
+    color: #000000;
+}
+
 div.topComponents {
     display: flex;
     justify-content: space-evenly;
