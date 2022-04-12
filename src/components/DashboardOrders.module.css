@@ -1,5 +1,4 @@
 .dashboardComponent {
-    max-width: 700px;
 
     background: #FFFFFF;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.09);
@@ -35,10 +34,13 @@
     margin: 0 auto;
     align-items: center;
     justify-content: center;
-    background: #FFA73E;
+    background: #FFEEC2;
+    color: #AC7D03;
+    font-weight: 700;
+    font-size: 16px;
     border-radius: 31px;
     height: 25px;
-    width: 100px
+    width: 130px
 }
 
 .LinkStyles { 
@@ -68,19 +70,13 @@
     width: 100%;
     border-collapse: collapse; /* removes gap between cells */
     border-radius: 20px;
-
-    background-color: #F3F3F3;
-    border-collapse: collapse;
-    border-radius: 20px;
-
+    background-color: #F9F9F9;   
     font-family: 'Hartwell';
     font-style: normal;
     font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-
+    font-size: 18px;
+    line-height: 21px;
     color: #313131;
-
     border-spacing: 5px;
  }
  
