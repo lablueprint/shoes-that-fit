@@ -42,36 +42,38 @@ function DashboardOrders() {
     <div className={styles.dashboardComponent}>
       <div className={styles.orderDashboardHeader}>
         <h2 className={styles.adminDashboardH2}>Orders</h2>
-        <Link to="/adminlist" className={styles.LinkStyles}>View All &gt;</Link>
+        <Link to="/adminlist" className={styles.LinkStyles}>view all &gt;</Link>
       </div>
-      <table className={styles.orderDashboardTable}>
-        <thead className={styles.orderTableTHead}>
-          <tr>
-            <th className={styles.orderTableData}>Date</th>
-            <th className={styles.orderTableData}>Name</th>
-            <th className={styles.orderTableData}>School</th>
-            <th className={styles.orderTableData}>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {displayedCards.map((card, index) => {
-            let trClassName = styles.orderTableTR;
-            if (index === displayedCards.length - 1) {
-              trClassName = 'null';
-            }
-            return (
-              <tr className={trClassName}>
-                <td className={styles.orderTableData}>{`${card.fields.Time.slice(5, 7)}/${card.fields.Time.slice(8, 10)}/${card.fields.Time.slice(2, 4)}`}</td>
-                <td className={styles.orderTableData}>{card.fields.Name}</td>
-                <td className={styles.orderTableData}>{card.fields['Teacher/School']}</td>
-                <td className={styles.orderTableData}>
-                  <span className={styles.incompleteBox}>Incomplete</span>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <div className={styles.orderDashboardTable}>
+        <table>
+          <thead className={styles.orderTableTHead}>
+            <tr>
+              <th className={styles.orderTableData}>Date</th>
+              <th className={styles.orderTableData}>Name</th>
+              <th className={styles.orderTableData}>School</th>
+              <th className={styles.orderTableData}>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {displayedCards.map((card, index) => {
+              let trClassName = styles.orderTableTR;
+              if (index === 0) {
+                trClassName = styles.orderTableTRFirst;
+              }
+              return (
+                <tr className={trClassName}>
+                  <td className={styles.orderTableData}>{`${card.fields.Time.slice(5, 7)}/${card.fields.Time.slice(8, 10)}/${card.fields.Time.slice(2, 4)}`}</td>
+                  <td className={styles.orderTableData}>{card.fields.Name}</td>
+                  <td className={styles.orderTableData}>{card.fields['Teacher/School']}</td>
+                  <td className={styles.orderTableData}>
+                    <span className={styles.incompleteBox}>INCOMPLETE</span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
