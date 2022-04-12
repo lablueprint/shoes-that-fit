@@ -4,14 +4,14 @@ import axios from 'axios';
 // import React from 'react';
 // import { makeStyles } from '@material-ui/core/styles';
 
-const Airtable = require('airtable');
+// const Airtable = require('airtable');
 
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
+// const airtableConfig = {
+//   apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
+//   baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
+// };
 
-const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(airtableConfig.baseKey);
+// const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(airtableConfig.baseKey);
 
 export default function LoginPage() {
   const [error, setError] = useState('');
@@ -58,20 +58,22 @@ export default function LoginPage() {
 
     const json = JSON.stringify({ username, password });
     const token = 'keyYheV6VxT2I65Z3';
-    axios
-      .get('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_register__', json, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      })
+
+    axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_register__', json, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         if (response.status === 200) {
-          // send to home page if registered
+          console.log('YAY');
+          // go to home page and/or confirm email
+          // set redux that user is logged in
         }
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((e2) => {
+        console.log(e2);
         curError = 'Error: Incorrect password.';
         setError(curError);
         // incorrect username or password
@@ -113,9 +115,32 @@ export default function LoginPage() {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-    base('Users').select({ filterByFormula: `Username = "${username}"` }).all().then((res) => {
-      console.log(res);
-    });
+    let curError = '';
+    setError('');
+    // base('Users').select({ filterByFormula: `Username = "${username}"` }).all().then((res) => {
+    //   console.log(res);
+    // });
+    const json = JSON.stringify({ username, password });
+    const token = 'keyYheV6VxT2I65Z3';
+
+    axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_login__', json, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log('YAY');
+          // go to home page and set login user in redux
+        }
+      })
+      .catch((e2) => {
+        console.log(e2);
+        curError = 'Error: Incorrect password.';
+        setError(curError);
+        // incorrect username or password
+      });
   };
 
   return (
