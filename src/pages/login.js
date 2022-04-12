@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
+import axios from 'axios';
 // import React from 'react';
 // import { makeStyles } from '@material-ui/core/styles';
 
@@ -20,13 +21,13 @@ export default function LoginPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [hasAccount, setHasAccount] = useState(false);
 
-  const clearState = (errorMsg) => {
-    setError(errorMsg);
-    setPassword('');
-    setUsername('');
-    setConfirmPassword('');
-    setRole('Educator');
-  };
+  // const clearState = (errorMsg) => {
+  //   setError(errorMsg);
+  //   setPassword('');
+  //   setUsername('');
+  //   setConfirmPassword('');
+  //   setRole('Educator');
+  // };
 
   const handleSignup = async (e) => {
     let curError = '';
@@ -52,41 +53,62 @@ export default function LoginPage() {
       console.log(role);
       curError = 'Error: must choose a role.';
       setError(curError);
-      return;
+      // return;
     }
 
-    base('Users').select({ filterByFormula: `Username = "${username}"` }).all().then((res) => {
-      if (res.length !== 0) {
-        curError = 'Error: Username already exists';
-        clearState(curError);
-      } else if (curError.length === 0) {
-        if (password === confirmPassword) {
-          base('Users').create(
-            [
-              {
-                fields: {
-                  Username: username,
-                  Password: password,
-                  Role: role,
-                  // Role: role,
-                },
-              }],
-            (err, records) => {
-              if (err) {
-                console.error(err);
-                return;
-              }
-              records.forEach((record) => {
-                console.log(record.getId());
-              });
-            },
-          );
-          clearState('');
-        } else {
-          console.log("passwords don't match");
+    const json = JSON.stringify({ username, password });
+    const token = 'keyYheV6VxT2I65Z3';
+    axios
+      .get('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_register__', json, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          // send to home page if registered
         }
-      }
-    });
+      })
+      .catch((e) => {
+        console.log(e);
+        curError = 'Error: Incorrect password.';
+        setError(curError);
+        // incorrect username or password
+      });
+
+    // base('Users').select({ filterByFormula: `Username = "${username}"` }).all().then((res) => {
+    //   if (res.length !== 0) {
+    //     curError = 'Error: Username already exists';
+    //     clearState(curError);
+    //   } else if (curError.length === 0) {
+    //     if (password === confirmPassword) {
+    //       base('Users').create(
+    //         [
+    //           {
+    //             fields: {
+    //               Username: username,
+    //               Password: password,
+    //               Role: role,
+    //               // Role: role,
+    //             },
+    //           }],
+    //         (err, records) => {
+    //           if (err) {
+    //             console.error(err);
+    //             return;
+    //           }
+    //           records.forEach((record) => {
+    //             console.log(record.getId());
+    //           });
+    //         },
+    //       );
+    //       clearState('');
+    //     } else {
+    //       console.log("passwords don't match");
+    //     }
+    //   }
+    // });
   };
 
   const handleSignIn = async (e) => {
