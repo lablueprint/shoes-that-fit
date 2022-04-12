@@ -50,7 +50,7 @@ function DashboardOrders() {
             <tr>
               <th className={styles.orderTableData}>Date</th>
               <th className={styles.orderTableData}>Name</th>
-              <th className={styles.orderTableData}>School</th>
+              <th className={styles.orderTableData}>School/District</th>
               <th className={styles.orderTableData}>Status</th>
             </tr>
           </thead>
