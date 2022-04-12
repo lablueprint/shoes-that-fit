@@ -126,6 +126,7 @@ input::-webkit-calendar-picker-indicator {
     background: rgba(229, 229, 229, 0.5);
     padding-left: 15%;
     padding-right: 15%;
+    height: 100%;
 }
 
 .orderText {

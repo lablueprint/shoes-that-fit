@@ -6,7 +6,12 @@ function Card({
   schoolDistrict,
   time,
   fulfilled,
+  cardId,
+  deleteCard,
 }) {
+  function deleteMyself() {
+    deleteCard(cardId);
+  }
   return (
     <div className={styles.cardBackground}>
       <div className={styles.leftText}>
@@ -18,13 +23,21 @@ function Card({
             year: 'numeric', month: 'long', day: 'numeric',
           })}
         </div>
-
-        <div className={styles.status}>
-          {fulfilled ? <div className={styles.statusChildInProgress}>In Progress</div>
-            : <div className={styles.statusChildFulfilled}>Fulfilled</div>}
+        <div className={styles.statusTime}>
+          <div className={styles.status}>
+            {fulfilled ? <div className={styles.statusChildInProgress}>In Progress</div>
+              : <div className={styles.statusChildFulfilled}>Fulfilled</div>}
+          </div>
+          <div className={styles.time}>
+            {`${new Date(Date.parse(time)).toLocaleString('en-US', {
+              year: 'numeric', month: 'long', day: 'numeric',
+            })} | ${new Date(Date.parse(time)).toLocaleString('en-US', {
+              hour: 'numeric', minute: 'numeric',
+            })}`}
+          </div>
         </div>
       </div>
-      <button type="button" className={styles.delete}> Delete </button>
+      <button type="button" className={styles.delete} onClick={deleteMyself}> Delete </button>
       <button type="button" className={styles.viewForm}> View Form</button>
     </div>
   );
@@ -34,6 +47,8 @@ Card.propTypes = {
   schoolDistrict: PropTypes.string.isRequired,
   time: PropTypes.string.isRequired,
   fulfilled: PropTypes.bool,
+  cardId: PropTypes.string.isRequired,
+  deleteCard: PropTypes.func.isRequired,
 };
 
 Card.defaultProps = {

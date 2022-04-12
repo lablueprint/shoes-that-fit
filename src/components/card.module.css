@@ -26,6 +26,8 @@
   padding-right: 10%;
   padding-top: 20px;
   padding-bottom: 20px;
+
+  margin: 11px;
 }
 
 .schoolDistrict {
@@ -35,27 +37,49 @@
 .order {
   font-size: 36px;
   font-weight: bold;
-  padding: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.statusTime {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
 }
 
 .status {
-  height: 36px;
-  width: 124px;
   text-align: center;
-  align-items: center;
   display: flex;
 }
 
+.time {
+  display: flex;
+  flex: 1;
+  text-align: center;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
 .statusChildInProgress {
+  height: 36px;
+  width: 124px;
   background-color: #AEECFF;
   flex-grow: 1;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
 }
 
 .statusChildFulfilled {
+  height: 36px;
+  width: 124px;
   background: rgba(255, 167, 62, 0.5);
   flex-grow: 1;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
 }
 
 .leftText {
@@ -88,4 +112,8 @@
   font-size: 30px;
   font-weight: bold;
   margin: 19px;
+}
+
+button {
+  cursor: pointer;
 }
