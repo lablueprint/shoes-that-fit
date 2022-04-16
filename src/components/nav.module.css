@@ -1,0 +1,24 @@
+.navEntry {
+  display: inline-block;
+  height: 70px;
+  width: 120px; /* width must be same size as NavBar to center */
+  text-align: left; /* Aligns <ul> inside of NavIcon div */
+  margin-bottom: 0;   /* Puts space between NavItems */
+}
+
+.sidebar {
+  position: fixed;     /* Fixed Sidebar (stay in place on scroll and position relative to viewport) */
+  height: 100%;
+  width: 120px;     /* Set the width of the sidebar */
+  z-index: 1;      /* Stay on top of everything */
+  top: 3.4em;      /* Stay at the top */
+  overflow-x: hidden;     /* Disable horizontal scroll */
+  padding-top: 10px;
+  background: #24275E;
+}
+
+.linkStyles {
+  color: white;
+  text-decoration:none; 
+}
+

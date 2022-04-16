@@ -1,19 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './nav.css';
+import styles from './nav.module.css';
 
 export default function Nav() {
   return (
-    <div>
-      <ul>
-        <ul><Link to="/home">Home</Link></ul>
-        <ul><Link to="/inventory">Inventory</Link></ul>
-        <ul><Link to="/newshoeform">New Shoe Form</Link></ul>
-        <ul><Link to="/orderform">Order Form</Link></ul>
-        <ul><Link to="/adminlist">Admin List</Link></ul>
-        <ul><Link to="/admindashboard">Admin Dashboard</Link></ul>
-      </ul>
-      <hr />
+    <div className={styles.sidebar}>
+      <ul className={styles.navEntry}><Link to="/home" className={styles.linkStyles}>Home</Link></ul>
+      <ul className={styles.navEntry}><Link to="/inventory" className={styles.linkStyles}>Inventory</Link></ul>
+      <ul className={styles.navEntry}><Link to="/newshoeform" className={styles.linkStyles}>New Shoe Form</Link></ul>
+      <ul className={styles.navEntry}><Link to="/orderform" className={styles.linkStyles}>Order Form</Link></ul>
+      <ul className={styles.navEntry}><Link to="/adminlist" className={styles.linkStyles}>Admin List</Link></ul>
+      <ul className={styles.navEntry}><Link to="/admindashboard" className={styles.linkStyles}>Admin Dashboard</Link></ul>
+      {/* <hr /> */}
     </div>
   );
 }
