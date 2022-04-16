@@ -1,38 +1,42 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import {
   Home, ClipboardList, ListOrdered, Gift, GraduationCap,
 } from 'lucide-react';
 import styles from './nav.module.css';
 
-export default function Nav() {
+function Nav() {
+  const location = useLocation();
+  const [selected, setSelected] = useState(location.pathname);
+  const linkArray = ['/home', '/inventory', '/newshoeform', '/orderform', '/adminlist', '/admindashboard'];
+  const textArray = ['Home', 'Inventory', 'New Shoe Form', 'Order Form', 'Admin List', 'Admin Dashboard'];
+  const iconArray = [Home, ClipboardList, Gift, ListOrdered, GraduationCap, Home];
+
   return (
     <div className={styles.sidebar}>
-      <ul className={styles.navEntry}>
-        <Home color="#FFFFFF" />
-        <Link to="/home" className={styles.linkStyles}>Home</Link>
-      </ul>
-      <ul className={styles.navEntry}>
-        <ClipboardList color="#FFFFFF" />
-        <Link to="/inventory" className={styles.linkStyles}>Inventory</Link>
-
-      </ul>
-      <ul className={styles.navEntry}>
-        <ListOrdered color="#FFFFFF" />
-        <Link to="/newshoeform" className={styles.linkStyles}>New Shoe Form</Link>
-      </ul>
-      <ul className={styles.navEntry}>
-        <Gift color="#FFFFFF" />
-        <Link to="/orderform" className={styles.linkStyles}>Order Form</Link>
-      </ul>
-      <ul className={styles.navEntry}>
-        <GraduationCap color="#FFFFFF" />
-        <Link to="/adminlist" className={styles.linkStyles}>Admin List</Link>
-      </ul>
-      <ul className={styles.navEntry}>
-        <Home color="#FFFFFF" />
-        <Link to="/admindashboard" className={styles.linkStyles}>Admin Dashboard</Link>
-      </ul>
+      {iconArray.map((Icon, index) => {
+        let ulNavClass = styles.navEntry;
+        let navColor = '#FFFFFF';
+        let linkClass = styles.linkStyles;
+        if (selected === linkArray[index]) {
+          ulNavClass = styles.selectedNavEntry;
+          navColor = '#24275E';
+          linkClass = styles.selectedLinkStyles;
+        }
+        return (
+          <ul className={ulNavClass}>
+            {/* eslint-disable-next-line max-len */}
+            <Link to={linkArray[index]} className={linkClass} onClick={() => setSelected(linkArray[index])}>
+              <div className={styles.navButtonText}>
+                <Icon color={navColor} className={styles.iconPadding} />
+                {textArray[index]}
+              </div>
+            </Link>
+          </ul>
+        );
+      })}
     </div>
   );
 }
+
+export default Nav;

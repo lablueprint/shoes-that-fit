@@ -1,19 +1,31 @@
 .navEntry {
-  display: inline-block;
   height: 70px;
-  width: 120px; /* width must be same size as NavBar to center */
+  width: 200px; /* width must be same size as NavBar to center */
   text-align: left; /* Aligns <ul> inside of NavIcon div */
   margin-bottom: 0;   /* Puts space between NavItems */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.selectedNavEntry {
+  height: 70px;
+  width: 200px; /* width must be same size as NavBar to center */
+  text-align: left; /* Aligns <ul> inside of NavIcon div */
+  margin-bottom: 0;   /* Puts space between NavItems */
+  background-color: #DBEAFF;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-right: 10px solid #F2672B;
 }
 
 .sidebar {
-  position: fixed;     /* Fixed Sidebar (stay in place on scroll and position relative to viewport) */
   height: 100%;
-  width: 120px;     /* Set the width of the sidebar */
-  z-index: 1;      /* Stay on top of everything */
-  top: 3.4em;      /* Stay at the top */
   overflow-x: hidden;     /* Disable horizontal scroll */
-  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
   background: #24275E;
 }
 
@@ -27,3 +39,22 @@
   line-height: 23px;
 }
 
+.selectedLinkStyles {
+  color: #24275E;
+  text-decoration:none;
+  font-family: 'Hartwell';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+}
+
+.navButtonText {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.iconPadding {
+  padding-right: 7px;
+}
