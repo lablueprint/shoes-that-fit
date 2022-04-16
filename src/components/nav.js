@@ -11,7 +11,6 @@ export default function Nav() {
       <ul className={styles.navEntry}><Link to="/orderform" className={styles.linkStyles}>Order Form</Link></ul>
       <ul className={styles.navEntry}><Link to="/adminlist" className={styles.linkStyles}>Admin List</Link></ul>
       <ul className={styles.navEntry}><Link to="/admindashboard" className={styles.linkStyles}>Admin Dashboard</Link></ul>
-      {/* <hr /> */}
     </div>
   );
 }
