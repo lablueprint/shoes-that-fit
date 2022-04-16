@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Box, Smile } from 'lucide-react';
 import styles from './InventorySummaryDashboard.module.css';
 
 const Airtable = require('airtable');
@@ -54,11 +55,13 @@ function InventorySummary() {
 
       <div className={styles.inventoryDashboardBody}>
         <div className={styles.inventoryDashboardQuantity}>
+          <Box color="#6BB7E8" className={styles.inventoryBox} />
           <h3 className={styles.minorTitle}>Total Quantity</h3>
           <p className={styles.minorTitleData}>{rows.length}</p>
         </div>
         <div className={styles.inventoryDashboardShipped}>
-          <h3 className={styles.minorTitle}>Quantity Shipped</h3>
+          <Smile color="#D66330" className={styles.inventorySmile} />
+          <h3 className={styles.minorTitle}>Kids Helped</h3>
           <p className={styles.minorTitleData}>{quantityFulfilled}</p>
         </div>
       </div>
