@@ -19,6 +19,11 @@
 
 .linkStyles {
   color: white;
-  text-decoration:none; 
+  text-decoration:none;
+  font-family: 'Hartwell';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23px;
 }
 
