@@ -168,7 +168,7 @@ function MainInventory() {
     // eslint-disable-next-line max-len
     // console.log(loginUser(process.env.REACT_APP_AIRTABLE_EMAIL, process.env.REACT_APP_AIRTABLE_PASSWORD));
   }, []);
-  
+
   useEffect(getInventory, []);
 
   // Retrieves number of entries for each bin and
