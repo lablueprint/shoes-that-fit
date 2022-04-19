@@ -1,6 +1,9 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+
 // import React from 'react';
 // import { makeStyles } from '@material-ui/core/styles';
 
@@ -13,13 +16,14 @@ import axios from 'axios';
 
 // const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(airtableConfig.baseKey);
 
-export default function LoginPage() {
+export default function LoginPage({ loggedIn, onLogin }) {
   const [error, setError] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('Educator');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [hasAccount, setHasAccount] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState(loggedIn);
 
   // const clearState = (errorMsg) => {
   //   setError(errorMsg);
@@ -131,7 +135,8 @@ export default function LoginPage() {
     })
       .then((response) => {
         if (response.status === 200) {
-          console.log('YAY');
+          onLogin();
+          setLoggedIn(true);
           // go to home page and set login user in redux
         }
       })
@@ -144,61 +149,71 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="loginWrapper">
-      <h1>Please Log In</h1>
-      {/* <form onSubmit={onSubmit}> */}
-      <form>
-        <label>
-          <p>Username</p>
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-        </label>
-        <label>
-          <p>Password</p>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </label>
-        <label>
-          <p>Confirm Password</p>
-          <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-        </label>
-        {error.length > 0 && <div><p>{error}</p></div>}
-        <div>
-          {hasAccount ? (
-            <>
-              <button type="button" onClick={handleSignIn}> Sign In</button>
-              <p className="accountStatusParagraph">
-                No account?
-                {/* toggle the state when you click the button */}
-                <button
-                  type="button"
-                  onClick={() => setHasAccount(!hasAccount)}
-                >
-                  Sign up
-                </button>
-              </p>
-            </>
-          ) : (
-            <>
-              <select value={role} onChange={(e) => setRole(e.target.value)}>
-                <option> Educator</option>
-                <option> Administrator</option>
-              </select>
-              <br />
-              <button type="button" onClick={handleSignup}> Sign up</button>
-              <p className="accountStatusParagraph">
-                {' '}
-                Have an account?
-                <button
-                  type="button"
-                  onClick={() => setHasAccount(!hasAccount)}
-                >
-                  Sign In
-                </button>
-              </p>
-            </>
-          )}
+    isLoggedIn
+      ? (
+        <Navigate to="/home" />
+      )
+      : (
+        <div className="loginWrapper">
+          <h1>Please Log In</h1>
+          {/* <form onSubmit={onSubmit}> */}
+          <form>
+            <label>
+              <p>Username</p>
+              <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+            </label>
+            <label>
+              <p>Password</p>
+              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            </label>
+            <label>
+              <p>Confirm Password</p>
+              <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+            </label>
+            {error.length > 0 && <div><p>{error}</p></div>}
+            <div>
+              {hasAccount ? (
+                <>
+                  <button type="button" onClick={handleSignIn}> Sign In</button>
+                  <p className="accountStatusParagraph">
+                    No account?
+                    {/* toggle the state when you click the button */}
+                    <button
+                      type="button"
+                      onClick={() => setHasAccount(!hasAccount)}
+                    >
+                      Sign up
+                    </button>
+                  </p>
+                </>
+              ) : (
+                <>
+                  <select value={role} onChange={(e) => setRole(e.target.value)}>
+                    <option> Educator</option>
+                    <option> Administrator</option>
+                  </select>
+                  <br />
+                  <button type="button" onClick={handleSignup}> Sign up</button>
+                  <p className="accountStatusParagraph">
+                    {' '}
+                    Have an account?
+                    <button
+                      type="button"
+                      onClick={() => setHasAccount(!hasAccount)}
+                    >
+                      Sign In
+                    </button>
+                  </p>
+                </>
+              )}
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
-
+      )
   );
 }
+
+LoginPage.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
+  onLogin: PropTypes.func.isRequired,
+};
