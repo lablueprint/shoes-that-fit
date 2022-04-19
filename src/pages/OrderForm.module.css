@@ -19,12 +19,18 @@ table {
     border: 1px solid black;
   }
 
-@font-face {
+  @font-face {
     font-family: Hartwell;
-    src: url(HartwellRegular.otf);
+    src: url(../assets/HartwellRegular.otf);
+  }
+  
+  @font-face {
+    font-family: Hartwell;
+    src: url(../assets/HartwellBold.otf);
+    font-weight: bold;
   }
 
-body {
+/* body {
     font-family: 'Hartwell';
     font-style: normal;
     font-weight: 500;
@@ -32,10 +38,10 @@ body {
 
     color: #000000;
 
-    /*text-align: 'left';
+     text-align: 'left';
     padding-left: '30%';
-    padding-right: '30%'; */
-}
+    padding-right: '30%'; 
+} */
 
 h1 {
     font-size: 40px;
@@ -82,6 +88,15 @@ label {
     width: 75%;
 }
 
+input::-webkit-calendar-picker-indicator {
+    opacity: 100;
+ }
+
+ input{
+    border:1px solid #000000;
+    padding:2px 2px;
+}
+
 .full {
     width: 95%;
     padding: 2px 1px; 
@@ -94,13 +109,13 @@ label {
     line-height: 28px;
 }
   
-.left-column {
+.leftColumn {
     height: 100%;
     text-align: left;
 
 }
 
-.right-column {
+.rightColumn {
     height: 100%;
 }
   
@@ -108,14 +123,14 @@ label {
     height: 30px;
 }
 
-.flex-container {
+.flexContainer {
     display: flex;
     width: 100%;
     text-align: left;
 
 }
   
-.flex-child.label {
+.flexChild.label {
     width: 50%;
 } 
 
@@ -179,4 +194,19 @@ input {
 
 .bottom {
     margin-top: 20%;
+}
+
+.orderHistory {
+    background: rgba(229, 229, 229, 0.5);
+    padding-left: 15%;
+    padding-right: 15%;
+    height: 100%;
+}
+
+.orderText {
+    text-align: left;
+    font-size: 36px;
+    font-family: Hartwell;
+    font-weight: bold;
+    padding: 1%;
 }

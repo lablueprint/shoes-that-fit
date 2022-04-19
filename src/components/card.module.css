@@ -1,0 +1,119 @@
+@font-face {
+  font-family: Hartwell;
+  src: url(../assets/HartwellRegular.otf);
+}
+
+@font-face {
+  font-family: Hartwell;
+  src: url(../assets/HartwellBold.otf);
+  font-weight: bold;
+}
+
+.cardBackground {
+  display: flex;
+  flex-direction: row;
+  border:1px solid black;
+  background-color: white;
+
+  font-family: 'Hartwell';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+
+  color: #000000;
+  text-align: left;
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  margin: 11px;
+}
+
+.schoolDistrict {
+  font-size: 18px;
+}
+
+.order {
+  font-size: 36px;
+  font-weight: bold;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.statusTime {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.status {
+  text-align: center;
+  display: flex;
+}
+
+.time {
+  display: flex;
+  flex: 1;
+  text-align: center;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.statusChildInProgress {
+  height: 36px;
+  width: 124px;
+  background-color: #AEECFF;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+}
+
+.statusChildFulfilled {
+  height: 36px;
+  width: 124px;
+  background: rgba(255, 167, 62, 0.5);
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+}
+
+.leftText {
+  flex-grow: 4;
+}
+
+.delete {
+  background-color: white;
+  flex-grow: 1;
+  border: 2px solid #FF6622;
+  box-sizing: border-box;
+
+  font-family: 'Hartwell';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 30px;
+  font-weight: bold;
+
+  margin: 19px;
+}
+
+.viewForm {
+  background: rgba(255, 167, 62, 0.5);
+  flex-grow: 1;
+  border: 0px solid #FF6622;
+
+  font-family: 'Hartwell';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 30px;
+  font-weight: bold;
+  margin: 19px;
+}
+
+button {
+  cursor: pointer;
+}

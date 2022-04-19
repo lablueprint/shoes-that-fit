@@ -9,7 +9,7 @@ export default function Nav() {
         <ul><Link to="/home">Home</Link></ul>
         <ul><Link to="/inventory">Inventory</Link></ul>
         <ul><Link to="/newshoeform">New Shoe Form</Link></ul>
-        <ul><Link to="/orderform">Order From</Link></ul>
+        <ul><Link to="/orderform">Order Form</Link></ul>
       </ul>
       <hr />
     </div>

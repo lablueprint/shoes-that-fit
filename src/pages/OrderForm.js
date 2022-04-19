@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+/* eslint-disable no-unused-vars */
+/* eslint-disable max-len */
+
+import React, { useState, useEffect } from 'react';
 import print from 'print-js';
-// import reactDom from 'react-dom';
-import './OrderForm.css';
+import Card from '../components/card';
+import styles from './OrderForm.module.css';
 
 const Airtable = require('airtable');
 
