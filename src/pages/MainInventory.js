@@ -3,20 +3,19 @@ import React, { useState, useEffect } from 'react';
 import ReactSelect from 'react-select';
 import PropTypes from 'prop-types';
 import base from '../lib/airtable';
-
 import { TableFooter, PageLengthForm } from '../components';
 
-const Airtable = require('airtable');
+// const Airtable = require('airtable');
 
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
+// const airtableConfig = {
+//   apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
+//   baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
+// };
 
-const base = new Airtable({
-  apiKey: airtableConfig.apiKey,
-  endpointURL: 'http://localhost:3000',
-}).base(airtableConfig.baseKey);
+// const base = new Airtable({
+//   apiKey: airtableConfig.apiKey,
+//   endpointURL: 'http://localhost:3000',
+// }).base(airtableConfig.baseKey);
 
 const loginUser = async (email, password) => {
   try {
@@ -58,7 +57,6 @@ function MainInventory({ loggedIn, username, onLogout }) {
   const [page, setPage] = useState(1);
   const [numRows, setNumRows] = useState(10);
   const [slice, setSlice] = useState([]);
-  const [highlightedRow, setHighlightedRow] = useState(0);
   const [tableRange, setTableRange] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState({
     'Client Name': [],
@@ -78,13 +76,9 @@ function MainInventory({ loggedIn, username, onLogout }) {
   });
   const categories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description', 'Quantity'];
   const filterableCategories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description'];
-  // eslint-disable-next-line no-unused-vars
-  const tableContents = useRef(); // For setting/ unsetting navigation
-  // eslint-disable-next-line no-unused-vars
-  const inputRefs = useRef([]); // For setting / unsetting input focus
+
   const getInventory = () => {
-    // base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
-    base('table editing test').select({ view: 'Grid view' }).all()
+    base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
       .then((records) => {
         setRows(records);
       });
@@ -106,67 +100,6 @@ function MainInventory({ loggedIn, username, onLogout }) {
       setQuantityMax(e.target.value);
     }
   };
-
-  const handleKeyDown = useCallback((e) => {
-    const { key } = e;
-    switch (key) {
-      case 'ArrowUp':
-        // Move up a row
-        if (highlightedRow === -1) {
-          setHighlightedRow(0);
-        } else if (highlightedRow > 0) {
-          setHighlightedRow((currHRow) => (currHRow - 1));
-        }
-        break;
-      case 'ArrowDown':
-        // Move down a row
-        if (highlightedRow === -1) {
-          setHighlightedRow(0);
-        } else if (highlightedRow < slice.length - 1) {
-          setHighlightedRow((currHRow) => (currHRow + 1));
-        }
-        break;
-      default:
-        break;
-    }
-  }, [highlightedRow]);
-  const editTableEntryQuantity = ((val, index) => {
-    const row = items[(page - 1) * numRows + index];
-    if (!(/^\d+$/.test(val))) {
-      console.error('Invalid Input: Quantity should be a number');
-      return;
-    }
-    base('table editing test').update([
-      {
-        id: row.id,
-        fields: {
-          Quantity: parseInt(val, 10),
-        },
-      },
-    ], (err, records) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      records.forEach((record) => {
-        console.log(`Edited entry at row ${(page - 1) * numRows + index}: ${record.get('Client Name')}, ${record.get('Location Name')}, ${record.get('Bin Name')}, ${record.get('Part Name')}, ${record.get('Part Description')}`);
-      });
-    });
-  });
-
-  const handleMouseDown = useCallback(
-    (e) => {
-      if (tableContents.current && tableContents.current.contains(e.target)) {
-        if ((e.target.className) <= numRows) {
-          setHighlightedRow(parseInt(e.target.className, 10));
-          console.log(highlightedRow);
-        }
-      } else {
-        console.log(typeof e.target.className);
-      }
-    },
-    [tableContents, highlightedRow],
-  );
 
   useEffect(() => {
     if (loggedIn) {
@@ -213,13 +146,14 @@ function MainInventory({ loggedIn, username, onLogout }) {
       include = include && (item.fields.Quantity >= quantityMin && (!quantityMax || item.fields.Quantity <= quantityMax));
       return include;
     });
+    // eslint-disable-next-line max-len
+    // filteredProducts = filteredProducts.filter((item) => item.fields.Quantity >= quantityMin && (!quantityMax || item.fields.Quantity <= quantityMax));
     setItems(filteredProducts);
   }, [quantityMin, quantityMax, optionsSelected, rows, updateFilter]);
 
   useEffect(() => {
     const singleslice = sliceRows(items, page, numRows);
     setSlice([...singleslice]);
-    setHighlightedRow(-1);
 
     const range = calculateRange(items, numRows);
     setTableRange(range);
@@ -232,31 +166,6 @@ function MainInventory({ loggedIn, username, onLogout }) {
     }
     setInventoryTotal(sum);
   }, [items]);
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('mousedown', handleMouseDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('mousedown', handleMouseDown);
-    };
-  }, [handleKeyDown, handleMouseDown]);
-
-  useEffect(() => {
-    const quantityTDElement = document.getElementById('editableQuantity');
-    if (!quantityTDElement) {
-      console.log('Waiting for selected row');
-      return null;
-    }
-    quantityTDElement.addEventListener('input', () => {
-      editTableEntryQuantity(quantityTDElement.innerHTML, highlightedRow);
-    });
-    return () => {
-      quantityTDElement.removeEventListener('input', () => {
-        editTableEntryQuantity(quantityTDElement.innerHTML, highlightedRow);
-      });
-    };
-  });
-
   return (
     !loggedIn
       ? (<thead> Please Login </thead>
@@ -309,7 +218,6 @@ function MainInventory({ loggedIn, username, onLogout }) {
           </span>
         </>
       )
-
   );
 }
 
