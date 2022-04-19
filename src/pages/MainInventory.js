@@ -55,6 +55,7 @@ function MainInventory() {
   const [numRows, setNumRows] = useState(10);
   const [slice, setSlice] = useState([]);
   const [highlightedRow, setHighlightedRow] = useState(0);
+  const [selectedRows, setSelectedRows] = useState([]);
   const [tableRange, setTableRange] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState({
     'Client Name': [],
@@ -238,7 +239,7 @@ function MainInventory() {
   useEffect(() => {
     const quantityTDElement = document.getElementById('editableQuantity');
     if (!quantityTDElement) {
-      console.log('Waiting for selected row');
+      // console.log('Waiting for selected row');
       return null;
     }
     quantityTDElement.addEventListener('input', () => {
@@ -250,6 +251,17 @@ function MainInventory() {
       });
     };
   });
+
+  const updateRowStatus = (e) => {
+    console.log(e);
+    setSelectedRows([...selectedRows, parseInt(e.target.className, 10)]);
+    console.log(selectedRows);
+  };
+
+  const removeRowStatus = (e) => {
+    const newRows = selectedRows.filter((index) => index !== parseInt(e.target.className, 10));
+    setSelectedRows(newRows);
+  };
 
   return (
     <>
@@ -282,9 +294,10 @@ function MainInventory() {
         </thead>
         <tbody ref={tableContents}>
           {slice.map((row, index) => {
-            if (index === highlightedRow) {
+            if (selectedRows.includes(index)) {
               return (
                 <tr className={index} style={{ color: 'red' }}>
+                  <input type="checkbox" className={index} onChange={(e) => removeRowStatus(e)} />
                   {categories.map((category) => {
                     if (category === 'Quantity') {
                       return (
@@ -300,6 +313,7 @@ function MainInventory() {
             }
             return (
               <tr className={index}>
+                <input type="checkbox" className={index} onChange={(e) => updateRowStatus(e)} />
                 {categories.map((category) => (
                   <td className={index} classID="tableData">{row.fields[category]}</td>
 
