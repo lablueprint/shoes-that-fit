@@ -1,0 +1,43 @@
+table {
+    border: 1px solid black;
+    width: 90%;
+    border-collapse: collapse;
+    font-size: 12px;
+    overflow: hidden;
+    table-layout: fixed;
+  }
+    
+  th {
+    border: 1px solid black;
+    background: #AEECFF;
+    overflow: hidden;
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top:5px;
+    padding-bottom:5px;
+  }
+    
+  td {
+    text-align: center;
+    border: 1px solid black;
+    padding-top:5px;
+    padding-bottom:5px;
+  }
+
+@font-face {
+    font-family: Hartwell;
+    src: url(HartwellRegular.otf);
+  }
+
+.container {
+    margin-left: 300px;
+  }
+
+.head {
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 1000;
+    font-size: 40px;
+    color: #000000;
+    
+}

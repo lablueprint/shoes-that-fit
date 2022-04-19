@@ -3,7 +3,7 @@ import './styles/App.css';
 import { Routes, Route } from 'react-router-dom';
 import { Header, Nav } from './components';
 import {
-  Home, MainInventory, NewShoeForm, AdminList, OrderForm,
+  Home, MainInventory, NewShoeForm, AdminList, OrderForm, OrderListAdmin,
 } from './pages';
 
 function App() {
@@ -17,6 +17,7 @@ function App() {
         <Route path="/newshoeform" element={<NewShoeForm />} />
         <Route path="/orderform" element={<OrderForm />} />
         <Route path="/adminlist" element={<AdminList />} />
+        <Route path="/viewhistory" element={<OrderListAdmin />} />
       </Routes>
     </div>
 
