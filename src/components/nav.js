@@ -4,6 +4,7 @@ import {
   Home, ClipboardList, ListOrdered, Gift, GraduationCap,
 } from 'lucide-react';
 import styles from './nav.module.css';
+import stfLogo from '../assets/STF_logo.png';
 
 function Nav() {
   const location = useLocation();
@@ -14,6 +15,7 @@ function Nav() {
 
   return (
     <div className={styles.sidebar}>
+      <img className={styles.stfLogo} src={stfLogo} alt="Shoes That Fit" />
       {iconArray.map((Icon, index) => {
         let ulNavClass = styles.navEntry;
         let navColor = '#FFFFFF';

@@ -58,3 +58,9 @@
 .iconPadding {
   padding-right: 7px;
 }
+
+.stfLogo {
+  max-width: 210px;
+  height: auto;
+  padding: 20px;
+}
