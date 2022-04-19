@@ -135,7 +135,7 @@ export default function LoginPage({ loggedIn, onLogin }) {
     })
       .then((response) => {
         if (response.status === 200) {
-          onLogin();
+          onLogin(username);
           setLoggedIn(true);
           // go to home page and set login user in redux
         }

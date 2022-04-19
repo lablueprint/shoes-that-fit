@@ -8,7 +8,9 @@ import {
   Home, MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage,
 } from './pages';
 
-function App({ isLoggedIn, login, logout }) {
+function App({
+  isLoggedIn, username, login, logout,
+}) {
   console.log(isLoggedIn);
   return (
     <div className="App">
@@ -21,6 +23,7 @@ function App({ isLoggedIn, login, logout }) {
           element={(
             <Home
               loggedIn={isLoggedIn}
+              username={username}
               onLogout={logout}
             />
         )}
@@ -30,6 +33,7 @@ function App({ isLoggedIn, login, logout }) {
           element={(
             <MainInventory
               loggedIn={isLoggedIn}
+              username={username}
               onLogout={logout}
             />
         )}
@@ -39,6 +43,7 @@ function App({ isLoggedIn, login, logout }) {
           element={(
             <LoginPage
               loggedIn={isLoggedIn}
+              username={username}
               onLogin={login}
             />
         )}
@@ -48,6 +53,7 @@ function App({ isLoggedIn, login, logout }) {
           element={(
             <NewShoeForm
               loggedIn={isLoggedIn}
+              username={username}
               onLogout={logout}
             />
         )}
@@ -57,6 +63,7 @@ function App({ isLoggedIn, login, logout }) {
           element={(
             <OrderForm
               loggedIn={isLoggedIn}
+              username={username}
               onLogout={logout}
             />
         )}
@@ -66,6 +73,7 @@ function App({ isLoggedIn, login, logout }) {
           element={(
             <AdminList
               loggedIn={isLoggedIn}
+              username={username}
               onLogout={logout}
             />
         )}
@@ -78,12 +86,13 @@ function App({ isLoggedIn, login, logout }) {
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.loggedIn,
+    username: state.username,
   };
 }
 
 const mapDispatchToProps = (dispatch) => ({
   // dispatching plain actions
-  login: () => dispatch({ type: 'LOG_IN' }),
+  login: (username) => dispatch({ type: 'LOG_IN', payload: username }),
   logout: () => dispatch({ type: 'LOG_OUT' }),
 });
 
@@ -91,6 +100,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 App.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
+  username: PropTypes.string.isRequired,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
 };

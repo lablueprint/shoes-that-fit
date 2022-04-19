@@ -44,8 +44,9 @@ const calculateRange = (tableData, numRows) => {
 // eslint-disable-next-line max-len
 const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * numRows, page * numRows);
 
-function MainInventory({ loggedIn, onLogout }) {
+function MainInventory({ loggedIn, username, onLogout }) {
   console.log(loggedIn);
+  console.log(username);
 
   const [rows, setRows] = useState([]);
   const [items, setItems] = useState([]);
@@ -224,5 +225,6 @@ export default MainInventory;
 
 MainInventory.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
+  username: PropTypes.string.isRequired,
   onLogout: PropTypes.func.isRequired,
 };
