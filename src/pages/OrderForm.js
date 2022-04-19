@@ -1,10 +1,7 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable max-len */
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import print from 'print-js';
-import Card from '../components/card';
-import styles from './OrderForm.module.css';
+// import reactDom from 'react-dom';
+import './OrderForm.css';
 
 const Airtable = require('airtable');
 
@@ -317,12 +314,90 @@ function OrderForm() {
                   <input
                     className="half"
                     required
-                    type="number"
                     id="size"
                     name="size"
                     value={size}
                     onChange={(e) => setSize(e.target.value)}
+                    list="sizes"
                   />
+                  <datalist id="sizes">
+                    <option value="Young Child 4"> </option>
+                    <option value="Young Child 4.5"> </option>
+                    <option value="Young Child 5"> </option>
+                    <option value="Young Child 5.5"> </option>
+                    <option value="Young Child 6"> </option>
+                    <option value="Young Child 6.5"> </option>
+                    <option value="Young Child 7"> </option>
+                    <option value="Young Child 7.5"> </option>
+                    <option value="Young Child 8"> </option>
+                    <option value="Young Child 8.5"> </option>
+                    <option value="Young Child 9"> </option>
+                    <option value="Young Child 9.5"> </option>
+                    <option value="Young Child 10"> </option>
+                    <option value="Young Child 10.5"> </option>
+                    <option value="Young Child 11"> </option>
+                    <option value="Young Child 11.5"> </option>
+                    <option value="Young Child 12"> </option>
+                    <option value="Young Child 12.5"> </option>
+                    <option value="Young Child 13"> </option>
+                    <option value="Young Child 13.5"> </option>
+                    <option value="Youth 1"> </option>
+                    <option value="Youth 1"> </option>
+                    <option value="Youth 1.5"> </option>
+                    <option value="Youth 1.5"> </option>
+                    <option value="Youth 2"> </option>
+                    <option value="Youth 2"> </option>
+                    <option value="Youth 2.5"> </option>
+                    <option value="Youth 2.5"> </option>
+                    <option value="Youth 3"> </option>
+                    <option value="Youth 3"> </option>
+                    <option value="Youth 3.5"> </option>
+                    <option value="Youth 3.5"> </option>
+                    <option value="Youth 4"> </option>
+                    <option value="Youth 4"> </option>
+                    <option value="Youth 4.5"> </option>
+                    <option value="Youth 4.5"> </option>
+                    <option value="Adult 5"> </option>
+                    <option value="Adult 5"> </option>
+                    <option value="Adult 5.5"> </option>
+                    <option value="Adult 5.5"> </option>
+                    <option value="Adult 6"> </option>
+                    <option value="Adult 6"> </option>
+                    <option value="Adult 6.5"> </option>
+                    <option value="Adult 6.5"> </option>
+                    <option value="Adult 7"> </option>
+                    <option value="Adult 7"> </option>
+                    <option value="Adult 7.5"> </option>
+                    <option value="Adult 7.5"> </option>
+                    <option value="Adult 8"> </option>
+                    <option value="Adult 8"> </option>
+                    <option value="Adult 8.5"> </option>
+                    <option value="Adult 8.5"> </option>
+                    <option value="Adult 9"> </option>
+                    <option value="Adult 9"> </option>
+                    <option value="Adult 9.5"> </option>
+                    <option value="Adult 9.5"> </option>
+                    <option value="Adult 10"> </option>
+                    <option value="Adult 10"> </option>
+                    <option value="Adult 10.5"> </option>
+                    <option value="Adult 10.5"> </option>
+                    <option value="Adult 11"> </option>
+                    <option value="Adult 11"> </option>
+                    <option value="Adult 11.5"> </option>
+                    <option value="Adult 11.5"> </option>
+                    <option value="Adult 12"> </option>
+                    <option value="Adult 12"> </option>
+                    <option value="Adult 12.5"> </option>
+                    <option value="Adult 12.5"> </option>
+                    <option value="Adult 13"> </option>
+                    <option value="Adult 13"> </option>
+                    <option value="Adult 13.5"> </option>
+                    <option value="Adult 13.5"> </option>
+                    <option value="Adult 14"> </option>
+                    <option value="Adult 14"> </option>
+                    <option value="Adult 15"> </option>
+                    <option value="Adult 15"> </option>
+                  </datalist>
                 </div>
                 <div className="flex-child label">
                   <label htmlFor="wideWidth">Wide Width?: </label>
@@ -330,12 +405,16 @@ function OrderForm() {
                   <input
                     className="half"
                     required
-                    type="boolean"
                     id="wideWidth"
                     name="wideWidth"
                     value={wideWidth}
                     onChange={(e) => setwideWidth(e.target.value)}
+                    list="yesorno"
                   />
+                  <datalist id="yesorno">
+                    <option value="Yes"> </option>
+                    <option value="No"> </option>
+                  </datalist>
                 </div>
               </div>
               <div className="space" />
