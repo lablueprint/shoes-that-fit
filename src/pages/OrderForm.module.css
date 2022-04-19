@@ -4,12 +4,14 @@ table {
     border-collapse: collapse;
     font-size: 12px;
     table-layout: fixed;
-
   }
     
   th {
     border: 1px solid black;
     background: #AEECFF;
+    overflow: hidden;
+    padding-left: 3px;
+    padding-right: 3px;
   }
     
   td {
@@ -56,19 +58,22 @@ label {
 .row {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     width: 100%;
     column-count: 2;
-    flex: 1 2 auto;
+    flex: 1 1;
 }
 
 .column {
-    float: left;
-    padding: 10px;
-  }
-  
+  float: left;
+  padding: 10px;
+}
+
 .left {
-    width: 35%;
+    width: 25%;
+    padding-left: 2.5%;
+    margin-top: 75px;
+    border-right: 1px solid black;
+    padding-right: 2.5%;
 }
 
 .right {
@@ -76,7 +81,11 @@ label {
     float: right;
     flex-direction: column;
     flex-basis: 100%;
+    padding-left: 5%;
+    padding-right: 2.5%;
+    padding-top:5%;
     flex: 1;
+    width: 75%;
 }
 
 input::-webkit-calendar-picker-indicator {
@@ -90,14 +99,20 @@ input::-webkit-calendar-picker-indicator {
 
 .full {
     width: 95%;
+    padding: 2px 1px; 
+    line-height: 28px;
 }
 
 .half {
     width: 90%;
+    padding: 2px 1px; 
+    line-height: 28px;
 }
   
 .leftColumn {
     height: 100%;
+    text-align: left;
+
 }
 
 .rightColumn {
@@ -105,21 +120,80 @@ input::-webkit-calendar-picker-indicator {
 }
   
 .space {
-    height: 10px;
+    height: 30px;
 }
 
 .flexContainer {
     display: flex;
     width: 100%;
+    text-align: left;
+
 }
   
 .flexChild.label {
     width: 50%;
 } 
 
-.cardBox {
+button {
+    color: black;
+    padding: 5px 30px;
+    text-align: center;
+    display: inline-block;
+    font-size: 20px;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 1000;
+}
 
+#print {
+    background-color:  white;
+    border-color: #00B1FF;
+    border-width: 3px;
+    border-style: solid;
+    margin-right: 1%;
+}
 
+input {
+    color: black;
+    padding: 5px 30px;
+    text-align: center;
+    display: inline-block;
+    font-size: 20px;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 1000;
+}
+
+#bigSubmit {
+    background-color:  rgba(174, 236, 255, 0.5);
+    border-color: rgba(174, 236, 255, 0.5);
+    border-width: 3px;
+    border-style: solid;
+}
+
+#submit {
+    background-color:  rgba(255, 167, 62, 0.5);
+    border: none;
+    color: black;
+    padding: 5px 30px;
+    text-align: center;
+    display: inline-block;
+    font-size: 20px;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 1000;
+    margin-left: 20%;
+} 
+
+.michael {
+    display: flex; 
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 5%;
+}
+
+.bottom {
+    margin-top: 20%;
 }
 
 .orderHistory {
