@@ -33,7 +33,6 @@ function Popup({ closePopup, success, value }) {
 Message.propTypes = {
   success: PropTypes.bool.isRequired,
   quantityDisplay: PropTypes.number.isRequired,
-
 };
 
 Popup.propTypes = {

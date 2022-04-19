@@ -1,8 +1,9 @@
-import React, {
-  useRef, useState, useEffect, useCallback,
-} from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from 'react';
 import ReactSelect from 'react-select';
-// import base from '../lib/airtable';
+import PropTypes from 'prop-types';
+import base from '../lib/airtable';
+
 import { TableFooter, PageLengthForm } from '../components';
 
 const Airtable = require('airtable');
@@ -17,20 +18,20 @@ const base = new Airtable({
   endpointURL: 'http://localhost:3000',
 }).base(airtableConfig.baseKey);
 
-// const loginUser = async (email, password) => {
-//   try {
-//     const res = await base.login({ username: email, password });
-//     if (!res.body.success) {
-//       return { match: false, found: false };
-//     }
-//     return { match: true, found: true };
-//   } catch (err) {
-//     if (err.error === 'AUTHENTICATION_REQUIRED') {
-//       return { match: false, found: true };
-//     }
-//     return { match: false, found: false };
-//   }
-// };
+const loginUser = async (email, password) => {
+  try {
+    const res = await base.login({ username: email, password });
+    if (!res.body.success) {
+      return { match: false, found: false };
+    }
+    return { match: true, found: true };
+  } catch (err) {
+    if (err.error === 'AUTHENTICATION_REQUIRED') {
+      return { match: false, found: true };
+    }
+    return { match: false, found: false };
+  }
+};
 
 const calculateRange = (tableData, numRows) => {
   const range = [];
@@ -44,7 +45,9 @@ const calculateRange = (tableData, numRows) => {
 // eslint-disable-next-line max-len
 const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * numRows, page * numRows);
 
-function MainInventory() {
+function MainInventory({ loggedIn, onLogout }) {
+  console.log(loggedIn);
+
   const [rows, setRows] = useState([]);
   const [items, setItems] = useState([]);
   const [inventoryTotal, setInventoryTotal] = useState(0);
@@ -165,8 +168,10 @@ function MainInventory() {
   );
 
   useEffect(() => {
+    if (loggedIn) {
     // eslint-disable-next-line max-len
-    // console.log(loginUser(process.env.REACT_APP_AIRTABLE_EMAIL, process.env.REACT_APP_AIRTABLE_PASSWORD));
+      console.log(loginUser(process.env.REACT_APP_AIRTABLE_EMAIL, process.env.REACT_APP_AIRTABLE_PASSWORD));
+    }
   }, []);
 
   useEffect(getInventory, []);
@@ -252,72 +257,64 @@ function MainInventory() {
   });
 
   return (
-    <>
-      <PageLengthForm setNumRows={setNumRows} />
-      <table>
-        <thead>
-          <tr>
-            {filterableCategories.map((category) => (
-              <th>
-                {category}
-                <ReactSelect
-                  isMulti
-                  onChange={(e) => handleOptionSelection(e, category)}
-                  options={categoryOptions[category]}
-                  placeholder={category}
-                />
-              </th>
-            ))}
-            <th>
-              Quantity
-              <form className="filter" onSubmit={(e) => e.preventDefault()}>
-                Min
-                <input type="number" onChange={(e) => handleQuantityFilterChange(e, true)} min="0" />
-                <br />
-                Max
-                <input type="number" onChange={(e) => handleQuantityFilterChange(e, false)} min="0" />
-              </form>
-            </th>
-          </tr>
-        </thead>
-        <tbody ref={tableContents}>
-          {slice.map((row, index) => {
-            if (index === highlightedRow) {
-              return (
-                <tr className={index} style={{ color: 'red' }}>
-                  {categories.map((category) => {
-                    if (category === 'Quantity') {
-                      return (
-                        <td className={index} contentEditable="true" id="editableQuantity">{row.fields[category]}</td>
-                      );
-                    }
-                    return (
-                      <td className={index}>{row.fields[category]}</td>
-                    );
-                  })}
-                </tr>
-              );
-            }
-            return (
-              <tr className={index}>
-                {categories.map((category) => (
-                  <td className={index} classID="tableData">{row.fields[category]}</td>
-
+    !loggedIn
+      ? (<thead> Please Login </thead>
+      )
+      : (
+        <>
+          <PageLengthForm setNumRows={setNumRows} />
+          <table>
+            <thead>
+              <tr>
+                {filterableCategories.map((category) => (
+                  <th>
+                    {category}
+                    <ReactSelect
+                      isMulti
+                      onChange={(e) => handleOptionSelection(e, category)}
+                      options={categoryOptions[category]}
+                      placeholder={category}
+                    />
+                  </th>
                 ))}
+                <th>
+                  Quantity
+                  <form className="filter" onSubmit={(e) => e.preventDefault()}>
+                    Min
+                    <input type="number" onChange={(e) => handleQuantityFilterChange(e, true)} min="0" />
+                    <br />
+                    Max
+                    <input type="number" onChange={(e) => handleQuantityFilterChange(e, false)} min="0" />
+                  </form>
+                </th>
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} />
-      <span>
-        {' '}
-        Total Item Inventory:
-        {' '}
-        {inventoryTotal}
-      </span>
-    </>
+            </thead>
+            <tbody>
+              {slice.map((row) => (
+                <tr>
+                  {categories.map((category) => (
+                    <td>{row.fields[category]}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} />
+          <span>
+            {' '}
+            Total Item Inventory:
+            {' '}
+            {inventoryTotal}
+          </span>
+        </>
+      )
+
   );
 }
 
 export default MainInventory;
+
+MainInventory.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
+  onLogout: PropTypes.func.isRequired,
+};
