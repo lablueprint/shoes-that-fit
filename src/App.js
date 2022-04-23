@@ -1,28 +1,97 @@
 import React from 'react';
 import './styles/App.css';
+import { connect } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
-import { Nav } from './components';
+import PropTypes from 'prop-types';
+import { Header, Nav } from './components';
 import {
-  Home, MainInventory, NewShoeForm, AdminList, OrderForm, AdminDashboard,
+  Home, MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records, AdminDashboard,
 } from './pages';
 
-function App() {
+function App({ isLoggedIn, login, logout }) {
+  console.log(isLoggedIn);
   return (
     <div className="App">
-      <div><Nav /></div>
-      <div>
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/inventory" element={<MainInventory />} />
-          <Route path="/newshoeform" element={<NewShoeForm />} />
-          <Route path="/orderform" element={<OrderForm />} />
-          <Route path="/adminlist" element={<AdminList />} />
-          <Route path="/admindashboard" element={<AdminDashboard />} />
-        </Routes>
-      </div>
+      <Nav loggedIn={isLoggedIn} />
+      <Routes>
+        <Route
+          exact
+          path="/home"
+          element={(
+            <Home
+              loggedIn={isLoggedIn}
+              onLogout={logout}
+            />
+        )}
+        />
+        <Route
+          path="/inventory"
+          element={(
+            <MainInventory
+              loggedIn={isLoggedIn}
+              onLogout={logout}
+            />
+        )}
+        />
+        <Route
+          path="/"
+          element={(
+            <LoginPage
+              loggedIn={isLoggedIn}
+              onLogin={login}
+            />
+        )}
+        />
+        <Route
+          path="/newshoeform"
+          element={(
+            <NewShoeForm
+              loggedIn={isLoggedIn}
+              onLogout={logout}
+            />
+        )}
+        />
+        <Route
+          path="/orderform"
+          element={(
+            <OrderForm
+              loggedIn={isLoggedIn}
+              onLogout={logout}
+            />
+        )}
+        />
+        <Route
+          path="/adminlist"
+          element={(
+            <AdminList
+              loggedIn={isLoggedIn}
+              onLogout={logout}
+            />
+        )}
+        />
+        <Route path="/records" element={<Records />} />
+        <Route path="/admindashboard" element={<AdminDashboard />} />
+      </Routes>
     </div>
-
   );
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+    isLoggedIn: state.loggedIn,
+  };
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  // dispatching plain actions
+  login: () => dispatch({ type: 'LOG_IN' }),
+  logout: () => dispatch({ type: 'LOG_OUT' }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+App.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  login: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+};

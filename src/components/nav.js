@@ -5,16 +5,19 @@ import {
 } from 'lucide-react';
 import styles from './nav.module.css';
 import stfLogo from '../assets/STF_logo.png';
+import PropTypes from 'prop-types';
 
-function Nav() {
+export default function Nav({ loggedIn }) {
   const location = useLocation();
   const [selected, setSelected] = useState(location.pathname);
   const linkArray = ['/home', '/inventory', '/newshoeform', '/orderform', '/adminlist', '/admindashboard'];
   const textArray = ['Home', 'Inventory', 'New Shoe Form', 'Order Form', 'Admin List', 'Admin Dashboard'];
   const iconArray = [Home, ClipboardList, Gift, ListOrdered, GraduationCap, Home];
-
+  
   return (
-    <div className={styles.sidebar}>
+    !loggedIn ? (null)
+      : (
+        <div className={styles.sidebar}>
       <img className={styles.stfLogo} src={stfLogo} alt="Shoes That Fit" />
       {iconArray.map((Icon, index) => {
         let ulNavClass = styles.navEntry;
@@ -38,7 +41,10 @@ function Nav() {
         );
       })}
     </div>
+      )
   );
 }
 
-export default Nav;
+Nav.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
+};
