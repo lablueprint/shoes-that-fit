@@ -151,7 +151,7 @@ export default function LoginPage({ loggedIn, onLogin }) {
   return (
     isLoggedIn
       ? (
-        <Navigate to="/home" />
+        <Navigate to="/admindashboard" />
       )
       : (
         <div className="loginWrapper">

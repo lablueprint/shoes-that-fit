@@ -4,21 +4,21 @@ import React, {
 } from 'react';
 import ReactSelect from 'react-select';
 import PropTypes from 'prop-types';
-import base from '../lib/airtable';
+// import base from '../lib/airtable';
 import { TableFooter, PageLengthForm } from '../components';
 import styles from './MainInventory.module.css';
 
-// const Airtable = require('airtable');
+const Airtable = require('airtable');
 
-// const airtableConfig = {
-//   apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-//   baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-// };
+const airtableConfig = {
+  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
+  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
+};
 
-// const base = new Airtable({
-//   apiKey: airtableConfig.apiKey,
-//   endpointURL: 'http://localhost:3000',
-// }).base(airtableConfig.baseKey);
+const base = new Airtable({
+  apiKey: airtableConfig.apiKey,
+  endpointURL: 'http://localhost:3000',
+}).base(airtableConfig.baseKey);
 
 const loginUser = async (email, password) => {
   try {
