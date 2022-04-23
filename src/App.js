@@ -5,14 +5,13 @@ import { Routes, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Header, Nav } from './components';
 import {
-  Home, MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage,
+  Home, MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records,
 } from './pages';
 
 function App({ isLoggedIn, login, logout }) {
   console.log(isLoggedIn);
   return (
     <div className="App">
-      <Header />
       <Nav loggedIn={isLoggedIn} />
       <Routes>
         <Route
@@ -70,6 +69,7 @@ function App({ isLoggedIn, login, logout }) {
             />
         )}
         />
+        <Route path="/records" element={<Records />} />
       </Routes>
     </div>
   );
