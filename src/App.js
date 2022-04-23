@@ -3,9 +3,9 @@ import './styles/App.css';
 import { connect } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Header, Nav } from './components';
+import { Nav } from './components';
 import {
-  Home, MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records, AdminDashboard,
+  MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records, AdminDashboard,
 } from './pages';
 
 function App({ isLoggedIn, login, logout }) {
@@ -14,16 +14,6 @@ function App({ isLoggedIn, login, logout }) {
     <div className="App">
       <Nav loggedIn={isLoggedIn} />
       <Routes>
-        <Route
-          exact
-          path="/home"
-          element={(
-            <Home
-              loggedIn={isLoggedIn}
-              onLogout={logout}
-            />
-        )}
-        />
         <Route
           path="/inventory"
           element={(
@@ -34,6 +24,7 @@ function App({ isLoggedIn, login, logout }) {
         )}
         />
         <Route
+          exact
           path="/"
           element={(
             <LoginPage

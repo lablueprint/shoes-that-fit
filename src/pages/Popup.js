@@ -31,13 +31,13 @@ function Popup({
 
 Message.propTypes = {
   success: PropTypes.bool.isRequired,
-  quantityDisplay: PropTypes.number.isRequired,
+  message: PropTypes.string.isRequired,
 };
 
 Popup.propTypes = {
   closePopup: PropTypes.func.isRequired,
   success: PropTypes.bool.isRequired,
-  value: PropTypes.number.isRequired,
+  message: PropTypes.string.isRequired,
 };
 
 export default Popup;
