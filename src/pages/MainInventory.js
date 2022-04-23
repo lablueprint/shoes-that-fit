@@ -66,22 +66,18 @@ function MainInventory() {
     Quantity: [],
   });
   const [optionsSelected, setOptionsSelected] = useState({
-    'Client Name': [],
     'Location Name': [],
-    'Bin Name': [],
     'Part Name': [],
-    'Part Description': [],
     Quantity: [],
   });
-  const categories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description', 'Quantity'];
-  const filterableCategories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description'];
+  const categories = ['Location Name', 'Part Name', 'Quantity'];
+  const filterableCategories = ['Location Name', 'Part Name'];
   // eslint-disable-next-line no-unused-vars
   const tableContents = useRef(); // For setting/ unsetting navigation
-  // eslint-disable-next-line no-unused-vars
-  const inputRefs = useRef([]); // For setting / unsetting input focus
+  const inputBoxes = useRef();
   const getInventory = () => {
     // base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
-    base('table editing test').select({ view: 'Grid view' }).all()
+    base('InventoryTestRevamp').select({ view: 'Grid view' }).all()
       .then((records) => {
         setRows(records);
       });
@@ -159,7 +155,7 @@ function MainInventory() {
           console.log(highlightedRow);
         }
       } else {
-        console.log(typeof e.target.className);
+        // console.log(typeof e.target.className);
       }
     },
     [tableContents, highlightedRow],
@@ -253,7 +249,6 @@ function MainInventory() {
   });
 
   const updateRowStatus = (e) => {
-    console.log(e);
     setSelectedRows([...selectedRows, parseInt(e.target.className, 10)]);
     console.log(selectedRows);
   };
@@ -263,12 +258,30 @@ function MainInventory() {
     setSelectedRows(newRows);
   };
 
+  const updateAllRows = () => {
+    if (selectedRows.length === 0) {
+      const nums = [];
+      for (let i = 0; i < numRows; i += 1) {
+        console.log(i);
+        nums.push(i);
+      }
+      setSelectedRows(nums);
+      console.log(selectedRows);
+    } else {
+      console.log('failed');
+      setSelectedRows([]);
+    }
+  };
+
   return (
     <>
       <PageLengthForm setNumRows={setNumRows} />
       <table>
         <thead>
           <tr>
+            <th>
+              <input type="checkbox" className={setNumRows} onChange={() => updateAllRows()} />
+            </th>
             {filterableCategories.map((category) => (
               <th>
                 {category}
@@ -297,7 +310,7 @@ function MainInventory() {
             if (selectedRows.includes(index)) {
               return (
                 <tr className={index} style={{ color: 'red' }}>
-                  <input type="checkbox" className={index} onChange={(e) => removeRowStatus(e)} />
+                  <input type="checkbox" className={index} id={index} onClick={(e) => removeRowStatus(e)} checked={selectedRows.includes(index)} />
                   {categories.map((category) => {
                     if (category === 'Quantity') {
                       return (
@@ -313,7 +326,7 @@ function MainInventory() {
             }
             return (
               <tr className={index}>
-                <input type="checkbox" className={index} onChange={(e) => updateRowStatus(e)} />
+                <input type="checkbox" ref={inputBoxes} className={index} onClick={(e) => updateRowStatus(e)} checked={selectedRows.includes(index)} />
                 {categories.map((category) => (
                   <td className={index} classID="tableData">{row.fields[category]}</td>
 
