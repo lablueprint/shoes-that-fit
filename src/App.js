@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Header, Nav } from './components';
 import {
   Home, MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage,
+  Donations, DonationConfirmation,
 } from './pages';
 
 function App() {
@@ -18,6 +19,8 @@ function App() {
         <Route path="/newshoeform" element={<NewShoeForm />} />
         <Route path="/orderform" element={<OrderForm />} />
         <Route path="/adminlist" element={<AdminList />} />
+        <Route path="/donations" element={<Donations />} />
+        <Route path="/confirmdonation" element={<DonationConfirmation />} />
       </Routes>
     </div>
   );
