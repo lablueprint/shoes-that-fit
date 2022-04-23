@@ -10,6 +10,7 @@ export default function Nav() {
         <ul><Link to="/inventory">Inventory</Link></ul>
         <ul><Link to="/newshoeform">New Shoe Form</Link></ul>
         <ul><Link to="/orderform">Order From</Link></ul>
+        <ul><Link to="/donations">Donations</Link></ul>
       </ul>
       <hr />
     </div>
