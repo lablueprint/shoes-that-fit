@@ -39,6 +39,7 @@
   font-weight: bold;
   padding-top: 10px;
   padding-bottom: 10px;
+  line-height: 110%;
 }
 
 .statusTime {
@@ -63,23 +64,29 @@
 .statusChildInProgress {
   height: 36px;
   width: 124px;
-  background-color: #AEECFF;
   flex-grow: 1;
   display: flex;
   justify-content: center;
   align-content: center;
   flex-direction: column;
+  background: #FFEEC2;
+  color: #AC7D03;
+  border-radius: 20px;
+  font-weight: bold;
 }
 
 .statusChildFulfilled {
   height: 36px;
   width: 124px;
-  background: rgba(255, 167, 62, 0.5);
+  background: #E1EFE7;
+  color: #4C8865;
+  font-weight: bold;
   flex-grow: 1;
   display: flex;
   justify-content: center;
   align-content: center;
   flex-direction: column;
+  border-radius: 20px;
 }
 
 .leftText {

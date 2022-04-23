@@ -41,32 +41,37 @@ function OrderHistory() {
   return (
     <div className={styles.orderHistory}>
       <div className={styles.orderText}>Orders in Progress</div>
-      {cards.filter((card) => (card.fields.ID === '2' && card.fields.Active === 'y')).map((card) => (
+
+      {cards.filter((card) => (card.fields.ID === '1' && card.fields.Active === true)).length === 0
+        ? <div className={styles.no}>No orders in progress.</div>
+        : cards.filter((card) => (card.fields.ID === '1' && card.fields.Active === true)).map((card) => (
         // eslint-disable-next-line react/no-array-index-key
-        <div key={card.id} className={styles.cardBox}>
-          {console.log(card)}
-          <Card
-            schoolDistrict={card.fields['Teacher/School']}
-            time={card.fields.Time}
-            fulfilled={(card.fields.Active === 'y')}
-            cardId={card.id}
-            deleteCard={deleteCard}
-          />
-        </div>
-      ))}
+          <div key={card.id} className={styles.cardBox}>
+            {console.log(card)}
+            <Card
+              schoolDistrict={card.fields.School}
+              time={card.fields.Date}
+              fulfilled={(card.fields.Active === true)}
+              cardId={card.id}
+              deleteCard={deleteCard}
+            />
+          </div>
+        ))}
       <div className={styles.orderText}>Previous Orders</div>
-      {cards.filter((card) => (card.fields.ID === '2' && !(card.fields.Active === 'y'))).map((card) => (
+      {cards.filter((card) => (card.fields.ID === '1' && !(card.fields.Active === true))).length === 0
+        ? <div className={styles.no}>No previous orders.</div>
+        : cards.filter((card) => (card.fields.ID === '1' && !(card.fields.Active === true))).map((card) => (
         // eslint-disable-next-line react/no-array-index-key
-        <div key={card.id} className={styles.cardBox}>
-          <Card
-            schoolDistrict={card.fields['Teacher/School']}
-            time={card.fields.Time}
-            fulfilled={(card.fields.Active === 'y')}
-            cardId={card.id}
-            deleteCard={deleteCard}
-          />
-        </div>
-      ))}
+          <div key={card.id} className={styles.cardBox}>
+            <Card
+              schoolDistrict={card.fields.School}
+              time={card.fields.Date}
+              fulfilled={(card.fields.Active === true)}
+              cardId={card.id}
+              deleteCard={deleteCard}
+            />
+          </div>
+        ))}
       {console.log(cards)}
     </div>
   );

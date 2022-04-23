@@ -46,6 +46,7 @@ function OrderForm() {
       || wideWidth === 'Y'
       || wideWidth === 'yes'
       || wideWidth === 'YES'
+      || wideWidth === 'Yes'
     ) {
       card.wideWidth = true;
     } else {
@@ -342,60 +343,32 @@ function OrderForm() {
                     <option value="Young Child 13"> </option>
                     <option value="Young Child 13.5"> </option>
                     <option value="Youth 1"> </option>
-                    <option value="Youth 1"> </option>
-                    <option value="Youth 1.5"> </option>
                     <option value="Youth 1.5"> </option>
                     <option value="Youth 2"> </option>
-                    <option value="Youth 2"> </option>
-                    <option value="Youth 2.5"> </option>
                     <option value="Youth 2.5"> </option>
                     <option value="Youth 3"> </option>
-                    <option value="Youth 3"> </option>
-                    <option value="Youth 3.5"> </option>
                     <option value="Youth 3.5"> </option>
                     <option value="Youth 4"> </option>
-                    <option value="Youth 4"> </option>
-                    <option value="Youth 4.5"> </option>
                     <option value="Youth 4.5"> </option>
                     <option value="Adult 5"> </option>
-                    <option value="Adult 5"> </option>
-                    <option value="Adult 5.5"> </option>
                     <option value="Adult 5.5"> </option>
                     <option value="Adult 6"> </option>
-                    <option value="Adult 6"> </option>
-                    <option value="Adult 6.5"> </option>
                     <option value="Adult 6.5"> </option>
                     <option value="Adult 7"> </option>
-                    <option value="Adult 7"> </option>
-                    <option value="Adult 7.5"> </option>
                     <option value="Adult 7.5"> </option>
                     <option value="Adult 8"> </option>
-                    <option value="Adult 8"> </option>
-                    <option value="Adult 8.5"> </option>
                     <option value="Adult 8.5"> </option>
                     <option value="Adult 9"> </option>
-                    <option value="Adult 9"> </option>
-                    <option value="Adult 9.5"> </option>
                     <option value="Adult 9.5"> </option>
                     <option value="Adult 10"> </option>
-                    <option value="Adult 10"> </option>
-                    <option value="Adult 10.5"> </option>
                     <option value="Adult 10.5"> </option>
                     <option value="Adult 11"> </option>
-                    <option value="Adult 11"> </option>
-                    <option value="Adult 11.5"> </option>
                     <option value="Adult 11.5"> </option>
                     <option value="Adult 12"> </option>
-                    <option value="Adult 12"> </option>
-                    <option value="Adult 12.5"> </option>
                     <option value="Adult 12.5"> </option>
                     <option value="Adult 13"> </option>
-                    <option value="Adult 13"> </option>
-                    <option value="Adult 13.5"> </option>
                     <option value="Adult 13.5"> </option>
                     <option value="Adult 14"> </option>
-                    <option value="Adult 14"> </option>
-                    <option value="Adult 15"> </option>
                     <option value="Adult 15"> </option>
                   </datalist>
                 </div>
@@ -465,7 +438,7 @@ function OrderForm() {
                       <td>{card.age}</td>
                       <td>{card.gender}</td>
                       <td>{card.size}</td>
-                      <td>{card.wide}</td>
+                      <td>{card.wideWidth ? 'Yes' : 'No'}</td>
                       <td>{card.school}</td>
                     </tr>
                   ))}
