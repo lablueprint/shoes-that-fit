@@ -5,7 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Header, Nav } from './components';
 import {
-  Home, MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records,
+  Home, MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records, AdminDashboard,
 } from './pages';
 
 function App({ isLoggedIn, login, logout }) {
@@ -70,6 +70,7 @@ function App({ isLoggedIn, login, logout }) {
         )}
         />
         <Route path="/records" element={<Records />} />
+        <Route path="/admindashboard" element={<AdminDashboard />} />
       </Routes>
     </div>
   );

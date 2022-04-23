@@ -5,8 +5,8 @@ import React, {
 import ReactSelect from 'react-select';
 import PropTypes from 'prop-types';
 import base from '../lib/airtable';
-
 import { TableFooter, PageLengthForm } from '../components';
+import styles from './MainInventory.module.css';
 
 // const Airtable = require('airtable');
 
@@ -264,53 +264,58 @@ function MainInventory({ loggedIn, onLogout }) {
       )
       : (
         <>
-          <PageLengthForm setNumRows={setNumRows} />
-          <table>
-            <thead>
-              <tr>
-                {filterableCategories.map((category) => (
-                  <th>
-                    {category}
-                    <ReactSelect
-                      isMulti
-                      onChange={(e) => handleOptionSelection(e, category)}
-                      options={categoryOptions[category]}
-                      placeholder={category}
-                    />
-                  </th>
+      <PageLengthForm setNumRows={setNumRows} />
+      <table className={styles.inventoryTable}>
+        <thead className={styles.inventoryHeader}>
+          <tr>
+            {filterableCategories.map((category) => (
+              <th>
+                {category}
+                <ReactSelect
+                  isMulti
+                  onChange={(e) => handleOptionSelection(e, category)}
+                  options={categoryOptions[category]}
+                  placeholder={category}
+                />
+              </th>
+            ))}
+            <th>
+              Quantity
+              <form className="filter" onSubmit={(e) => e.preventDefault()}>
+                Min
+                <input type="number" onChange={(e) => handleQuantityFilterChange(e, true)} min="0" />
+                <br />
+                Max
+                <input type="number" onChange={(e) => handleQuantityFilterChange(e, false)} min="0" />
+              </form>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {slice.map((row, index) => {
+            let trClassName = 'evenRow';
+            if (index % 2 === 1) {
+              trClassName = 'oddRow';
+            }
+            return (
+              <tr className={styles[trClassName]}>
+                {categories.map((category) => (
+                  <td>{row.fields[category]}</td>
                 ))}
-                <th>
-                  Quantity
-                  <form className="filter" onSubmit={(e) => e.preventDefault()}>
-                    Min
-                    <input type="number" onChange={(e) => handleQuantityFilterChange(e, true)} min="0" />
-                    <br />
-                    Max
-                    <input type="number" onChange={(e) => handleQuantityFilterChange(e, false)} min="0" />
-                  </form>
-                </th>
               </tr>
-            </thead>
-            <tbody>
-              {slice.map((row) => (
-                <tr>
-                  {categories.map((category) => (
-                    <td>{row.fields[category]}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} />
-          <span>
-            {' '}
-            Total Item Inventory:
-            {' '}
-            {inventoryTotal}
-          </span>
-        </>
+            );
+          })}
+        </tbody>
+      </table>
+      <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} />
+      <span>
+        {' '}
+        Total Item Inventory:
+        {' '}
+        {inventoryTotal}
+      </span>
+    </>
       )
-
   );
 }
 
