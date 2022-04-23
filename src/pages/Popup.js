@@ -29,8 +29,15 @@ function Popup({
   );
 }
 
+Message.propTypes = {
+  success: PropTypes.bool.isRequired,
+  quantityDisplay: PropTypes.number.isRequired,
+};
+
 Popup.propTypes = {
   closePopup: PropTypes.func.isRequired,
+  success: PropTypes.bool.isRequired,
+  value: PropTypes.number.isRequired,
 };
 
 export default Popup;
