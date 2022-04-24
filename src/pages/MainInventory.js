@@ -58,11 +58,8 @@ function MainInventory() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [tableRange, setTableRange] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState({
-    'Client Name': [],
     'Location Name': [],
-    'Bin Name': [],
     'Part Name': [],
-    'Part Description': [],
     Quantity: [],
   });
   const [optionsSelected, setOptionsSelected] = useState({
