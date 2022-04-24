@@ -8,10 +8,16 @@ function Card({
   fulfilled,
   cardId,
   deleteCard,
+  selectCard,
 }) {
   function deleteMyself() {
     deleteCard(cardId);
   }
+
+  function viewForm() {
+    selectCard(cardId);
+  }
+
   return (
     <div className={styles.cardBackground}>
       <div className={styles.leftText}>
@@ -38,7 +44,7 @@ function Card({
         </div>
       </div>
       <button type="button" className={styles.delete} onClick={deleteMyself}> Delete </button>
-      <button type="button" className={styles.viewForm}> View Form</button>
+      <button type="button" className={styles.viewForm} onClick={viewForm}> View Form</button>
     </div>
   );
 }
@@ -49,6 +55,7 @@ Card.propTypes = {
   fulfilled: PropTypes.bool,
   cardId: PropTypes.string.isRequired,
   deleteCard: PropTypes.func.isRequired,
+  selectCard: PropTypes.func.isRequired,
 };
 
 Card.defaultProps = {
