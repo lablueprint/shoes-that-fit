@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Card from '../components/card';
 import styles from './OrderForm.module.css';
+import OrderListAdmin from './OrderListAdmin';
 
 const Airtable = require('airtable');
 
@@ -16,8 +17,8 @@ const base = new Airtable({ apiKey: airtableConfig.apiKey })
 function OrderHistory() {
   const [cards, setCards] = useState([]);
   const [specificCardID, setSpecificCardID] = useState('');
-  const [specificCard, setSpecificCard] = useState(null);
-  const [display, setDisplay] = useState('');
+  // const [specificCard, setSpecificCard] = useState(null);
+  // const [display, setDisplay] = useState([]);
   const getCards = () => {
     base('Orders').select({ view: 'Grid 2' }).all()
       .then((records) => {
@@ -41,39 +42,33 @@ function OrderHistory() {
   };
 
   const selectCard = (cardID) => {
+    console.log('in select card');
     setSpecificCardID(cardID);
-    base('Orders').find(cardID, (err, record) => {
-      if (err) { console.error(err); return; }
-      console.log('Retrieved', record.id);
-      console.log(record);
-      setSpecificCard(record);
-    });
+    // base('Orders').find(cardID, (err, record) => {
+    //   if (err) { console.error(err); return; }
+    //   console.log('Retrieved', record.id);
+    //   console.log(record);
+    //   setSpecificCard(record);
+    // });
+    // OrderListAdmin(cardID);
   };
 
   const clearSpecificCard = () => {
     setSpecificCardID('');
-    setSpecificCard(null);
+    // setSpecificCard(null);
   };
 
-  const generateTable = () => {
-    if (specificCardID !== '') {
-      const lines = JSON.parse(specificCard.fields.Orders);
-      setDisplay(lines.map((line) => (
-        <tr>
-          <td>{line.name}</td>
-          <td>{line.age}</td>
-          <td>{line.gender}</td>
-          <td>{line.size}</td>
-          <td>{line.wideWidth ? 'Yes' : 'No'}</td>
-          <td>{line.school}</td>
-        </tr>
-      )));
-    }
-  };
+  // const generateTable = () => {
+  //   console.log('generate table');
+  //   if (specificCardID !== '') {
+  //     console.log('generate table');
+  //     setDisplay(OrderListAdmin(specificCardID));
+  //   }
+  // };
 
-  useEffect(() => {
-    generateTable(specificCardID);
-  }, [specificCard]);
+  // useEffect(() => {
+  //   generateTable(specificCardID);
+  // }, []);
 
   return (
     specificCardID === ''
@@ -116,7 +111,9 @@ function OrderHistory() {
       )
       : (
         <>
-          <button type="button" onClick={clearSpecificCard}>Back</button>
+          {console.log('pressed')}
+          {console.log(specificCardID)}
+          {/* <button type="button" onClick={clearSpecificCard}>Back</button>
           <div className={styles.status}>
             {specificCard && specificCard.fields.Active
               ? <div className={styles.statusChildInProgress}>In Progress</div>
@@ -141,7 +138,10 @@ function OrderHistory() {
             <tbody>
               {display}
             </tbody>
-          </table>
+          </table> */}
+          <button type="button" onClick={clearSpecificCard}>Back</button>
+          {console.log(specificCardID)}
+          {OrderListAdmin(specificCardID)}
         </>
       )
   );

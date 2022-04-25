@@ -23,11 +23,10 @@ function printForm() {
   });
 }
 
-function OrderListAdmin() {
+function OrderListAdmin(id) {
   const [cards, setCards] = useState([]);
   const [info, setInfo] = useState([]);
 
-  const id = 1234;
   const getCards = () => {
     base('Orders')
       .select({ filterByFormula: `id="${id}"` })

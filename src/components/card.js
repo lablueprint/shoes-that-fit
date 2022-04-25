@@ -15,6 +15,7 @@ function Card({
   }
 
   function viewForm() {
+    console.log(cardId);
     selectCard(cardId);
   }
 
