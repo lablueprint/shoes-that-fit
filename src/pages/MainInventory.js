@@ -52,6 +52,7 @@ function MainInventory({ loggedIn, username, onLogout }) {
   console.log(username);
 
   const [rows, setRows] = useState([]);
+  const [allChecked, setAllChecked] = useState(false);
   const [items, setItems] = useState([]);
   const [inventoryTotal, setInventoryTotal] = useState(0);
   const [quantityMin, setQuantityMin] = useState(0);
@@ -60,23 +61,28 @@ function MainInventory({ loggedIn, username, onLogout }) {
   const [page, setPage] = useState(1);
   const [numRows, setNumRows] = useState(10);
   const [slice, setSlice] = useState([]);
+  const [highlightedRow, setHighlightedRow] = useState(0);
+  const [selectedRows, setSelectedRows] = useState([]);
   const [tableRange, setTableRange] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState({
-    'Client Name': [],
     'Location Name': [],
-    'Bin Name': [],
     'Part Name': [],
-    'Part Description': [],
     Quantity: [],
   });
   const [optionsSelected, setOptionsSelected] = useState({
-    'Client Name': [],
     'Location Name': [],
-    'Bin Name': [],
     'Part Name': [],
-    'Part Description': [],
     Quantity: [],
   });
+  const categories = ['Location Name', 'Part Name', 'Quantity'];
+  const filterableCategories = ['Location Name', 'Part Name'];
+  // eslint-disable-next-line no-unused-vars
+  const tableContents = useRef(); // For setting/ unsetting navigation
+  const inputBoxes = useRef();
+  const getInventory = () => {
+    // base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
+    base('InventoryTestRevamp').select({ view: 'Grid view' }).all()
+=======
   const categories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description', 'Quantity'];
   const filterableCategories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description'];
 
@@ -103,6 +109,67 @@ function MainInventory({ loggedIn, username, onLogout }) {
       setQuantityMax(e.target.value);
     }
   };
+
+  const handleKeyDown = useCallback((e) => {
+    const { key } = e;
+    switch (key) {
+      case 'ArrowUp':
+        // Move up a row
+        if (highlightedRow === -1) {
+          setHighlightedRow(0);
+        } else if (highlightedRow > 0) {
+          setHighlightedRow((currHRow) => (currHRow - 1));
+        }
+        break;
+      case 'ArrowDown':
+        // Move down a row
+        if (highlightedRow === -1) {
+          setHighlightedRow(0);
+        } else if (highlightedRow < slice.length - 1) {
+          setHighlightedRow((currHRow) => (currHRow + 1));
+        }
+        break;
+      default:
+        break;
+    }
+  }, [highlightedRow]);
+  const editTableEntryQuantity = ((val, index) => {
+    const row = items[(page - 1) * numRows + index];
+    if (!(/^\d+$/.test(val))) {
+      console.error('Invalid Input: Quantity should be a number');
+      return;
+    }
+    base('table editing test').update([
+      {
+        id: row.id,
+        fields: {
+          Quantity: parseInt(val, 10),
+        },
+      },
+    ], (err, records) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      records.forEach((record) => {
+        console.log(`Edited entry at row ${(page - 1) * numRows + index}: ${record.get('Client Name')}, ${record.get('Location Name')}, ${record.get('Bin Name')}, ${record.get('Part Name')}, ${record.get('Part Description')}`);
+      });
+    });
+  });
+
+  const handleMouseDown = useCallback(
+    (e) => {
+      if (tableContents.current && tableContents.current.contains(e.target)) {
+        if ((e.target.className) <= numRows) {
+          setHighlightedRow(parseInt(e.target.className, 10));
+          console.log(highlightedRow);
+        }
+      } else {
+        // console.log(typeof e.target.className);
+      }
+    },
+    [tableContents, highlightedRow],
+  );
 
   useEffect(() => {
     if (loggedIn) {
@@ -169,6 +236,46 @@ function MainInventory({ loggedIn, username, onLogout }) {
     }
     setInventoryTotal(sum);
   }, [items]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('mousedown', handleMouseDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('mousedown', handleMouseDown);
+    };
+  }, [handleKeyDown, handleMouseDown]);
+
+  useEffect(() => {
+    const quantityTDElement = document.getElementById('editableQuantity');
+    if (!quantityTDElement) {
+      // console.log('Waiting for selected row');
+      return null;
+    }
+    quantityTDElement.addEventListener('input', () => {
+      editTableEntryQuantity(quantityTDElement.innerHTML, highlightedRow);
+    });
+    return () => {
+      quantityTDElement.removeEventListener('input', () => {
+        editTableEntryQuantity(quantityTDElement.innerHTML, highlightedRow);
+      });
+    };
+  });
+
+  const updateRowStatus = (e) => {
+    setSelectedRows([...selectedRows, parseInt(e.target.className, 10)]);
+    console.log(selectedRows);
+  };
+
+  const removeRowStatus = (e) => {
+    const newRows = selectedRows.filter((index) => index !== parseInt(e.target.className, 10));
+    setSelectedRows(newRows);
+  };
+
+  const updateAllRows = () => {
+    if (allChecked) { setSelectedRows([]); setAllChecked(false); } else { setAllChecked(true); }
+  };
+
   return (
     !loggedIn
       ? (<thead> Please Login </thead>
@@ -176,19 +283,59 @@ function MainInventory({ loggedIn, username, onLogout }) {
       : (
         <>
           <PageLengthForm setNumRows={setNumRows} />
-          <table className={styles.inventoryTable}>
-            <thead className={styles.inventoryHeader}>
-              <tr>
-                {filterableCategories.map((category) => (
-                  <th>
-                    {category}
-                    <ReactSelect
-                      isMulti
-                      onChange={(e) => handleOptionSelection(e, category)}
-                      options={categoryOptions[category]}
-                      placeholder={category}
-                    />
-                  </th>
+      <table>
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" className={setNumRows} onChange={() => updateAllRows()} />
+            </th>
+            {filterableCategories.map((category) => (
+              <th>
+                {category}
+                <ReactSelect
+                  isMulti
+                  onChange={(e) => handleOptionSelection(e, category)}
+                  options={categoryOptions[category]}
+                  placeholder={category}
+                />
+              </th>
+            ))}
+            <th>
+              Quantity
+              <form className="filter" onSubmit={(e) => e.preventDefault()}>
+                Min
+                <input type="number" onChange={(e) => handleQuantityFilterChange(e, true)} min="0" />
+                <br />
+                Max
+                <input type="number" onChange={(e) => handleQuantityFilterChange(e, false)} min="0" />
+              </form>
+            </th>
+          </tr>
+        </thead>
+        <tbody ref={tableContents}>
+          {slice.map((row, index) => {
+            if (selectedRows.includes(index) || allChecked) {
+              return (
+                <tr className={index} style={{ color: 'red' }}>
+                  <input type="checkbox" className={index} id={index} onClick={(e) => removeRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
+                  {categories.map((category) => {
+                    if (category === 'Quantity') {
+                      return (
+                        <td className={index} contentEditable="true" id="editableQuantity">{row.fields[category]}</td>
+                      );
+                    }
+                    return (
+                      <td className={index}>{row.fields[category]}</td>
+                    );
+                  })}
+                </tr>
+              );
+            }
+            return (
+              <tr className={index}>
+                <input type="checkbox" ref={inputBoxes} className={index} onClick={(e) => updateRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
+                {categories.map((category) => (
+                  <td className={index} classID="tableData">{row.fields[category]}</td>
                 ))}
                 <th>
                   Quantity
