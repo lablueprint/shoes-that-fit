@@ -134,7 +134,7 @@ function OrderForm() {
   return (
     <div className={styles.row}>
       <script src="print.js" />
-      <div className={[styles.column, styles.left]}>
+      <div className={[styles.column, styles.left].join(' ')}>
         {submit ? (
           <div className={styles.leftColumn}>
             <form>
@@ -152,7 +152,7 @@ function OrderForm() {
               <div className={styles.space} />
 
               <div className={styles.flexContainer}>
-                <div className={[styles.flexChild, styles.label]}>
+                <div className={styles.label}>
                   <label htmlFor="age">Address 1: </label>
                   <div />
                   <input
@@ -165,7 +165,7 @@ function OrderForm() {
                     onChange={(e) => setAddress(e.target.value)}
                   />
                 </div>
-                <div className={[styles.flexChild, styles.label]}>
+                <div className={[styles.flexChild, styles.label].join(' ')}>
                   <label htmlFor="gender">City </label>
                   <div />
                   <input
@@ -182,7 +182,7 @@ function OrderForm() {
               <div className={styles.space} />
 
               <div className={styles.flexContainer}>
-                <div className={[styles.flexChild, styles.label]}>
+                <div className={[styles.flexChild, styles.label].join(' ')}>
                   <label htmlFor="size">State </label>
                   <div />
                   <input
@@ -195,7 +195,7 @@ function OrderForm() {
                     onChange={(e) => setState(e.target.value)}
                   />
                 </div>
-                <div className={[styles.flexChild, styles.label]}>
+                <div className={[styles.flexChild, styles.label].join(' ')}>
                   <label htmlFor="wideWidth">Zip Code </label>
                   <div />
                   <input
@@ -415,7 +415,7 @@ function OrderForm() {
           </div>
         )}
       </div>
-      <div className={[styles.column, styles.right]}>
+      <div className={[styles.column, styles.right].join(' ')}>
         <div className={styles.rightColumn}>
           <div id="orders">
             <table>
