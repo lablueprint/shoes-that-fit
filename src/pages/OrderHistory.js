@@ -1,7 +1,7 @@
 // import React, { useState, useEffect } from 'react';
 import React, { useState, useEffect } from 'react';
 import Card from '../components/card';
-import styles from './OrderForm.module.css';
+import styles from './OrderHistory.module.css';
 import OrderListAdmin from './OrderListAdmin';
 
 const Airtable = require('airtable');

@@ -24,21 +24,35 @@ table {
     src: url(../assets/HartwellRegular.otf);
   }
 
-body {
+  @font-face {
+    font-family: Hartwell;
+    src: url(../assets/HartwellBold.otf);
+    font-weight: bold;
+  }
+
+
+h1 {
+    font-size: 40px;
+}
+
+.no {
     font-family: 'Hartwell';
     font-style: normal;
     font-weight: 500;
+    font-size: 18px;
     line-height: 21px;
 
     color: #000000;
+    padding: 1%;
 
-    /*text-align: 'left';
+    /* text-align: 'left';
     padding-left: '30%';
     padding-right: '30%'; */
 }
 
 h1 {
     font-size: 40px;
+    padding: 1%;
 }
 
 label {
@@ -80,6 +94,14 @@ label {
     padding-top:5%;
     flex: 1;
     width: 75%;
+}
+
+input::-webkit-calendar-picker-indicator {
+    opacity: 100;
+ }
+ input{
+    border:1px solid #000000;
+    padding:2px 2px;
 }
 
 .full {
@@ -180,3 +202,50 @@ input {
 .bottom {
     margin-top: 20%;
 }
+
+.orderHistory {
+    background: rgba(229, 229, 229, 0.5);
+    padding-left: 15%;
+    padding-right: 15%;
+}
+
+.orderText {
+    text-align: left;
+    font-size: 36px;
+    font-family: Hartwell;
+    font-weight: bold;
+    padding: 1%;
+}
+
+.status {
+    text-align: center;
+    display: flex;
+  }
+  
+  .statusChildInProgress {
+    height: 36px;
+    width: 124px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    background: #FFEEC2;
+    color: #AC7D03;
+    border-radius: 20px;
+    font-weight: bold;
+  }
+  
+  .statusChildFulfilled {
+    height: 36px;
+    width: 124px;
+    background: #E1EFE7;
+    color: #4C8865;
+    font-weight: bold;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    border-radius: 20px;
+  }

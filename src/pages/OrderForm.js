@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import print from 'print-js';
-// import reactDom from 'react-dom';
-import './OrderForm.css';
+//  import reactDom from 'react-dom';
+import { Link } from 'react-router-dom';
+import styles from './OrderForm.module.css';
 
 const Airtable = require('airtable');
 
@@ -131,16 +132,16 @@ function OrderForm() {
   }
 
   return (
-    <div className="row">
+    <div className={styles.row}>
       <script src="print.js" />
-      <div className="column left">
+      <div className={[styles.column, styles.left]}>
         {submit ? (
-          <div className="left-column">
+          <div className={styles.leftColumn}>
             <form>
               <label htmlFor="name">School Name:</label>
               <div />
               <input
-                className="full"
+                className={styles.full}
                 required
                 type="text"
                 id="schoolName"
@@ -148,14 +149,14 @@ function OrderForm() {
                 value={schoolName}
                 onChange={(e) => setschoolName(e.target.value)}
               />
-              <div className="space" />
+              <div className={styles.space} />
 
-              <div className="flex-container">
-                <div className="flex-child label">
+              <div className={styles.flexContainer}>
+                <div className={[styles.flexChild, styles.label]}>
                   <label htmlFor="age">Address 1: </label>
                   <div />
                   <input
-                    className="full"
+                    className={styles.full}
                     required
                     type="text"
                     id="address"
@@ -164,11 +165,11 @@ function OrderForm() {
                     onChange={(e) => setAddress(e.target.value)}
                   />
                 </div>
-                <div className="flex-child label">
+                <div className={[styles.flexChild, styles.label]}>
                   <label htmlFor="gender">City </label>
                   <div />
                   <input
-                    className="half"
+                    className={styles.half}
                     required
                     type="text"
                     id="city"
@@ -178,14 +179,14 @@ function OrderForm() {
                   />
                 </div>
               </div>
-              <div className="space" />
+              <div className={styles.space} />
 
-              <div className="flex-container">
-                <div className="flex-child label">
+              <div className={styles.flexContainer}>
+                <div className={[styles.flexChild, styles.label]}>
                   <label htmlFor="size">State </label>
                   <div />
                   <input
-                    className="half"
+                    className={styles.half}
                     required
                     type="text"
                     id="state"
@@ -194,11 +195,11 @@ function OrderForm() {
                     onChange={(e) => setState(e.target.value)}
                   />
                 </div>
-                <div className="flex-child label">
+                <div className={[styles.flexChild, styles.label]}>
                   <label htmlFor="wideWidth">Zip Code </label>
                   <div />
                   <input
-                    className="half"
+                    className={styles.half}
                     required
                     type="text"
                     id="zip"
@@ -208,11 +209,11 @@ function OrderForm() {
                   />
                 </div>
               </div>
-              <div className="space" />
+              <div className={styles.space} />
 
               <label htmlFor="school">Contact Name </label>
               <input
-                className="full"
+                className={styles.full}
                 required
                 type="text"
                 id="contact"
@@ -220,11 +221,11 @@ function OrderForm() {
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}
               />
-              <div className="space" />
+              <div className={styles.space} />
 
               <label htmlFor="school">Email Address </label>
               <input
-                className="full"
+                className={styles.full}
                 required
                 type="text"
                 id="email"
@@ -232,11 +233,11 @@ function OrderForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <div className="space" />
+              <div className={styles.space} />
 
               <label htmlFor="school">Phone </label>
               <input
-                className="half"
+                className={styles.half}
                 required
                 type="text"
                 id="phone"
@@ -244,11 +245,11 @@ function OrderForm() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
-              <div className="space" />
+              <div className={styles.space} />
 
               <label htmlFor="school">Date </label>
               <input
-                className="half"
+                className={styles.half}
                 required
                 type="text"
                 id="date"
@@ -256,19 +257,19 @@ function OrderForm() {
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
               />
-              <div className="space" />
+              <div className={styles.space} />
             </form>
             <div style={errorStyle}>{error}</div>
           </div>
         ) : (
-          <div className="left-column">
+          <div className={styles.leftColumn}>
             <form onSubmit={shoeUpdate}>
               <label htmlFor="name">
                 Student&apos;s First Name & Last Initial:
               </label>
               <div />
               <input
-                className="full"
+                className={styles.full}
                 required
                 type="text"
                 id="name"
@@ -276,14 +277,14 @@ function OrderForm() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
-              <div className="space" />
+              <div className={styles.space} />
 
-              <div className="flex-container">
-                <div className="flex-child label">
+              <div className={styles.flexContainer}>
+                <div className={[styles.flexChild, styles.label]}>
                   <label htmlFor="age">Age: </label>
                   <div />
                   <input
-                    className="half"
+                    className={styles.half}
                     required
                     type="number"
                     id="age"
@@ -292,11 +293,11 @@ function OrderForm() {
                     onChange={(e) => setAge(e.target.value)}
                   />
                 </div>
-                <div className="flex-child label">
+                <div className={[styles.flexChild, styles.label]}>
                   <label htmlFor="gender">Gender: </label>
                   <div />
                   <input
-                    className="half"
+                    className={styles.half}
                     required
                     type="text"
                     id="gender"
@@ -306,14 +307,14 @@ function OrderForm() {
                   />
                 </div>
               </div>
-              <div className="space" />
+              <div className={styles.space} />
 
-              <div className="flex-container">
-                <div className="flex-child label">
+              <div className={styles.flexContainer}>
+                <div className={[styles.flexChild, styles.label]}>
                   <label htmlFor="size">Size: </label>
                   <div />
                   <input
-                    className="half"
+                    className={styles.half}
                     required
                     id="size"
                     name="size"
@@ -372,11 +373,11 @@ function OrderForm() {
                     <option value="Adult 15"> </option>
                   </datalist>
                 </div>
-                <div className="flex-child label">
+                <div className={[styles.flexChild, styles.label]}>
                   <label htmlFor="wideWidth">Wide Width?: </label>
                   <div />
                   <input
-                    className="half"
+                    className={styles.half}
                     required
                     id="wideWidth"
                     name="wideWidth"
@@ -390,11 +391,11 @@ function OrderForm() {
                   </datalist>
                 </div>
               </div>
-              <div className="space" />
+              <div className={styles.space} />
 
               <label htmlFor="school">Teacher / School (if applicable) </label>
               <input
-                className="full"
+                className={styles.full}
                 required
                 type="string"
                 id="school"
@@ -402,7 +403,7 @@ function OrderForm() {
                 value={school}
                 onChange={(e) => setSchool(e.target.value)}
               />
-              <div className="space" />
+              <div className={styles.space} />
               <input
                 type="submit"
                 id="submit"
@@ -414,8 +415,8 @@ function OrderForm() {
           </div>
         )}
       </div>
-      <div className="column right">
-        <div className="right-column">
+      <div className={[styles.column, styles.right]}>
+        <div className={styles.rightColumn}>
           <div id="orders">
             <table>
               <thead>
@@ -445,12 +446,12 @@ function OrderForm() {
               </tbody>
             </table>
             {submit ? (
-              <div className="bottom">
-                <div className="notes">
+              <div className={styles.bottom}>
+                <div className={styles.notes}>
                   <label htmlFor="note">Notes:</label>
                   <div />
                   <input
-                    className="full"
+                    className={styles.full}
                     required
                     type="text"
                     id="note"
@@ -458,22 +459,23 @@ function OrderForm() {
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
                   />
-                  <div className="space" />
+                  <div className={styles.space} />
                 </div>
 
-                <div className="michael">
+                <div className={styles.michael}>
                   <button
                     type="button"
                     id="print"
                     name="confirm"
                     onClick={pushToAirtable}
                   >
+                    <Link to="/orderhistory" />
                     Confirm Submission
                   </button>
                 </div>
               </div>
             ) : (
-              <div className="michael">
+              <div className={styles.michael}>
                 <button
                   type="button"
                   id="print"
