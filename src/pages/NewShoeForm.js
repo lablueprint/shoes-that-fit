@@ -21,13 +21,25 @@ function NewShoeForm() {
   // popup states
   const [popup, setPopup] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [quantityDisplay, setQuantityDisplay] = useState(0);
+  const [popupMessage, setPopupMessage] = useState('');
 
   // clear input fields
   function clear() {
     setLocation('');
     setPart('');
     setQuantity('');
+  }
+
+  function addRecord(delta) {
+    base('Records').create([
+      {
+        fields: {
+          Message: `Added ${delta} shoes to inventory.`,
+        },
+      },
+    ], (err) => {
+      if (err) { console.log(err); }
+    });
   }
 
   const closePopup = () => setPopup(false);
@@ -39,12 +51,18 @@ function NewShoeForm() {
         evt.preventDefault();
         // check for valid input
         const quantityToInt = parseInt(quantity, 10);
-        if (Number.isNaN(quantityToInt) || quantityToInt < 0 || location === '' || part === '') {
+        if (Number.isNaN(quantityToInt) || quantityToInt <= 0 || location === '' || part === '') {
+          if (Number.isNaN(quantityToInt) || quantityToInt <= 0) {
+            setPopupMessage('Make sure to input a positive number for quantity!');
+          } else {
+            setPopupMessage('Make sure to fill out all fields!');
+          }
+
           setSuccess(false);
           setPopup(true);
           return;
         }
-
+        addRecord(quantityToInt);
         const wideWidth = partDescription ? 'Wide' : 'Not Wide';
 
         const filter = `AND({Location Name} = '${location}',
@@ -72,7 +90,7 @@ function NewShoeForm() {
                 if (err) { console.log(err); }
               });
               setSuccess(true);
-              setQuantityDisplay(totalQuantity);
+              setPopupMessage(`New quantity: ${totalQuantity}`);
               setPopup(true);
               return;
             }
@@ -103,7 +121,7 @@ function NewShoeForm() {
               }
             });
             setSuccess(true);
-            setQuantityDisplay(totalQuantity);
+            setPopupMessage(`New quantity: ${totalQuantity}`);
             setPopup(true);
           },
           (err) => { console.log(err); },
@@ -156,7 +174,7 @@ function NewShoeForm() {
       <Popup
         closePopup={closePopup}
         success={success}
-        value={quantityDisplay}
+        message={popupMessage}
       />
       )}
       {inputForm}

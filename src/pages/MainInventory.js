@@ -1,9 +1,12 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState, useEffect, useRef, useCallback,
+} from 'react';
 import ReactSelect from 'react-select';
 import PropTypes from 'prop-types';
 import base from '../lib/airtable';
 import { TableFooter, PageLengthForm } from '../components';
+import styles from './MainInventory.module.css';
 
 // const Airtable = require('airtable');
 
@@ -173,8 +176,8 @@ function MainInventory({ loggedIn, username, onLogout }) {
       : (
         <>
           <PageLengthForm setNumRows={setNumRows} />
-          <table>
-            <thead>
+          <table className={styles.inventoryTable}>
+            <thead className={styles.inventoryHeader}>
               <tr>
                 {filterableCategories.map((category) => (
                   <th>
@@ -200,13 +203,19 @@ function MainInventory({ loggedIn, username, onLogout }) {
               </tr>
             </thead>
             <tbody>
-              {slice.map((row) => (
-                <tr>
-                  {categories.map((category) => (
-                    <td>{row.fields[category]}</td>
-                  ))}
-                </tr>
-              ))}
+              {slice.map((row, index) => {
+                let trClassName = 'evenRow';
+                if (index % 2 === 1) {
+                  trClassName = 'oddRow';
+                }
+                return (
+                  <tr className={styles[trClassName]}>
+                    {categories.map((category) => (
+                      <td>{row.fields[category]}</td>
+                    ))}
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
           <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} />
