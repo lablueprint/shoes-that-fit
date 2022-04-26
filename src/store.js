@@ -9,13 +9,13 @@ const persistConfig = {
   storage,
 };
 
-const loginReducer = (state = { loggedIn: false }, action) => {
+const loginReducer = (state = { loggedIn: false, username: null }, action) => {
   switch (action.type) {
     case 'LOG_IN':
-      state = { loggedIn: true };
+      state = { loggedIn: true, username: action.payload };
       break;
     case 'LOG_OUT':
-      state = { loggedIn: false };
+      state = { loggedIn: false, username: null };
       break;
     default:
       break;
