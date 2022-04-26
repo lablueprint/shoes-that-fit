@@ -1,20 +1,24 @@
-import React, { useState } from 'react';
-
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({ apiKey: airtableConfig.apiKey })
-  .base(airtableConfig.baseKey);
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 function Donations() {
-  const [donor, setDonor] = useState(null);
+  const [donor, setDonor] = useState({});
   const [donations, setDonations] = useState([]);
-  const [error, setError] = useState('');
+  // const [error, setError] = useState('');
   const donationFields = ['Quantity', 'Gender', 'Category', 'Wide', 'Size', 'Notes'];
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state) {
+      setDonor(location.state.donor);
+      setDonations(location.state.donations);
+      console.log(location.state.donor);
+      console.log(location.state.donations);
+    } else {
+      console.log('No donor/donations field');
+    }
+  }, []);
+
   const donorUpdate = (e) => {
     e.preventDefault();
     const tempDonor = {};
@@ -44,9 +48,17 @@ function Donations() {
     const donation = {};
     donation.Quantity = document.getElementById('quantity').value;
     donation.Gender = document.getElementById('gender').value;
+    if (donation.Gender === 'none') {
+      console.log('Select a gender');
+      return;
+    }
     donation.Category = document.getElementById('category').value;
+    if (donation.Category === 'none') {
+      console.log('Select a category');
+      return;
+    }
     donation.Size = document.getElementById('size').value;
-    if (document.getElementById('wide')) {
+    if (document.getElementById('wide').checked) {
       donation.Wide = 'W';
     } else {
       donation.Wide = 'NW';
@@ -54,47 +66,51 @@ function Donations() {
     donation.Notes = document.getElementById('notes').value;
     setDonations([...donations, donation]);
   };
-  const submitDonations = (e) => {
-    e.preventDefault();
-    if (!donor) {
-      console.log('Need a donor');
-      return;
-    }
-    base('Donors').create([
-      {
-        fields: {
-          Name: donor.name,
-          Phone: donor.phone,
-          Email: donor.email,
-          'Address Line 1': donor.addressline1,
-          'Address Line 2': donor.addressline2,
-          City: donor.city,
-          State: donor.state,
-          'Zip Code': donor.zipcode,
-          Donations: JSON.stringify(donations),
-
-        },
-      },
-    ], (err, records) => {
-      if (err) {
-        console.error(err);
-        setError(
-          <p>
-            {err.message}
-          </p>,
-        );
-        return;
-      }
-      records.forEach((record) => {
-        console.log(record.getId());
-      });
-    });
-  };
 
   return (
     <div>
       <h1>Log a Donation</h1>
       <h2>Step 1. Add donor info</h2>
+      <p>
+        Name:
+        {' '}
+        {donor.name}
+      </p>
+      <p>
+        Phone:
+        {' '}
+        {donor.phone}
+      </p>
+      <p>
+        Email:
+        {' '}
+        {donor.email}
+      </p>
+      <p>
+        Address Line 1:
+        {' '}
+        {donor.addressline1}
+      </p>
+      <p>
+        Address Line 2:
+        {' '}
+        {donor.addressline2}
+      </p>
+      <p>
+        City:
+        {' '}
+        {donor.city}
+      </p>
+      <p>
+        State:
+        {' '}
+        {donor.state}
+      </p>
+      <p>
+        Zip Code:
+        {' '}
+        {donor.zipcode}
+      </p>
       <form onSubmit={donorUpdate}>
         <div className="flex-container">
           <div className="flex-child label">
@@ -214,7 +230,12 @@ function Donations() {
               {' '}
             </label>
           </div>
-          <input required type="text" id="gender" name="gender" />
+          {/* <input required type="text" id="gender" name="gender" /> */}
+          <select name="gender" id="gender">
+            <option value="none" selected disabled hidden>Select an Option</option>
+            <option value="Boys">Boys</option>
+            <option value="Girls">Girls</option>
+          </select>
         </div>
 
         <div className="flex-container">
@@ -224,7 +245,13 @@ function Donations() {
               {' '}
             </label>
           </div>
-          <input required type="text" id="category" name="category" />
+          {/* <input required type="text" id="category" name="category" /> */}
+          <select name="category" id="category">
+            <option value="none" selected disabled hidden>Select an Option</option>
+            <option value="Infant/Child">Infant/Child</option>
+            <option value="Youth">Youth</option>
+            <option value="Adult">Adult</option>
+          </select>
         </div>
 
         <div className="flex-container">
@@ -234,17 +261,17 @@ function Donations() {
               {' '}
             </label>
           </div>
-          <input required type="number" id="size" name="size" />
+          <input required type="text" id="size" name="size" />
         </div>
 
         <div className="flex-container">
           <div className="flex-child label">
-            <label htmlFor="width">
+            <label htmlFor="wide">
               Wide:
               {' '}
             </label>
           </div>
-          <input type="checkbox" id="width" name="addressline2" />
+          <input type="checkbox" id="wide" name="wide" />
         </div>
 
         <div className="flex-container">
@@ -258,10 +285,13 @@ function Donations() {
         </div>
         <input type="submit" id="add" name="add" value="Add" />
       </form>
-      <form onSubmit={submitDonations}>
+      {/* <form onSubmit={submitDonations}>
         <input type="submit" id="submit" name="submit" value="Save and Continue" />
-      </form>
-      {error}
+      </form> */}
+      <Link to="/confirmdonation" state={{ valid: true, donor, donations }}>
+        <input type="submit" id="submit" name="submit" value="Save and Continue" />
+      </Link>
+      {/* {error} */}
     </div>
   );
 }
