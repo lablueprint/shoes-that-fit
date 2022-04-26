@@ -1,0 +1,132 @@
+.dashboardComponent {
+    background: #FFFFFF;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.09);
+    border-radius: 20px;
+}
+
+.orderDashboardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.adminDashboardH2 {
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 35px;
+    color: #000000;
+}
+
+.orderTableData {
+    height: 50px;
+    width: 100px;
+    justify-content: center;
+}
+
+.incompleteBox {
+    display: flex;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+    background: #FFEEC2;
+    color: #AC7D03;
+    font-weight: 700;
+    font-size: 16px;
+    border-radius: 31px;
+    height: 25px;
+    width: 130px
+}
+
+.LinkStyles { 
+    text-decoration: none;
+
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 23px;
+    color: #24275E;
+}
+
+ 
+ /* table wrapper for continuous border */
+ .orderDashboardTable {
+     overflow: hidden;
+     margin-left: 10px;
+     margin-right: 10px;
+     margin-bottom: 10px;
+     border-radius: 20px;
+ }
+ 
+ /* table border */
+ .orderDashboardTable table {
+    margin-top: 10px;
+    width: 100%;
+    border-collapse: collapse; /* removes gap between cells */
+    border-radius: 20px;
+    background-color: #F9F9F9;   
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    color: #313131;
+    border-spacing: 5px;
+ }
+ 
+ .orderDashboardTable thead th {
+     font-weight: bold;
+ }
+ 
+ /* cell padding */
+ .orderDashboardTable th, td {
+     padding: 5px;
+ }
+ 
+ /* create 1px gap in table for line */
+ .orderDashboardTable tr.orderTableTRFirst td,
+ .orderDashboardTable tr.orderTableTR td {
+     position: relative;
+     top: 1px;
+ }
+ 
+ /* create the line */
+ .orderDashboardTable tr.orderTableTR td:after {
+     content: '';
+     position: absolute;
+     top: -1px;
+     left: 0px;
+     height: 0.25px;
+     width: 100%;
+     background-color: #AAAAAA;
+ }
+
+ /* create the line */
+ .orderDashboardTable tr.orderTableTRFirst td:after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0px;
+    height: 1px;
+    width: 100%;
+    background-color: rgb(0, 0, 0);
+}
+ 
+ /* reduce width of line for first and last cells, by cell padding amount */
+ .orderDashboardTable tr.orderTableTRFirst td:first-child:after,
+ .orderDashboardTable tr.orderTableTRFirst td:last-child:after,
+ .orderDashboardTable tr.orderTableTR td:first-child:after,
+ .orderDashboardTable tr.orderTableTR td:last-child:after {
+     width: calc(100% - 10px);
+ }
+ 
+ /* pull line on first cell to the right */
+ .orderDashboardTable tr.orderTableTRFirst td:first-child:after,
+ .orderDashboardTable tr.orderTableTR td:first-child:after {
+     right: 0px;
+     left: auto;
+ }
