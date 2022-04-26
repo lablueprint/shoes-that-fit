@@ -17,10 +17,9 @@ const base = new Airtable({ apiKey: airtableConfig.apiKey })
 function OrderHistory() {
   const [cards, setCards] = useState([]);
   const [specificCardID, setSpecificCardID] = useState('');
-  // const [specificCard, setSpecificCard] = useState(null);
-  // const [display, setDisplay] = useState([]);
+
   const getCards = () => {
-    base('Orders').select({ view: 'Grid 2' }).all()
+    base('Orders').select({ view: 'Grid View' }).all()
       .then((records) => {
         setCards(records);
       });
@@ -42,33 +41,12 @@ function OrderHistory() {
   };
 
   const selectCard = (cardID) => {
-    console.log('in select card');
     setSpecificCardID(cardID);
-    // base('Orders').find(cardID, (err, record) => {
-    //   if (err) { console.error(err); return; }
-    //   console.log('Retrieved', record.id);
-    //   console.log(record);
-    //   setSpecificCard(record);
-    // });
-    // OrderListAdmin(cardID);
   };
 
   const clearSpecificCard = () => {
     setSpecificCardID('');
-    // setSpecificCard(null);
   };
-
-  // const generateTable = () => {
-  //   console.log('generate table');
-  //   if (specificCardID !== '') {
-  //     console.log('generate table');
-  //     setDisplay(OrderListAdmin(specificCardID));
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   generateTable(specificCardID);
-  // }, []);
 
   return (
     specificCardID === ''
@@ -76,9 +54,9 @@ function OrderHistory() {
         <div className={styles.orderHistory}>
           <div className={styles.orderText}>Orders in Progress</div>
 
-          {cards.filter((card) => (card.fields.ID === '1' && card.fields.Active === true)).length === 0
+          {cards.filter((card) => (card.fields.UserID === '1' && card.fields.Active === true)).length === 0
             ? <div className={styles.no}>No orders in progress.</div>
-            : cards.filter((card) => (card.fields.ID === '1' && card.fields.Active === true)).map((card) => (
+            : cards.filter((card) => (card.fields.UserID === '1' && card.fields.Active === true)).map((card) => (
               // eslint-disable-next-line react/no-array-index-key
               <div key={card.id} className={styles.cardBox}>
                 <Card
@@ -92,9 +70,9 @@ function OrderHistory() {
               </div>
             ))}
           <div className={styles.orderText}>Previous Orders</div>
-          {cards.filter((card) => (card.fields.ID === '1' && !(card.fields.Active === true))).length === 0
+          {cards.filter((card) => (card.fields.UserID === '1' && !(card.fields.Active === true))).length === 0
             ? <div className={styles.no}>No previous orders.</div>
-            : cards.filter((card) => (card.fields.ID === '1' && !(card.fields.Active === true))).map((card) => (
+            : cards.filter((card) => (card.fields.UserID === '1' && !(card.fields.Active === true))).map((card) => (
               // eslint-disable-next-line react/no-array-index-key
               <div key={card.id} className={styles.cardBox}>
                 <Card
@@ -111,37 +89,8 @@ function OrderHistory() {
       )
       : (
         <>
-          {console.log('pressed')}
-          {console.log(specificCardID)}
-          {/* <button type="button" onClick={clearSpecificCard}>Back</button>
-          <div className={styles.status}>
-            {specificCard && specificCard.fields.Active
-              ? <div className={styles.statusChildInProgress}>In Progress</div>
-              : <div className={styles.statusChildFulfilled}>Fulfilled</div>}
-          </div>
-          <div>
-            Order placed on
-            {' '}
-            {specificCard && specificCard.fields.Date}
-          </div>
-          <table>
-            <thead>
-              <tr>
-                <th width="263px">Student&apos;s First Name and Last Name</th>
-                <th width="100px">Age</th>
-                <th width="60px">Gender</th>
-                <th width="100px">Shoe Size</th>
-                <th width="70px">Wide Width?</th>
-                <th width="263px">Teacher or school?</th>
-              </tr>
-            </thead>
-            <tbody>
-              {display}
-            </tbody>
-          </table> */}
           <button type="button" onClick={clearSpecificCard}>Back</button>
-          {console.log(specificCardID)}
-          {OrderListAdmin(specificCardID)}
+          <OrderListAdmin id={specificCardID} />
         </>
       )
   );
