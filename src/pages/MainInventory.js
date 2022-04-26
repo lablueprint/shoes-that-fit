@@ -46,6 +46,7 @@ const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * num
 
 function MainInventory() {
   const [rows, setRows] = useState([]);
+  const [allChecked, setAllChecked] = useState(false);
   const [items, setItems] = useState([]);
   const [inventoryTotal, setInventoryTotal] = useState(0);
   const [quantityMin, setQuantityMin] = useState(0);
@@ -256,18 +257,7 @@ function MainInventory() {
   };
 
   const updateAllRows = () => {
-    if (selectedRows.length === 0) {
-      const nums = [];
-      for (let i = 0; i < numRows; i += 1) {
-        console.log(i);
-        nums.push(i);
-      }
-      setSelectedRows(nums);
-      console.log(selectedRows);
-    } else {
-      console.log('failed');
-      setSelectedRows([]);
-    }
+    if (allChecked) { setSelectedRows([]); setAllChecked(false); } else { setAllChecked(true); }
   };
 
   return (
@@ -304,10 +294,10 @@ function MainInventory() {
         </thead>
         <tbody ref={tableContents}>
           {slice.map((row, index) => {
-            if (selectedRows.includes(index)) {
+            if (selectedRows.includes(index) || allChecked) {
               return (
                 <tr className={index} style={{ color: 'red' }}>
-                  <input type="checkbox" className={index} id={index} onClick={(e) => removeRowStatus(e)} checked={selectedRows.includes(index)} />
+                  <input type="checkbox" className={index} id={index} onClick={(e) => removeRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
                   {categories.map((category) => {
                     if (category === 'Quantity') {
                       return (
@@ -323,7 +313,7 @@ function MainInventory() {
             }
             return (
               <tr className={index}>
-                <input type="checkbox" ref={inputBoxes} className={index} onClick={(e) => updateRowStatus(e)} checked={selectedRows.includes(index)} />
+                <input type="checkbox" ref={inputBoxes} className={index} onClick={(e) => updateRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
                 {categories.map((category) => (
                   <td className={index} classID="tableData">{row.fields[category]}</td>
 
