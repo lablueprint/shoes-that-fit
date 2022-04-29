@@ -81,17 +81,11 @@ function MainInventory({ loggedIn, username, onLogout }) {
   const inputBoxes = useRef();
   const getInventory = () => {
     // base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
-    base('InventoryTestRevamp').select({ view: 'Grid view' }).all()
-=======
-  const categories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description', 'Quantity'];
-  const filterableCategories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description'];
-
-  const getInventory = () => {
-    base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
-      .then((records) => {
-        setRows(records);
-      });
+    base('InventoryTestRevamp').select({ view: 'Grid view' }).all().then((records) => {
+      setRows(records);
+    });
   };
+
   const createOptions = (category, optionList) => {
     categoryOptions[category] = optionList;
     setCategoryOptions(categoryOptions);
@@ -283,59 +277,22 @@ function MainInventory({ loggedIn, username, onLogout }) {
       : (
         <>
           <PageLengthForm setNumRows={setNumRows} />
-      <table>
-        <thead>
-          <tr>
-            <th>
-              <input type="checkbox" className={setNumRows} onChange={() => updateAllRows()} />
-            </th>
-            {filterableCategories.map((category) => (
-              <th>
-                {category}
-                <ReactSelect
-                  isMulti
-                  onChange={(e) => handleOptionSelection(e, category)}
-                  options={categoryOptions[category]}
-                  placeholder={category}
-                />
-              </th>
-            ))}
-            <th>
-              Quantity
-              <form className="filter" onSubmit={(e) => e.preventDefault()}>
-                Min
-                <input type="number" onChange={(e) => handleQuantityFilterChange(e, true)} min="0" />
-                <br />
-                Max
-                <input type="number" onChange={(e) => handleQuantityFilterChange(e, false)} min="0" />
-              </form>
-            </th>
-          </tr>
-        </thead>
-        <tbody ref={tableContents}>
-          {slice.map((row, index) => {
-            if (selectedRows.includes(index) || allChecked) {
-              return (
-                <tr className={index} style={{ color: 'red' }}>
-                  <input type="checkbox" className={index} id={index} onClick={(e) => removeRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
-                  {categories.map((category) => {
-                    if (category === 'Quantity') {
-                      return (
-                        <td className={index} contentEditable="true" id="editableQuantity">{row.fields[category]}</td>
-                      );
-                    }
-                    return (
-                      <td className={index}>{row.fields[category]}</td>
-                    );
-                  })}
-                </tr>
-              );
-            }
-            return (
-              <tr className={index}>
-                <input type="checkbox" ref={inputBoxes} className={index} onClick={(e) => updateRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
-                {categories.map((category) => (
-                  <td className={index} classID="tableData">{row.fields[category]}</td>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  <input type="checkbox" className={setNumRows} onChange={() => updateAllRows()} />
+                </th>
+                {filterableCategories.map((category) => (
+                  <th>
+                    {category}
+                    <ReactSelect
+                      isMulti
+                      onChange={(e) => handleOptionSelection(e, category)}
+                      options={categoryOptions[category]}
+                      placeholder={category}
+                    />
+                  </th>
                 ))}
                 <th>
                   Quantity
@@ -349,16 +306,31 @@ function MainInventory({ loggedIn, username, onLogout }) {
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody ref={tableContents}>
               {slice.map((row, index) => {
-                let trClassName = 'evenRow';
-                if (index % 2 === 1) {
-                  trClassName = 'oddRow';
+                if (selectedRows.includes(index) || allChecked) {
+                  return (
+                    <tr className={index} style={{ color: 'red' }}>
+                      <input type="checkbox" className={index} id={index} onClick={(e) => removeRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
+                      {categories.map((category) => {
+                        if (category === 'Quantity') {
+                          return (
+                            <td className={index} contentEditable="true" id="editableQuantity">{row.fields[category]}</td>
+                          );
+                        }
+                        return (
+                          <td className={index}>{row.fields[category]}</td>
+                        );
+                      })}
+                    </tr>
+                  );
                 }
                 return (
-                  <tr className={styles[trClassName]}>
+                  <tr className={index}>
+                    <input type="checkbox" ref={inputBoxes} className={index} onClick={(e) => updateRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
                     {categories.map((category) => (
-                      <td>{row.fields[category]}</td>
+                      <td className={index} classID="tableData">{row.fields[category]}</td>
+
                     ))}
                   </tr>
                 );
