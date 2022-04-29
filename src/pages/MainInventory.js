@@ -281,10 +281,10 @@ function MainInventory({ loggedIn, username, onLogout }) {
             <thead>
               <tr>
                 <th>
-                  <input type="checkbox" className={setNumRows} onChange={() => updateAllRows()} />
+                  <input type="checkbox" onChange={() => updateAllRows()} />
                 </th>
                 {filterableCategories.map((category) => (
-                  <th>
+                  <th key={category}>
                     {category}
                     <ReactSelect
                       isMulti
@@ -311,11 +311,11 @@ function MainInventory({ loggedIn, username, onLogout }) {
                 if (selectedRows.includes(index) || allChecked) {
                   return (
                     <tr className={index} style={{ color: 'red' }}>
-                      <input type="checkbox" className={index} id={index} onClick={(e) => removeRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
+                      <input type="checkbox" className={index} onClick={(e) => removeRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
                       {categories.map((category) => {
                         if (category === 'Quantity') {
                           return (
-                            <td className={index} contentEditable="true" id="editableQuantity">{row.fields[category]}</td>
+                            <td className={index} contentEditable="true" id="editableQuantity" suppressContentEditableWarning>{row.fields[category]}</td>
                           );
                         }
                         return (
@@ -330,7 +330,6 @@ function MainInventory({ loggedIn, username, onLogout }) {
                     <input type="checkbox" ref={inputBoxes} className={index} onClick={(e) => updateRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
                     {categories.map((category) => (
                       <td className={index} classID="tableData">{row.fields[category]}</td>
-
                     ))}
                   </tr>
                 );
