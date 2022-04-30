@@ -16,65 +16,67 @@ function App({
   return (
     <div className="App">
       <Nav loggedIn={isLoggedIn} />
-      <Routes>
-        <Route
-          path="/inventory"
-          element={(
-            <MainInventory
-              loggedIn={isLoggedIn}
-              username={username}
-              onLogout={logout}
-            />
-        )}
-        />
-        <Route
-          exact
-          path="/"
-          element={(
-            <LoginPage
-              loggedIn={isLoggedIn}
-              username={username}
-              onLogin={login}
-            />
-        )}
-        />
-        <Route
-          path="/newshoeform"
-          element={(
-            <NewShoeForm
-              loggedIn={isLoggedIn}
-              username={username}
-              onLogout={logout}
-            />
-        )}
-        />
-        <Route
-          path="/orderform"
-          element={(
-            <OrderForm
-              loggedIn={isLoggedIn}
-              username={username}
-              onLogout={logout}
-            />
-        )}
-        />
-        <Route
-          path="/adminlist"
-          element={(
-            <AdminList
-              loggedIn={isLoggedIn}
-              username={username}
-              onLogout={logout}
-            />
-        )}
-        />
-        <Route path="/records" element={<Records />} />
-        <Route path="/admindashboard" element={<AdminDashboard />} />
-        <Route path="/viewhistory" element={<OrderListAdmin />} />
-        <Route path="/orderhistory" element={<OrderHistory />} />
-        <Route path="/donations" element={<Donations />} />
-        <Route path="/confirmdonation" element={<DonationConfirmation />} />
-      </Routes>
+      <div className="App-container">
+        <Routes>
+          <Route
+            path="/inventory"
+            element={(
+              <MainInventory
+                loggedIn={isLoggedIn}
+                username={username}
+                onLogout={logout}
+              />
+          )}
+          />
+          <Route
+            exact
+            path="/"
+            element={(
+              <LoginPage
+                loggedIn={isLoggedIn}
+                username={username}
+                onLogin={login}
+              />
+          )}
+          />
+          <Route
+            path="/newshoeform"
+            element={(
+              <NewShoeForm
+                loggedIn={isLoggedIn}
+                username={username}
+                onLogout={logout}
+              />
+          )}
+          />
+          <Route
+            path="/orderform"
+            element={(
+              <OrderForm
+                loggedIn={isLoggedIn}
+                username={username}
+                onLogout={logout}
+              />
+          )}
+          />
+          <Route
+            path="/adminlist"
+            element={(
+              <AdminList
+                loggedIn={isLoggedIn}
+                username={username}
+                onLogout={logout}
+              />
+          )}
+          />
+          <Route path="/records" element={<Records />} />
+          <Route path="/admindashboard" element={<AdminDashboard />} />
+          <Route path="/viewhistory" element={<OrderListAdmin />} />
+          <Route path="/orderhistory" element={<OrderHistory />} />
+          <Route path="/donations" element={<Donations />} />
+          <Route path="/confirmdonation" element={<DonationConfirmation />} />
+        </Routes>
+      </div>
     </div>
   );
 }

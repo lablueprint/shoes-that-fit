@@ -12,5 +12,5 @@ import DonationConfirmation from './DonationConfirmation';
 
 export {
   MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records, AdminDashboard,
-  Donations, DonationConfirmation, OrderListAdmin, OrderHistory
+  Donations, DonationConfirmation, OrderListAdmin, OrderHistory,
 };
