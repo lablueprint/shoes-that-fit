@@ -9,3 +9,22 @@
     background-color: transparent;
     background-repeat: no-repeat;
 }
+
+.donationsForm {
+    border: 1px solid black;
+    margin: 1rem;
+    padding: 2rem 2rem;
+    text-align: center;
+}
+
+.donationFormField {
+    display: inline-block;
+    padding: 1rem 1rem;
+    vertical-align: middle;
+}
+
+.logTable {
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid gray;
+}

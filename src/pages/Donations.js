@@ -80,7 +80,7 @@ function Donations() {
     <div>
       <h1>Log a Donation</h1>
       <h2>Step 1. Add donor info</h2>
-      <table>
+      <table className={styles.logTable}>
         <thead>
           <tr>
             {donorFields.map((field) => (
@@ -180,7 +180,7 @@ function Donations() {
       </form>
       {donorError}
       <h2>Step 2. Add donation info</h2>
-      <table>
+      <table className={styles.logTable}>
         <thead>
           <tr>
             {donationFields.map((field) => (
@@ -201,75 +201,77 @@ function Donations() {
         </tbody>
       </table>
       <form onSubmit={addDonation}>
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="quantity">
-              Quantity:
-              {' '}
-            </label>
+        <div className={styles.donationForm}>
+          <div className={styles.donationFormField}>
+            <div>
+              <label htmlFor="quantity">
+                Quantity:
+                {' '}
+              </label>
+            </div>
+            <input required type="number" id="quantity" name="quantity" />
           </div>
-          <input required type="number" id="quantity" name="quantity" />
-        </div>
 
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="gender">
-              Gender:
-              {' '}
-            </label>
+          <div className={styles.donationFormField}>
+            <div>
+              <label htmlFor="gender">
+                Gender:
+                {' '}
+              </label>
+            </div>
+            {/* <input required type="text" id="gender" name="gender" /> */}
+            <select name="gender" id="gender">
+              <option value="none" selected disabled hidden>Select an Option</option>
+              <option value="Boys">Boys</option>
+              <option value="Girls">Girls</option>
+            </select>
           </div>
-          {/* <input required type="text" id="gender" name="gender" /> */}
-          <select name="gender" id="gender">
-            <option value="none" selected disabled hidden>Select an Option</option>
-            <option value="Boys">Boys</option>
-            <option value="Girls">Girls</option>
-          </select>
-        </div>
 
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="category">
-              Category:
-              {' '}
-            </label>
+          <div className={styles.donationFormField}>
+            <div>
+              <label htmlFor="category">
+                Category:
+                {' '}
+              </label>
+            </div>
+            {/* <input required type="text" id="category" name="category" /> */}
+            <select name="category" id="category">
+              <option value="none" selected disabled hidden>Select an Option</option>
+              <option value="Infant/Child">Infant/Child</option>
+              <option value="Youth">Youth</option>
+              <option value="Adult">Adult</option>
+            </select>
           </div>
-          {/* <input required type="text" id="category" name="category" /> */}
-          <select name="category" id="category">
-            <option value="none" selected disabled hidden>Select an Option</option>
-            <option value="Infant/Child">Infant/Child</option>
-            <option value="Youth">Youth</option>
-            <option value="Adult">Adult</option>
-          </select>
-        </div>
 
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="size">
-              Size:
-              {' '}
-            </label>
+          <div className={styles.donationFormField}>
+            <div>
+              <label htmlFor="size">
+                Size:
+                {' '}
+              </label>
+            </div>
+            <input required type="text" id="size" name="size" />
           </div>
-          <input required type="text" id="size" name="size" />
-        </div>
 
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="wide">
-              Wide:
-              {' '}
-            </label>
+          <div className={styles.donationFormField}>
+            <div>
+              <label htmlFor="wide">
+                Wide:
+                {' '}
+              </label>
+            </div>
+            <input type="checkbox" id="wide" name="wide" />
           </div>
-          <input type="checkbox" id="wide" name="wide" />
-        </div>
 
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="notes">
-              Notes:
-              {' '}
-            </label>
+          <div className={styles.donationFormField}>
+            <div>
+              <label htmlFor="notes">
+                Notes:
+                {' '}
+              </label>
+            </div>
+            <textarea required type="text" id="notes" name="notes" />
           </div>
-          <textarea required type="text" id="notes" name="notes" />
         </div>
         <input type="submit" id="add" name="add" value="Add" />
       </form>
