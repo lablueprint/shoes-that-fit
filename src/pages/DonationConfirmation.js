@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
+import { Table } from '../components';
 
 const Airtable = require('airtable');
 
@@ -15,8 +16,11 @@ export default function DonationConfirmation() {
   const location = useLocation();
   const { valid, donor, donations } = location.state;
   const [error, setError] = useState('');
+  const donorFields = ['Name', 'Phone', 'Address Line 1', 'Address Line 2', 'City', 'State', 'Zip Code'];
   const donationFields = ['Quantity', 'Gender', 'Category', 'Wide', 'Size', 'Notes'];
-
+  // eslint-disable-next-line max-len
+  const sum = donations.reduce((accumulator, object) => accumulator + parseInt(object.Quantity, 10), 0);
+  const date = new Date();
   const submitDonations = (e) => {
     e.preventDefault();
     if (!donor) {
@@ -26,14 +30,14 @@ export default function DonationConfirmation() {
     base('Donors').create([
       {
         fields: {
-          Name: donor.name,
-          Phone: donor.phone,
-          Email: donor.email,
-          'Address Line 1': donor.addressline1,
-          'Address Line 2': donor.addressline2,
-          City: donor.city,
-          State: donor.state,
-          'Zip Code': donor.zipcode,
+          Name: donor.Name,
+          Phone: donor.Phone,
+          Email: donor.Email,
+          'Address Line 1': donor['Address Line 1'],
+          'Address Line 2': donor['Address Line e'],
+          City: donor.City,
+          State: donor.State,
+          'Zip Code': donor['Zip Code'],
           Donations: JSON.stringify(donations),
         },
       },
@@ -60,52 +64,41 @@ export default function DonationConfirmation() {
 
   return (
     <div>
-      <table>
-        <tr>
-          <td>
-            {donor.name}
-          </td>
-          <td>
-            {donor.phone}
-          </td>
-          <td>
-            {donor.email}
-          </td>
-          <td>
-            {donor.addressline1}
-          </td>
-          <td>
-            {donor.addressline2}
-          </td>
-          <td>
-            {donor.city}
-          </td>
-          <td>
-            {donor.state}
-          </td>
-          <td>
-            {donor.zipcode}
-          </td>
-        </tr>
-      </table>
+      {/* eslint-disable-next-line max-len */}
+      {/* <Table headers={donorFields} data={[donor]} checkbox={false} dataKeyProp="ID" /> */}
       <table>
         <thead>
           <tr>
-            {donationFields.map((field) => (
+            {donorFields.map((field) => (
               <th>{field}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {donations.map((donation) => (
-            <tr>
-              {donationFields.map((field) => (
-                <td>{donation[field]}</td>
-              ))}
-            </tr>
-          ))}
+          <tr>
+            {donorFields.map((field) => (
+              <td>{donor[field]}</td>
+            ))}
+          </tr>
         </tbody>
       </table>
+      <Table headers={donationFields} data={donations} checkbox={false} dataKeyProp="ID" />
+      <div>
+        <p>
+          Total Quantity Donated:
+          {' '}
+          {sum}
+        </p>
+        <p>
+          Date Logged:
+          {' '}
+          {date.getMonth() + 1}
+          /
+          {date.getDate()}
+          /
+          {date.getFullYear()}
+        </p>
+      </div>
       <form onSubmit={submitDonations}>
         <input type="submit" id="submit" name="submit" value="Submit Donations" />
       </form>

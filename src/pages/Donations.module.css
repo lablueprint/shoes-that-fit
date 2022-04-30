@@ -1,0 +1,11 @@
+.deleteButtonEntry button {
+    border: none;
+    background-color: transparent;
+    background-repeat: no-repeat;
+}
+.deleteButtonEntry button focus{
+    border: none;
+    outline: none;
+    background-color: transparent;
+    background-repeat: no-repeat;
+}

@@ -3,11 +3,13 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   Trash2,
 } from 'lucide-react';
+import styles from './Donations.module.css';
 
 function Donations() {
   const [donor, setDonor] = useState({});
   const [donations, setDonations] = useState([]);
-  // const [error, setError] = useState('');
+  const [donorError, setDonorError] = useState('');
+  const donorFields = ['Name', 'Phone', 'Address Line 1', 'Address Line 2', 'City', 'State', 'Zip Code'];
   const donationFields = ['Quantity', 'Gender', 'Category', 'Wide', 'Size', 'Notes'];
   const location = useLocation();
 
@@ -23,25 +25,26 @@ function Donations() {
   const donorUpdate = (e) => {
     e.preventDefault();
     const tempDonor = {};
-    tempDonor.name = document.getElementById('name').value;
-    tempDonor.phone = document.getElementById('phone').value;
-    tempDonor.email = document.getElementById('email').value;
-    tempDonor.addressline1 = document.getElementById('addressline1').value;
+    tempDonor.Name = document.getElementById('name').value;
+    tempDonor.Phone = document.getElementById('phone').value;
+    tempDonor.Email = document.getElementById('email').value;
+    tempDonor['Address Line 1'] = document.getElementById('addressline1').value;
     const addressline2Element = document.getElementById('addressline2');
     if (addressline2Element) {
-      tempDonor.addressline2 = addressline2Element.value;
+      tempDonor['Address Line 2'] = addressline2Element.value;
     } else {
-      tempDonor.addressline2 = '';
+      tempDonor['Address Line 2'] = '';
     }
-    tempDonor.city = document.getElementById('city').value;
-    tempDonor.state = document.getElementById('state').value;
+    tempDonor.City = document.getElementById('city').value;
+    tempDonor.State = document.getElementById('state').value;
     const zipcode = parseInt(document.getElementById('zipcode').value, 10);
     if (!zipcode || zipcode < 10000 || zipcode > 99999) {
-      console.log('Bad Zipcode');
+      setDonorError(<p>Bad Zip Code</p>);
       return;
     }
-    tempDonor.zipcode = zipcode;
+    tempDonor['Zip Code'] = zipcode;
     setDonor(tempDonor);
+    setDonorError('');
   };
 
   const addDonation = (e) => {
@@ -78,32 +81,20 @@ function Donations() {
       <h1>Log a Donation</h1>
       <h2>Step 1. Add donor info</h2>
       <table>
-        <tr>
-          <td>
-            {donor.name}
-          </td>
-          <td>
-            {donor.phone}
-          </td>
-          <td>
-            {donor.email}
-          </td>
-          <td>
-            {donor.addressline1}
-          </td>
-          <td>
-            {donor.addressline2}
-          </td>
-          <td>
-            {donor.city}
-          </td>
-          <td>
-            {donor.state}
-          </td>
-          <td>
-            {donor.zipcode}
-          </td>
-        </tr>
+        <thead>
+          <tr>
+            {donorFields.map((field) => (
+              <th>{field}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {donorFields.map((field) => (
+              <td>{donor[field]}</td>
+            ))}
+          </tr>
+        </tbody>
       </table>
       <form onSubmit={donorUpdate}>
         <div className="flex-container">
@@ -187,8 +178,8 @@ function Donations() {
         </div>
         <input type="submit" id="save" name="save" value="Save" />
       </form>
+      {donorError}
       <h2>Step 2. Add donation info</h2>
-      <Trash2 />
       <table>
         <thead>
           <tr>
@@ -204,7 +195,7 @@ function Donations() {
               {donationFields.map((field) => (
                 <td>{donation[field]}</td>
               ))}
-              <td><button aria-label="Delete" type="button" onClick={(e) => deleteDonation(e, index)}><Trash2 /></button></td>
+              <td className={styles.deleteButtonEntry}><button aria-label="Delete" type="button" onClick={(e) => deleteDonation(e, index)}><Trash2 /></button></td>
             </tr>
           ))}
         </tbody>
@@ -285,7 +276,6 @@ function Donations() {
       <Link to="/confirmdonation" state={{ valid: true, donor, donations }}>
         <input type="submit" id="submit" name="submit" value="Save and Continue" />
       </Link>
-      {/* {error} */}
     </div>
   );
 }
