@@ -47,5 +47,6 @@ header {
 }
 
 .sortButton>div {
-  margin-left: 6px;
+  margin-top: 2px;
+  margin-left: 4px;
 }
