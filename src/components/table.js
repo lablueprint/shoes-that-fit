@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
@@ -20,7 +19,6 @@ export default function Table({
   function sortData(index, dir) {
     // sorts by sortIndex, defaults to sorting by left-most column values
     if (dataProps.length > 0) {
-      console.log('hi');
       data.sort((a, b) => {
         if (typeof a[dataProps[index]] === 'string') {
           return a[dataProps[index]].localeCompare(b[dataProps[index]]);
@@ -118,7 +116,9 @@ export default function Table({
               } : { backgroundColor: '#FFFFFF' }}
             >
               <p className={styles.cell}>
-                {dataProps.length > 0 ? (d[dataProps[hIndex]] && d[dataProps[hIndex]].toString()) : (d[headers[hIndex]] && d[headers[hIndex]].toString())}
+                {dataProps.length > 0
+                  ? (d[dataProps[hIndex]] && d[dataProps[hIndex]].toString())
+                  : (d[headers[hIndex]] && d[headers[hIndex]].toString())}
               </p>
             </div>
           ))}
