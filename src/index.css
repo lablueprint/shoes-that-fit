@@ -9,7 +9,12 @@ body {
   width: 100vw;
 }
 
-code {
+.code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
 }

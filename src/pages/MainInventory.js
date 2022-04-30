@@ -1,34 +1,39 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable no-unused-vars */
+import React, {
+  useState, useEffect, useRef, useCallback,
+} from 'react';
 import ReactSelect from 'react-select';
-// import { base } from 'airlock-example/index.ts';
-// import Airtable from '@calblueprint/airlock';
-import PageLengthForm from '../components/PageLengthForm';
-import TableFooter from '../components/TableFooter';
+import PropTypes from 'prop-types';
+import base from '../lib/airtable';
+import { TableFooter, PageLengthForm } from '../components';
+import styles from './MainInventory.module.css';
 
-//*
-// airtable configurationcs
-const Airtable = require('airtable');
+// const Airtable = require('airtable');
 
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
+// const airtableConfig = {
+//   apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
+//   baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
+// };
+
+// const base = new Airtable({
+//   apiKey: airtableConfig.apiKey,
+//   endpointURL: 'http://localhost:3000',
+// }).base(airtableConfig.baseKey);
+
+const loginUser = async (email, password) => {
+  try {
+    const res = await base.login({ username: email, password });
+    if (!res.body.success) {
+      return { match: false, found: false };
+    }
+    return { match: true, found: true };
+  } catch (err) {
+    if (err.error === 'AUTHENTICATION_REQUIRED') {
+      return { match: false, found: true };
+    }
+    return { match: false, found: false };
+  }
 };
-
-const base = new Airtable({
-  apiKey: airtableConfig.apiKey,
-  endpointURL: 'http://localhost:3000',
-})
-  .base(airtableConfig.baseKey);
-// */
-
-/*
-Airtable.configure({
-  apiKey: process.env.REACT_APP_AIRTABLE_API_KEY,
-  endpointURL: 'http://localhost:8000',
-});
-
-const base = Airtable.base(process.env.REACT_APP_AIRTABLE_BASE_KEY);
-// */
 
 const calculateRange = (tableData, numRows) => {
   const range = [];
@@ -42,8 +47,12 @@ const calculateRange = (tableData, numRows) => {
 // eslint-disable-next-line max-len
 const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * numRows, page * numRows);
 
-function MainInventory() {
+function MainInventory({ loggedIn, username, onLogout }) {
+  console.log(loggedIn);
+  console.log(username);
+
   const [rows, setRows] = useState([]);
+  const [allChecked, setAllChecked] = useState(false);
   const [items, setItems] = useState([]);
   const [inventoryTotal, setInventoryTotal] = useState(0);
   const [quantityMin, setQuantityMin] = useState(0);
@@ -52,32 +61,31 @@ function MainInventory() {
   const [page, setPage] = useState(1);
   const [numRows, setNumRows] = useState(10);
   const [slice, setSlice] = useState([]);
+  const [highlightedRow, setHighlightedRow] = useState(0);
+  const [selectedRows, setSelectedRows] = useState([]);
   const [tableRange, setTableRange] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState({
-    'Client Name': [],
     'Location Name': [],
-    'Bin Name': [],
     'Part Name': [],
-    'Part Description': [],
     Quantity: [],
   });
   const [optionsSelected, setOptionsSelected] = useState({
-    'Client Name': [],
     'Location Name': [],
-    'Bin Name': [],
     'Part Name': [],
-    'Part Description': [],
     Quantity: [],
   });
-  const categories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description', 'Quantity'];
-  const filterableCategories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description'];
-
+  const categories = ['Location Name', 'Part Name', 'Quantity'];
+  const filterableCategories = ['Location Name', 'Part Name'];
+  // eslint-disable-next-line no-unused-vars
+  const tableContents = useRef(); // For setting/ unsetting navigation
+  const inputBoxes = useRef();
   const getInventory = () => {
-    base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
-      .then((records) => {
-        setRows(records);
-      });
+    // base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
+    base('InventoryTestRevamp').select({ view: 'Grid view' }).all().then((records) => {
+      setRows(records);
+    });
   };
+
   const createOptions = (category, optionList) => {
     categoryOptions[category] = optionList;
     setCategoryOptions(categoryOptions);
@@ -95,6 +103,74 @@ function MainInventory() {
       setQuantityMax(e.target.value);
     }
   };
+
+  const handleKeyDown = useCallback((e) => {
+    const { key } = e;
+    switch (key) {
+      case 'ArrowUp':
+        // Move up a row
+        if (highlightedRow === -1) {
+          setHighlightedRow(0);
+        } else if (highlightedRow > 0) {
+          setHighlightedRow((currHRow) => (currHRow - 1));
+        }
+        break;
+      case 'ArrowDown':
+        // Move down a row
+        if (highlightedRow === -1) {
+          setHighlightedRow(0);
+        } else if (highlightedRow < slice.length - 1) {
+          setHighlightedRow((currHRow) => (currHRow + 1));
+        }
+        break;
+      default:
+        break;
+    }
+  }, [highlightedRow]);
+  const editTableEntryQuantity = ((val, index) => {
+    const row = items[(page - 1) * numRows + index];
+    if (!(/^\d+$/.test(val))) {
+      console.error('Invalid Input: Quantity should be a number');
+      return;
+    }
+    base('table editing test').update([
+      {
+        id: row.id,
+        fields: {
+          Quantity: parseInt(val, 10),
+        },
+      },
+    ], (err, records) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      records.forEach((record) => {
+        console.log(`Edited entry at row ${(page - 1) * numRows + index}: ${record.get('Client Name')}, ${record.get('Location Name')}, ${record.get('Bin Name')}, ${record.get('Part Name')}, ${record.get('Part Description')}`);
+      });
+    });
+  });
+
+  const handleMouseDown = useCallback(
+    (e) => {
+      if (tableContents.current && tableContents.current.contains(e.target)) {
+        if ((e.target.className) <= numRows) {
+          setHighlightedRow(parseInt(e.target.className, 10));
+          console.log(highlightedRow);
+        }
+      } else {
+        // console.log(typeof e.target.className);
+      }
+    },
+    [tableContents, highlightedRow],
+  );
+
+  useEffect(() => {
+    if (loggedIn) {
+    // eslint-disable-next-line max-len
+      console.log(loginUser(process.env.REACT_APP_AIRTABLE_EMAIL, process.env.REACT_APP_AIRTABLE_PASSWORD));
+    }
+  }, []);
 
   useEffect(getInventory, []);
 
@@ -154,54 +230,128 @@ function MainInventory() {
     }
     setInventoryTotal(sum);
   }, [items]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('mousedown', handleMouseDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('mousedown', handleMouseDown);
+    };
+  }, [handleKeyDown, handleMouseDown]);
+
+  useEffect(() => {
+    const quantityTDElement = document.getElementById('editableQuantity');
+    if (!quantityTDElement) {
+      // console.log('Waiting for selected row');
+      return null;
+    }
+    quantityTDElement.addEventListener('input', () => {
+      editTableEntryQuantity(quantityTDElement.innerHTML, highlightedRow);
+    });
+    return () => {
+      quantityTDElement.removeEventListener('input', () => {
+        editTableEntryQuantity(quantityTDElement.innerHTML, highlightedRow);
+      });
+    };
+  });
+
+  const updateRowStatus = (e) => {
+    setSelectedRows([...selectedRows, parseInt(e.target.className, 10)]);
+    console.log(selectedRows);
+  };
+
+  const removeRowStatus = (e) => {
+    const newRows = selectedRows.filter((index) => index !== parseInt(e.target.className, 10));
+    setSelectedRows(newRows);
+  };
+
+  const updateAllRows = () => {
+    if (allChecked) { setSelectedRows([]); setAllChecked(false); } else { setAllChecked(true); }
+  };
+
   return (
-    <>
-      <PageLengthForm setNumRows={setNumRows} />
-      <table>
-        <thead>
-          <tr>
-            {filterableCategories.map((category) => (
-              <th>
-                {category}
-                <ReactSelect
-                  isMulti
-                  onChange={(e) => handleOptionSelection(e, category)}
-                  options={categoryOptions[category]}
-                  placeholder={category}
-                />
-              </th>
-            ))}
-            <th>
-              Quantity
-              <form className="filter" onSubmit={(e) => e.preventDefault()}>
-                Min
-                <input type="number" onChange={(e) => handleQuantityFilterChange(e, true)} min="0" />
-                <br />
-                Max
-                <input type="number" onChange={(e) => handleQuantityFilterChange(e, false)} min="0" />
-              </form>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {slice.map((row) => (
-            <tr>
-              {categories.map((category) => (
-                <td>{row.fields[category]}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} />
-      <span>
-        {' '}
-        Total Item Inventory:
-        {' '}
-        {inventoryTotal}
-      </span>
-    </>
+    !loggedIn
+      ? (<thead> Please Login </thead>
+      )
+      : (
+        <>
+          <PageLengthForm setNumRows={setNumRows} />
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  <input type="checkbox" onChange={() => updateAllRows()} />
+                </th>
+                {filterableCategories.map((category) => (
+                  <th key={category}>
+                    {category}
+                    <ReactSelect
+                      isMulti
+                      onChange={(e) => handleOptionSelection(e, category)}
+                      options={categoryOptions[category]}
+                      placeholder={category}
+                    />
+                  </th>
+                ))}
+                <th>
+                  Quantity
+                  <form className="filter" onSubmit={(e) => e.preventDefault()}>
+                    Min
+                    <input type="number" onChange={(e) => handleQuantityFilterChange(e, true)} min="0" />
+                    <br />
+                    Max
+                    <input type="number" onChange={(e) => handleQuantityFilterChange(e, false)} min="0" />
+                  </form>
+                </th>
+              </tr>
+            </thead>
+            <tbody ref={tableContents}>
+              {slice.map((row, index) => {
+                if (selectedRows.includes(index) || allChecked) {
+                  return (
+                    <tr className={index} style={{ color: 'red' }}>
+                      <input type="checkbox" className={index} onClick={(e) => removeRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
+                      {categories.map((category) => {
+                        if (category === 'Quantity') {
+                          return (
+                            <td className={index} contentEditable="true" id="editableQuantity" suppressContentEditableWarning>{row.fields[category]}</td>
+                          );
+                        }
+                        return (
+                          <td className={index}>{row.fields[category]}</td>
+                        );
+                      })}
+                    </tr>
+                  );
+                }
+                return (
+                  <tr className={index}>
+                    <input type="checkbox" ref={inputBoxes} className={index} onClick={(e) => updateRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
+                    {categories.map((category) => (
+                      <td className={index} classID="tableData">{row.fields[category]}</td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} />
+          <span>
+            {' '}
+            Total Item Inventory:
+            {' '}
+            {inventoryTotal}
+          </span>
+        </>
+      )
   );
 }
 
 export default MainInventory;
+
+MainInventory.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
+  username: PropTypes.string.isRequired,
+  onLogout: PropTypes.func.isRequired,
+};

@@ -1,0 +1,33 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5% 5% 1.5%;
+    align-items: flex-start;
+}
+
+.fields {
+    display: flex;
+    justify-content: start;
+    gap: 10%;
+}
+
+input {
+    height: 30px;
+}
+
+.check {
+    width: 30px;
+}
+
+
+.submitBtn {
+    margin-top: 50px;
+}
+
+.submitBtn > input {
+    text-align: center;
+}
+
+h4 {
+    white-space: nowrap;
+}

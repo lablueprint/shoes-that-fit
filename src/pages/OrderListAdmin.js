@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import print from 'print-js';
 // import './OrderListAdmin.css';
 import styles from './OrderListAdmin.module.css';
+// import { AdminCard } from '../components';
 
 const Airtable = require('airtable');
 
