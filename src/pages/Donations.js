@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import {
+  Trash2,
+} from 'lucide-react';
 
 function Donations() {
   const [donor, setDonor] = useState({});
@@ -12,8 +15,6 @@ function Donations() {
     if (location.state) {
       setDonor(location.state.donor);
       setDonations(location.state.donations);
-      console.log(location.state.donor);
-      console.log(location.state.donations);
     } else {
       console.log('No donor/donations field');
     }
@@ -61,56 +62,49 @@ function Donations() {
     if (document.getElementById('wide').checked) {
       donation.Wide = 'W';
     } else {
-      donation.Wide = 'NW';
+      donation.Wide = '';
     }
     donation.Notes = document.getElementById('notes').value;
     setDonations([...donations, donation]);
+  };
+  const deleteDonation = (e, index) => {
+    e.preventDefault();
+    console.log(index);
+    setDonations(donations.splice(0, index).concat(donations.splice(1)));
   };
 
   return (
     <div>
       <h1>Log a Donation</h1>
       <h2>Step 1. Add donor info</h2>
-      <p>
-        Name:
-        {' '}
-        {donor.name}
-      </p>
-      <p>
-        Phone:
-        {' '}
-        {donor.phone}
-      </p>
-      <p>
-        Email:
-        {' '}
-        {donor.email}
-      </p>
-      <p>
-        Address Line 1:
-        {' '}
-        {donor.addressline1}
-      </p>
-      <p>
-        Address Line 2:
-        {' '}
-        {donor.addressline2}
-      </p>
-      <p>
-        City:
-        {' '}
-        {donor.city}
-      </p>
-      <p>
-        State:
-        {' '}
-        {donor.state}
-      </p>
-      <p>
-        Zip Code:
-        {' '}
-        {donor.zipcode}
-      </p>
+      <table>
+        <tr>
+          <td>
+            {donor.name}
+          </td>
+          <td>
+            {donor.phone}
+          </td>
+          <td>
+            {donor.email}
+          </td>
+          <td>
+            {donor.addressline1}
+          </td>
+          <td>
+            {donor.addressline2}
+          </td>
+          <td>
+            {donor.city}
+          </td>
+          <td>
+            {donor.state}
+          </td>
+          <td>
+            {donor.zipcode}
+          </td>
+        </tr>
+      </table>
       <form onSubmit={donorUpdate}>
         <div className="flex-container">
           <div className="flex-child label">
@@ -194,20 +188,23 @@ function Donations() {
         <input type="submit" id="save" name="save" value="Save" />
       </form>
       <h2>Step 2. Add donation info</h2>
+      <Trash2 />
       <table>
         <thead>
           <tr>
             {donationFields.map((field) => (
               <th>{field}</th>
             ))}
+            <th> Delete </th>
           </tr>
         </thead>
         <tbody>
-          {donations.map((donation) => (
+          {donations.map((donation, index) => (
             <tr>
               {donationFields.map((field) => (
                 <td>{donation[field]}</td>
               ))}
+              <td><button aria-label="Delete" type="button" onClick={(e) => deleteDonation(e, index)}><Trash2 /></button></td>
             </tr>
           ))}
         </tbody>
@@ -285,9 +282,6 @@ function Donations() {
         </div>
         <input type="submit" id="add" name="add" value="Add" />
       </form>
-      {/* <form onSubmit={submitDonations}>
-        <input type="submit" id="submit" name="submit" value="Save and Continue" />
-      </form> */}
       <Link to="/confirmdonation" state={{ valid: true, donor, donations }}>
         <input type="submit" id="submit" name="submit" value="Save and Continue" />
       </Link>

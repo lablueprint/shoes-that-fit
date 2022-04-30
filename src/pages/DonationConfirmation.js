@@ -60,46 +60,34 @@ export default function DonationConfirmation() {
 
   return (
     <div>
-      <p>
-        Name:
-        {' '}
-        {donor.name}
-      </p>
-      <p>
-        Phone:
-        {' '}
-        {donor.phone}
-      </p>
-      <p>
-        Email:
-        {' '}
-        {donor.email}
-      </p>
-      <p>
-        Address Line 1:
-        {' '}
-        {donor.addressline1}
-      </p>
-      <p>
-        Address Line 2:
-        {' '}
-        {donor.addressline2}
-      </p>
-      <p>
-        City:
-        {' '}
-        {donor.city}
-      </p>
-      <p>
-        State:
-        {' '}
-        {donor.state}
-      </p>
-      <p>
-        Zip Code:
-        {' '}
-        {donor.zipcode}
-      </p>
+      <table>
+        <tr>
+          <td>
+            {donor.name}
+          </td>
+          <td>
+            {donor.phone}
+          </td>
+          <td>
+            {donor.email}
+          </td>
+          <td>
+            {donor.addressline1}
+          </td>
+          <td>
+            {donor.addressline2}
+          </td>
+          <td>
+            {donor.city}
+          </td>
+          <td>
+            {donor.state}
+          </td>
+          <td>
+            {donor.zipcode}
+          </td>
+        </tr>
+      </table>
       <table>
         <thead>
           <tr>
