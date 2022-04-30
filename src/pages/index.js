@@ -9,5 +9,6 @@ import OrderListAdmin from './OrderListAdmin';
 import AdminDashboard from './AdminDashboard';
 
 export {
-  OrderListAdmin, MainInventory, NewShoeForm, AdminList, OrderForm, OrderHistory, LoginPage, Records, AdminDashboard,
+  OrderListAdmin, MainInventory, NewShoeForm, AdminList,
+  OrderForm, OrderHistory, LoginPage, Records, AdminDashboard,
 };
