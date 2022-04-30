@@ -1,0 +1,66 @@
+.navEntry {
+  height: 70px;
+  width: 200px; /* width must be same size as NavBar to center */
+  text-align: left; /* Aligns <ul> inside of NavIcon div */
+  margin-bottom: 0;   /* Puts space between NavItems */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.selectedNavEntry {
+  height: 70px;
+  width: 200px; /* width must be same size as NavBar to center */
+  text-align: left; /* Aligns <ul> inside of NavIcon div */
+  margin-bottom: 0;   /* Puts space between NavItems */
+  background-color: #DBEAFF;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-right: 10px solid #F2672B;
+}
+
+.sidebar {
+  height: 100%;
+  overflow-x: hidden;     /* Disable horizontal scroll */
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  background: #24275E;
+}
+
+.linkStyles {
+  color: white;
+  text-decoration:none;
+  font-family: 'Hartwell';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23px;
+}
+
+.selectedLinkStyles {
+  color: #24275E;
+  text-decoration:none;
+  font-family: 'Hartwell';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+}
+
+.navButtonText {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.iconPadding {
+  padding-right: 7px;
+}
+
+.stfLogo {
+  max-width: 210px;
+  height: auto;
+  padding: 20px;
+}
