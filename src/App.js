@@ -5,8 +5,8 @@ import { Routes, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Nav } from './components';
 import {
-  MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage,
-  Records, AdminDashboard, OrderListAdmin, OrderHistory,
+  MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records,
+  AdminDashboard, Donations, DonationConfirmation, OrderListAdmin, OrderHistory,
 } from './pages';
 
 function App({
@@ -72,6 +72,8 @@ function App({
         <Route path="/admindashboard" element={<AdminDashboard />} />
         <Route path="/viewhistory" element={<OrderListAdmin />} />
         <Route path="/orderhistory" element={<OrderHistory />} />
+        <Route path="/donations" element={<Donations />} />
+        <Route path="/confirmdonation" element={<DonationConfirmation />} />
       </Routes>
     </div>
   );

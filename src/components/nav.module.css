@@ -21,7 +21,6 @@
 }
 
 .sidebar {
-  height: 100%;
   overflow-x: hidden;     /* Disable horizontal scroll */
   display: flex;
   flex-direction: column;
