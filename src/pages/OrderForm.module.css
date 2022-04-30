@@ -133,7 +133,7 @@ button {
     font-weight: 1000;
 }
 
-#print {
+.print {
     background-color:  white;
     border-color: #00B1FF;
     border-width: 3px;
@@ -152,7 +152,7 @@ input {
     font-weight: 1000;
 }
 
-#bigSubmit {
+.bigSubmit {
     background-color:  rgba(174, 236, 255, 0.5);
     border-color: rgba(174, 236, 255, 0.5);
     border-width: 3px;
@@ -183,3 +183,52 @@ input {
 .bottom {
     margin-top: 20%;
 }
+
+.orderHistory {
+    background: rgba(229, 229, 229, 0.5);
+    padding-left: 15%;
+    padding-right: 15%;
+}
+
+.orderText {
+    text-align: left;
+    font-size: 36px;
+    font-family: Hartwell;
+    font-weight: bold;
+    padding: 1%;
+}
+
+.status {
+    text-align: center;
+    display: flex;
+  }
+  
+  .statusChildInProgress {
+    height: 36px;
+    width: 124px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    background: #FFEEC2;
+    color: #AC7D03;
+    border-radius: 20px;
+    font-weight: bold;
+  }
+  
+  .statusChildFulfilled {
+    height: 36px;
+    width: 124px;
+    background: #E1EFE7;
+    color: #4C8865;
+    font-weight: bold;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    border-radius: 20px;
+  }
+
+

@@ -1,5 +1,6 @@
 // import React, { useState, useEffect } from 'react';
 import React, { useState, useEffect } from 'react';
+import { ChevronLeft } from 'lucide-react';
 import Card from '../components/card';
 import styles from './OrderHistory.module.css';
 import OrderListAdmin from './OrderListAdmin';
@@ -89,7 +90,9 @@ function OrderHistory() {
       )
       : (
         <>
-          <button type="button" onClick={clearSpecificCard}>Back</button>
+          <div className={styles.back}>
+            <ChevronLeft size={50} type="button" onClick={clearSpecificCard} />
+          </div>
           <OrderListAdmin id={specificCardID} />
         </>
       )

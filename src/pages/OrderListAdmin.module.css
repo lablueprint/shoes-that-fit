@@ -40,7 +40,6 @@ table {
     font-weight: 1000;
     font-size: 40px;
     color: #000000;
-    margin-top:5%;
     margin-left: 5%;
     
 }
@@ -104,10 +103,12 @@ table {
   margin-bottom:1%;
   align-items:center;
   width: 90%;
+  height:100%;
+  display:flex;
 }
 
 
-#printform {
+.printform {
   background-color:  #C4C4C4;
   border:transparent;
   margin-left:700%;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import print from 'print-js';
-import './OrderListAdmin.css';
+// import './OrderListAdmin.css';
+import styles from './OrderListAdmin.module.css';
 
 const Airtable = require('airtable');
 
@@ -43,11 +44,11 @@ function OrderListAdmin(id) {
   return (
     info !== []
       ? (
-        <div id="orders">
-          <div className="head">Order Details: </div>
-          <div className="wrapper">
+        <div id={styles.orders}>
+          <div className={styles.head}>Order Details: </div>
+          <div className={styles.wrapper}>
             <div>
-              <div className="title">
+              <div className={styles.title}>
                 School Information
               </div>
               <p>{info.School}</p>
@@ -62,7 +63,7 @@ function OrderListAdmin(id) {
               </p>
             </div>
             <div>
-              <div className="title">
+              <div className={styles.title}>
                 Contact Information
               </div>
               <p>{info['Contact Name']}</p>
@@ -72,29 +73,30 @@ function OrderListAdmin(id) {
               </p>
             </div>
           </div>
-          <div className="row">
-            <div className="status">
+          <div className={styles.row}>
+            <div className={styles.status}>
               {info && info.Active
-                ? <div className="statusChildInProgress">In Progress</div>
-                : <div className="statusChildFulfilled">Fulfilled</div>}
+                ? <div className={styles.statusChildInProgress}>In Progress</div>
+                : <div className={styles.statusChildFulfilled}>Fulfilled</div>}
             </div>
-            <div className="status">
+            <div className={styles.status}>
               Order placed on
               {' '}
               {info && info.Date}
             </div>
-            <div className="status">
+            <div className={styles.status}>
               <button
                 type="button"
                 id="printform"
                 name="print"
+                className={styles.printform}
                 onClick={printForm}
               >
                 Print
               </button>
             </div>
           </div>
-          <div className="container">
+          <div className={styles.container}>
             <table>
               <thead>
                 <tr>
@@ -119,9 +121,9 @@ function OrderListAdmin(id) {
                 ))}
               </tbody>
             </table>
-            <div className="space" />
+            <div className={styles.space} />
             Notes
-            <div className="notes">
+            <div className={styles.notes}>
               {info.Notes}
               {' '}
             </div>

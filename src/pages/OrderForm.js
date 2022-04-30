@@ -57,6 +57,7 @@ function OrderForm() {
     card.size = size;
     card.age = age;
     card.school = school;
+    card.note = note;
     console.log(card);
     setcurCards((prev) => [...prev, card]);
     setSubmit(false);
@@ -98,6 +99,7 @@ function OrderForm() {
             'Email Address': email,
             Phone: phone,
             Date: date,
+            Notes: note,
             Orders: JSON.stringify(curcards),
           },
         },
@@ -115,6 +117,16 @@ function OrderForm() {
       },
     );
     setcurCards([]);
+    setschoolName('');
+    setAddress('');
+    setCity('');
+    setState('');
+    setZip('');
+    setContact('');
+    setEmail('');
+    setPhone('');
+    setDate('');
+    setNote('');
   }
 
   const errorStyle = {
@@ -463,15 +475,16 @@ function OrderForm() {
                 </div>
 
                 <div className={styles.michael}>
-                  <button
-                    type="button"
-                    id="print"
-                    name="confirm"
-                    onClick={pushToAirtable}
-                  >
-                    <Link to="/orderhistory" />
-                    Confirm Submission
-                  </button>
+                  <Link to="/orderhistory">
+                    <button
+                      type="button"
+                      id="print"
+                      name="confirm"
+                      onClick={pushToAirtable}
+                    >
+                      Confirm Submission
+                    </button>
+                  </Link>
                 </div>
               </div>
             ) : (
@@ -481,6 +494,7 @@ function OrderForm() {
                   id="print"
                   name="print"
                   onClick={printForm}
+                  className={styles.print}
                 >
                   Print Form
                 </button>
@@ -489,6 +503,7 @@ function OrderForm() {
                   id="bigSubmit"
                   name="bigsubmit"
                   onClick={submitOrder}
+                  className={styles.bigSubmit}
                 >
                   {' '}
                   Submit Form
