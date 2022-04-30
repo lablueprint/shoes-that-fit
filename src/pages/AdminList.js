@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 // import Card from '../components/card';
 import { Table } from '../components';
+import OrderListAdmin from './OrderListAdmin';
 
 const Airtable = require('airtable');
 
@@ -16,6 +17,7 @@ const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(
 
 function AdminList() {
   const [cards, setCards] = useState([]);
+  const [specificCardID, setSpecificCardID] = useState('');
   // let unique = [];
   // Card ex:
   /* Active: true
@@ -32,9 +34,9 @@ function AdminList() {
   State: "California"
   UserID: "1"
   Zip Code: "90024" */
-  const headers = ['Active', 'Address', 'City', 'Contact Name', 'Email Address', 'Notes', 'Phone', 'School', 'State', 'Zip Code'];
+  const headers = ['Active', 'Address', 'City', 'Contact Name', 'Email Address', 'Notes', 'Phone', 'School', 'State', 'Zip Code', 'Details'];
   // card.Orders will go into details page, unsure how to implement this right now
-  const dataProps = ['Active', 'Address1', 'City', 'Contact Name', 'Email Address', 'Notes', 'Phone', 'School', 'State', 'Zip Code'];
+  const dataProps = ['Active', 'Address1', 'City', 'Contact Name', 'Email Address', 'Notes', 'Phone', 'School', 'State', 'Zip Code', 'Details'];
   const dataKeyProp = 'ID';
   const sortIndices = [0, 3, 4];
 
@@ -51,12 +53,25 @@ function AdminList() {
     getCards();
   }, []);
 
+  const selectCard = (cardID) => {
+    setSpecificCardID(cardID);
+    return true;
+  };
+
+  // const clearSpecificCard = () => {
+  //   setSpecificCardID('');
+  // };
+
   // const getId = () => {
   //   unique = [...new Set(cards.map((card) => card.fields.Time))];
   // };
 
   return (
-    cards && cards.length > 0 && <Table headers={headers} sortIndices={sortIndices} data={cards} dataProps={dataProps} dataKeyProp={dataKeyProp} />
+    (specificCardID === '')
+      ? cards && cards.length > 0 && <Table headers={headers} sortIndices={sortIndices} data={cards} dataProps={dataProps} dataKeyProp={dataKeyProp} selectCard={selectCard} />
+      : (
+        <OrderListAdmin id={specificCardID} />
+      )
   );
 }
 
