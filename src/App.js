@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Nav } from './components';
 import {
   MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records,
-  AdminDashboard, Donations, DonationConfirmation, OrderListAdmin, OrderHistory,
+  AdminDashboard, Donations, DonationConfirmation, OrderListAdmin, OrderHistory, SchoolsForm,
 } from './pages';
 
 function App({
@@ -75,6 +75,7 @@ function App({
           <Route path="/orderhistory" element={<OrderHistory />} />
           <Route path="/donations" element={<Donations />} />
           <Route path="/confirmdonation" element={<DonationConfirmation />} />
+          <Route path="/schoolsform" element={<SchoolsForm />} />
         </Routes>
       </div>
     </div>

@@ -9,8 +9,9 @@ import OrderListAdmin from './OrderListAdmin';
 import AdminDashboard from './AdminDashboard';
 import Donations from './Donations';
 import DonationConfirmation from './DonationConfirmation';
+import SchoolsForm from './SchoolsForm';
 
 export {
   MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records, AdminDashboard,
-  Donations, DonationConfirmation, OrderListAdmin, OrderHistory,
+  Donations, DonationConfirmation, OrderListAdmin, OrderHistory, SchoolsForm,
 };
