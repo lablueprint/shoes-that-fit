@@ -10,8 +10,8 @@ import stfLogo from '../assets/STF_logo.png';
 export default function Nav({ loggedIn }) {
   const location = useLocation();
   const [selected, setSelected] = useState(location.pathname);
-  const linkArray = ['/home', '/inventory', '/newshoeform', '/orderform', '/adminlist', '/admindashboard'];
-  const textArray = ['Home', 'Inventory', 'New Shoe Form', 'Order Form', 'Admin List', 'Admin Dashboard'];
+  const linkArray = ['/home', '/inventory', '/newshoeform', '/orderform', '/adminlist', '/admindashboard', '/donations'];
+  const textArray = ['Home', 'Inventory', 'New Shoe Form', 'Order Form', 'Admin List', 'Admin Dashboard', 'Donations'];
   const iconArray = [Home, ClipboardList, Gift, ListOrdered, GraduationCap, Home];
 
   return (
