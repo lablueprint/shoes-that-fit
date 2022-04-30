@@ -5,7 +5,8 @@ import { Routes, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Nav } from './components';
 import {
-  MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records, AdminDashboard, Donations, DonationConfirmation,
+  MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage,
+  Records, AdminDashboard, Donations, DonationConfirmation,
 } from './pages';
 
 function App({
