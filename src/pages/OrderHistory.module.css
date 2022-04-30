@@ -141,7 +141,7 @@ input::-webkit-calendar-picker-indicator {
     width: 50%;
 } 
 
-button {
+.orderHistory button {
     color: black;
     padding: 5px 30px;
     text-align: center;
