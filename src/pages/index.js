@@ -1,11 +1,11 @@
 import MainInventory from './MainInventory';
 import LoginPage from './login';
 import NewShoeForm from './NewShoeForm';
-import Records from './Records';
+import RecordPage from './RecordPage';
 import AdminList from './AdminList';
 import OrderForm from './OrderForm';
 import AdminDashboard from './AdminDashboard';
 
 export {
-  MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records, AdminDashboard,
+  MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, RecordPage, AdminDashboard,
 };

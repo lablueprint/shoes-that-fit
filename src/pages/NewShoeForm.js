@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Popup from './Popup';
-import './NewShoeForm.css';
+import styles from './NewShoeForm.module.css';
 
 // Airtable stuff
 const Airtable = require('airtable');
@@ -15,7 +15,7 @@ const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(airtableConfig
 function NewShoeForm() {
   const [location, setLocation] = useState('');
   const [part, setPart] = useState('');
-  const [partDescription, setPartDescription] = useState(false);
+  const [isWide, setWide] = useState(false);
   const [quantity, setQuantity] = useState('');
 
   // popup states
@@ -52,10 +52,10 @@ function NewShoeForm() {
         // check for valid input
         const quantityToInt = parseInt(quantity, 10);
         if (Number.isNaN(quantityToInt) || quantityToInt <= 0 || location === '' || part === '') {
-          if (Number.isNaN(quantityToInt) || quantityToInt <= 0) {
-            setPopupMessage('Make sure to input a positive number for quantity!');
+          if (location === '' || part === '') {
+            setPopupMessage('Make sure to fill out all fields.');
           } else {
-            setPopupMessage('Make sure to fill out all fields!');
+            setPopupMessage('Quantity should be a positive number.');
           }
 
           setSuccess(false);
@@ -63,10 +63,10 @@ function NewShoeForm() {
           return;
         }
         addRecord(quantityToInt);
-        const wideWidth = partDescription ? 'Wide' : 'Not Wide';
+        const wideBool = isWide ? 1 : '';
 
-        const filter = `AND({Location Name} = '${location}',
-        {Part Name} = '${part}', {Wide Width} = '${wideWidth}')`;
+        const filter = `AND({Part Name} = '${part}', {Bin Name} = '${location}',
+        {Wide Width} = '${wideBool}')`;
         let totalQuantity = quantityToInt;
 
         // find the total quantity of all existing matching records and delete the records
@@ -78,11 +78,9 @@ function NewShoeForm() {
               base('TestInventory').create([
                 {
                   fields: {
-                    'Client Name': 'Shoes That Fit Warehouse',
-                    'Warehouse Name': 'STF Warehouse',
-                    'Location Name': location,
                     'Part Name': part,
-                    'Wide Width': wideWidth,
+                    'Bin Name': location,
+                    'Wide Width': isWide,
                     Quantity: totalQuantity,
                   },
                 },
@@ -128,11 +126,11 @@ function NewShoeForm() {
         );
       }}
     >
-      <div className="container">
+      <div className={styles.container}>
         <div>
           <h2>Add Inventory</h2>
         </div>
-        <div className="fields">
+        <div className={styles.fields}>
           <div>
             <label>
               <h4>Location</h4>
@@ -148,7 +146,7 @@ function NewShoeForm() {
           <div>
             <label>
               <h4>Wide width?</h4>
-              <input className="check" type="checkbox" onChange={(e) => setPartDescription(e.target.checked)} />
+              <input className={styles.check} type="checkbox" onChange={(e) => setWide(e.target.checked)} />
             </label>
           </div>
           <div>
@@ -158,7 +156,7 @@ function NewShoeForm() {
             </label>
           </div>
         </div>
-        <div className="submitBtn">
+        <div className={styles.submitBtn}>
           <input
             value="Add to inventory"
             type="submit"
