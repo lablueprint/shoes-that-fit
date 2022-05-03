@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp, faCircle } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import styles from './table.module.css';
+import details from '../assets/DetailsIcon.svg';
 
 const sorts = {
   descending: 0,
@@ -10,7 +11,7 @@ const sorts = {
 };
 
 export default function Table({
-  headers, sortIndices, data, dataProps, checkbox, dataKeyProp,
+  headers, sortIndices, data, dataProps, checkbox, dataKeyProp, selectCard,
 }) {
   const [lastIndex, setLast] = useState(0);
   const [sortDir, setDir] = useState(sorts.descending);
@@ -120,9 +121,15 @@ export default function Table({
                 ? <div className={styles.cell}>{d}</div>
                 : (
                   <p className={styles.cell}>
-                    {dataProps.length > 0
+                    {dataProps.length === 0 && (d[headers[hIndex]]
+                      && d[headers[hIndex]].toString())}
+                    {dataProps.length !== 0 && dataProps[hIndex] !== 'Details'
                       ? (d[dataProps[hIndex]] && d[dataProps[hIndex]].toString())
-                      : (d[headers[hIndex]] && d[headers[hIndex]].toString())}
+                      : (
+                        <button type="button" style={{ color: 'black' }} onClick={() => { selectCard(d.ID); }}>
+                          <img src={details} alt="details" />
+                        </button>
+                      )}
                   </p>
                 )}
             </div>
@@ -141,6 +148,7 @@ Table.propTypes = {
   dataProps: PropTypes.arrayOf(PropTypes.string),
   checkbox: PropTypes.bool,
   dataKeyProp: PropTypes.string.isRequired,
+  selectCard: PropTypes.func.isRequired,
 };
 
 Table.defaultProps = {
