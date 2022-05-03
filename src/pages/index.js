@@ -10,8 +10,9 @@ import AdminDashboard from './AdminDashboard';
 import Donations from './Donations';
 import DonationConfirmation from './DonationConfirmation';
 import SchoolsForm from './SchoolsForm';
+import Schools from './Schools';
 
 export {
   MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records, AdminDashboard,
-  Donations, DonationConfirmation, OrderListAdmin, OrderHistory, SchoolsForm,
+  Donations, DonationConfirmation, OrderListAdmin, OrderHistory, SchoolsForm, Schools,
 };

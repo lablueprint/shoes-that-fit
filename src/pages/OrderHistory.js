@@ -20,7 +20,7 @@ function OrderHistory() {
   const [specificCardID, setSpecificCardID] = useState('');
 
   const getCards = () => {
-    base('Orders').select({ view: 'Grid View' }).all()
+    base('Orders').select({ view: 'Grid view' }).all()
       .then((records) => {
         setCards(records);
       });
