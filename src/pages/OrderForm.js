@@ -1,21 +1,12 @@
 import React, { useState } from 'react';
 import print from 'print-js';
-//  import reactDom from 'react-dom';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+// import reactDom from 'react-dom';
+import { Navigate, Link } from 'react-router-dom';
+import Card from '../components/card';
 import styles from './OrderForm.module.css';
 
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(
-  airtableConfig.baseKey,
-);
-
-function OrderForm() {
+function OrderForm({ isLoggedIn, base }) {
   const [curcards, setcurCards] = useState([]);
   const [error, setError] = useState('');
   const [name, setName] = useState('');
@@ -36,6 +27,17 @@ function OrderForm() {
   const [phone, setPhone] = useState('');
   const [date, setDate] = useState('');
   const [note, setNote] = useState('');
+
+  const getCards = async () => {
+    await base('Orders').select({ view: 'Grid view' }).all()
+      .then((records) => {
+        setCards(records);
+      });
+  };
+
+  useEffect(() => {
+    getCards();
+  }, []);
 
   const shoeUpdate = (evt) => {
     evt.preventDefault();
@@ -144,7 +146,10 @@ function OrderForm() {
   }
 
   return (
-    <div className={styles.orderFormContainer}>
+    !isLoggedIn
+      ? (<Navigate to="/" />)
+      : (
+       <div className={styles.orderFormContainer}>
       <div className={styles.row}>
         <script src="print.js" />
         <div className={[styles.column, styles.left].join(' ')}>
@@ -516,7 +521,13 @@ function OrderForm() {
         </div>
       </div>
     </div>
+      )
   );
 }
 
 export default OrderForm;
+
+OrderForm.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  base: PropTypes.func.isRequired,
+};

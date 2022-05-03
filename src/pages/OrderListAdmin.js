@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import print from 'print-js';
-// import './OrderListAdmin.css';
+import PropTypes from 'prop-types';
+import { AdminCard } from '../components';
 import styles from './OrderListAdmin.module.css';
-// import { AdminCard } from '../components';
+import print from 'print-js';
 
-const Airtable = require('airtable');
+function OrderListAdmin({base, id}) {
+  const [cards, setCards] = useState([]);
+  const [info, setInfo] = useState([]);
 
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({ apiKey: airtableConfig.apiKey })
-  .base(airtableConfig.baseKey);
-
-function printForm() {
+  function printForm() {
   print({
     printable: 'orders',
     type: 'html',
@@ -23,12 +17,11 @@ function printForm() {
     targetStyles: ['*'],
   });
 }
+  
+  
 
-function OrderListAdmin(id) {
-  const [cards, setCards] = useState([]);
-  const [info, setInfo] = useState([]);
-
-  const getCards = () => {
+  useEffect(() => {
+    const getCards = () => {
     base('Orders')
       .select({ filterByFormula: `ID="${JSON.parse(JSON.stringify(id)).id}"` })
       .all()
@@ -37,8 +30,6 @@ function OrderListAdmin(id) {
         setInfo(records[0].fields);
       });
   };
-
-  useEffect(() => {
     getCards();
   }, []);
 
@@ -136,3 +127,7 @@ function OrderListAdmin(id) {
 }
 
 export default OrderListAdmin;
+
+OrderListAdmin.propTypes = {
+  base: PropTypes.func.isRequired,
+};
