@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
-  Trash2,
+  Trash2, Pencil,
 } from 'lucide-react';
 import styles from './Donations.module.css';
 
@@ -9,6 +9,7 @@ function Donations() {
   const [donor, setDonor] = useState({});
   const [donations, setDonations] = useState([]);
   const [donorError, setDonorError] = useState('');
+  const [editingDonor, setEditingDonor] = useState(true);
   const donorFields = ['Name', 'Phone', 'Address Line 1', 'Address Line 2', 'City', 'State', 'Zip Code'];
   const donationFields = ['Quantity', 'Gender', 'Category', 'Wide', 'Size', 'Notes'];
   const location = useLocation();
@@ -24,27 +25,31 @@ function Donations() {
 
   const donorUpdate = (e) => {
     e.preventDefault();
-    const tempDonor = {};
-    tempDonor.Name = document.getElementById('name').value;
-    tempDonor.Phone = document.getElementById('phone').value;
-    tempDonor.Email = document.getElementById('email').value;
-    tempDonor['Address Line 1'] = document.getElementById('addressline1').value;
-    const addressline2Element = document.getElementById('addressline2');
-    if (addressline2Element) {
-      tempDonor['Address Line 2'] = addressline2Element.value;
-    } else {
-      tempDonor['Address Line 2'] = '';
+    console.log(editingDonor);
+    if (editingDonor) {
+      const tempDonor = {};
+      tempDonor.Name = document.getElementById('name').value;
+      tempDonor.Phone = document.getElementById('phone').value;
+      tempDonor.Email = document.getElementById('email').value;
+      tempDonor['Address Line 1'] = document.getElementById('addressline1').value;
+      const addressline2Element = document.getElementById('addressline2');
+      if (addressline2Element) {
+        tempDonor['Address Line 2'] = addressline2Element.value;
+      } else {
+        tempDonor['Address Line 2'] = '';
+      }
+      tempDonor.City = document.getElementById('city').value;
+      tempDonor.State = document.getElementById('state').value;
+      const zipcode = parseInt(document.getElementById('zipcode').value, 10);
+      if (!zipcode || zipcode < 10000 || zipcode > 99999) {
+        setDonorError(<p>Bad Zip Code</p>);
+        return;
+      }
+      tempDonor['Zip Code'] = zipcode;
+      setDonor(tempDonor);
+      setDonorError('');
     }
-    tempDonor.City = document.getElementById('city').value;
-    tempDonor.State = document.getElementById('state').value;
-    const zipcode = parseInt(document.getElementById('zipcode').value, 10);
-    if (!zipcode || zipcode < 10000 || zipcode > 99999) {
-      setDonorError(<p>Bad Zip Code</p>);
-      return;
-    }
-    tempDonor['Zip Code'] = zipcode;
-    setDonor(tempDonor);
-    setDonorError('');
+    setEditingDonor(!editingDonor);
   };
 
   const addDonation = (e) => {
@@ -80,104 +85,111 @@ function Donations() {
     <div>
       <h1>Log a Donation</h1>
       <h2>Step 1. Add donor info</h2>
-      <table className={styles.logTable}>
-        <thead>
-          <tr>
-            {donorFields.map((field) => (
-              <th>{field}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            {donorFields.map((field) => (
-              <td>{donor[field]}</td>
-            ))}
-          </tr>
-        </tbody>
-      </table>
-      <form onSubmit={donorUpdate}>
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="name">
-              Donor/organization name:
-              {' '}
-            </label>
-          </div>
-          <input required type="text" id="name" name="name" />
-        </div>
+      {!editingDonor ? (
+        <table className={styles.logTable}>
+          <thead>
+            <tr>
+              {donorFields.map((field) => (
+                <th>{field}</th>
+              ))}
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {donorFields.map((field) => (
+                <td>{donor[field]}</td>
+              ))}
+              <td className={styles.buttonEntry}><button aria-label="Delete" type="button" onClick={donorUpdate}><Pencil /></button></td>
+            </tr>
+          </tbody>
+        </table>
+      ) : (
+        <form onSubmit={donorUpdate}>
+          <div className={styles.donationForm}>
+            <div className={styles.donationFormField}>
+              <div>
+                <label htmlFor="name">
+                  Donor/organization name:
+                  {' '}
+                </label>
+              </div>
+              <input required type="text" id="name" name="name" defaultValue={donor.Name} />
+            </div>
 
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="phone">
-              Phone #:
-              {' '}
-            </label>
-          </div>
-          <input required type="text" id="phone" name="phone" />
-        </div>
+            <div className={styles.donationFormField}>
+              <div>
+                <label htmlFor="phone">
+                  Phone #:
+                  {' '}
+                </label>
+              </div>
+              <input required type="text" id="phone" name="phone" defaultValue={donor.Phone} />
+            </div>
 
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="email">
-              Email address:
-              {' '}
-            </label>
-          </div>
-          <input required type="text" id="email" name="email" />
-        </div>
+            <div className={styles.donationFormField}>
+              <div>
+                <label htmlFor="email">
+                  Email address:
+                  {' '}
+                </label>
+              </div>
+              <input required type="text" id="email" name="email" defaultValue={donor.Email} />
+            </div>
 
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="addressline1">
-              Address line 1:
-              {' '}
-            </label>
-          </div>
-          <input required type="text" id="addressline1" name="addressline1" />
-        </div>
+            <div className={styles.donationFormField}>
+              <div>
+                <label htmlFor="addressline1">
+                  Address line 1:
+                  {' '}
+                </label>
+              </div>
+              <input required type="text" id="addressline1" name="addressline1" defaultValue={donor['Address Line 1']} />
+            </div>
 
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="addressline2">
-              Address line 2 (optional):
-              {' '}
-            </label>
-          </div>
-          <input type="text" id="addressline2" name="addressline2" />
-        </div>
+            <div className={styles.donationFormField}>
+              <div>
+                <label htmlFor="addressline2">
+                  Address line 2 (optional):
+                  {' '}
+                </label>
+              </div>
+              <input type="text" id="addressline2" name="addressline2" defaultValue={donor['Address Line 2']} />
+            </div>
 
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="city">
-              City:
-              {' '}
-            </label>
-          </div>
-          <input required type="text" id="city" name="city" />
-        </div>
+            <div className={styles.donationFormField}>
+              <div>
+                <label htmlFor="city">
+                  City:
+                  {' '}
+                </label>
+              </div>
+              <input required type="text" id="city" name="city" defaultValue={donor.City} />
+            </div>
 
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="state">
-              State:
-              {' '}
-            </label>
-          </div>
-          <input required type="text" id="state" name="state" />
-        </div>
+            <div className={styles.donationFormField}>
+              <div>
+                <label htmlFor="state">
+                  State:
+                  {' '}
+                </label>
+              </div>
+              <input required type="text" id="state" name="state" defaultValue={donor.State} />
+            </div>
 
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="zipcode">
-              Zip code:
-              {' '}
-            </label>
+            <div className={styles.donationFormField}>
+              <div>
+                <label htmlFor="zipcode">
+                  Zip code:
+                  {' '}
+                </label>
+              </div>
+              <input required type="text" id="zipcode" name="zipcode" defaultValue={donor['Zip Code']} />
+            </div>
+            <input className={styles.addSaveButton} type="submit" id="save" name="save" value="Save" />
           </div>
-          <input required type="text" id="zipcode" name="zipcode" />
-        </div>
-        <input type="submit" id="save" name="save" value="Save" />
-      </form>
+        </form>
+      )}
       {donorError}
       <h2>Step 2. Add donation info</h2>
       <table className={styles.logTable}>
@@ -195,7 +207,7 @@ function Donations() {
               {donationFields.map((field) => (
                 <td>{donation[field]}</td>
               ))}
-              <td className={styles.deleteButtonEntry}><button aria-label="Delete" type="button" onClick={(e) => deleteDonation(e, index)}><Trash2 /></button></td>
+              <td className={styles.buttonEntry}><button aria-label="Delete" type="button" onClick={(e) => deleteDonation(e, index)}><Trash2 /></button></td>
             </tr>
           ))}
         </tbody>
@@ -219,7 +231,6 @@ function Donations() {
                 {' '}
               </label>
             </div>
-            {/* <input required type="text" id="gender" name="gender" /> */}
             <select name="gender" id="gender">
               <option value="none" selected disabled hidden>Select an Option</option>
               <option value="Boys">Boys</option>
@@ -234,7 +245,6 @@ function Donations() {
                 {' '}
               </label>
             </div>
-            {/* <input required type="text" id="category" name="category" /> */}
             <select name="category" id="category">
               <option value="none" selected disabled hidden>Select an Option</option>
               <option value="Infant/Child">Infant/Child</option>
@@ -272,11 +282,14 @@ function Donations() {
             </div>
             <textarea required type="text" id="notes" name="notes" />
           </div>
+          <input className={styles.addSaveButton} type="submit" id="add" name="add" value="Add" />
         </div>
-        <input type="submit" id="add" name="add" value="Add" />
       </form>
+      <Link to="/">
+        <input className={styles.cancelButton} type="submit" id="submit" name="submit" value="Cancel" />
+      </Link>
       <Link to="/confirmdonation" state={{ valid: true, donor, donations }}>
-        <input type="submit" id="submit" name="submit" value="Save and Continue" />
+        <input className={styles.confirmButton} type="submit" id="submit" name="submit" value="Save and Continue" />
       </Link>
     </div>
   );

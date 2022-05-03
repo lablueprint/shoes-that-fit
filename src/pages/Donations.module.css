@@ -1,9 +1,9 @@
-.deleteButtonEntry button {
+.buttonEntry button {
     border: none;
     background-color: transparent;
     background-repeat: no-repeat;
 }
-.deleteButtonEntry button focus{
+.buttonEntry button focus{
     border: none;
     outline: none;
     background-color: transparent;
@@ -21,10 +21,59 @@
     display: inline-block;
     padding: 1rem 1rem;
     vertical-align: middle;
+    text-align: left;
+
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
 }
 
 .logTable {
     margin-left: auto;
     margin-right: auto;
     border: 1px solid gray;
+}
+
+.addSaveButton {
+    background: #FFA73E;
+    border-radius: 5px;
+
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 23px;
+
+    width: 75px;
+    height: 42px;
+}
+
+.cancelButton {
+    background: #FFA73E;
+    border-radius: 5px;
+
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+
+    width: 144px;
+    height: 48px;
+}
+
+.confirmButton {
+    background: #AEECFF;
+    border-radius: 5px;
+
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+
+    width: 212px;
+    height: 48px;
 }

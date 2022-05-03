@@ -99,9 +99,12 @@ export default function DonationConfirmation() {
           {date.getFullYear()}
         </p>
       </div>
-      <form onSubmit={submitDonations}>
-        <input type="submit" id="submit" name="submit" value="Submit Donations" />
-      </form>
+      <Link to="/admindashboard">
+        <button type="button" id="submit" name="submit" onClick={submitDonations}>Submit Donations</button>
+        {/* <form onSubmit={submitDonations}>
+          <input type="submit" id="submit" name="submit" value="Submit Donations" />
+        </form> */}
+      </Link>
       <Link to="/donations" state={{ valid: true, donor, donations }}>
         <input type="submit" id="submit" name="submit" value="Back" />
       </Link>
