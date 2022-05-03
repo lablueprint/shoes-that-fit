@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 // import Card from '../components/card';
+import { ChevronLeft } from 'lucide-react';
 import { Table } from '../components';
 import OrderListAdmin from './OrderListAdmin';
 
@@ -42,7 +43,7 @@ function AdminList() {
 
   const getCards = () => {
     base('Orders')
-      .select({ view: 'Grid View' })
+      .select({ view: 'Grid view' })
       .all()
       .then((records) => {
         setCards(records.map((r) => (r.fields)));
@@ -58,19 +59,26 @@ function AdminList() {
     return true;
   };
 
-  // const clearSpecificCard = () => {
-  //   setSpecificCardID('');
-  // };
+  const clearSpecificCard = () => {
+    setSpecificCardID('');
+  };
 
-  // const getId = () => {
-  //   unique = [...new Set(cards.map((card) => card.fields.Time))];
-  // };
+  useEffect(() => {
+    clearSpecificCard();
+  }, []);
+
+  const style = {
+    cursor: 'pointer',
+  };
 
   return (
     (specificCardID === '')
       ? cards && cards.length > 0 && <Table headers={headers} sortIndices={sortIndices} data={cards} dataProps={dataProps} dataKeyProp={dataKeyProp} selectCard={selectCard} />
       : (
-        <OrderListAdmin id={specificCardID} />
+        <div>
+          <ChevronLeft style={style} size={50} type="button" onClick={clearSpecificCard} />
+          <OrderListAdmin id={specificCardID} />
+        </div>
       )
   );
 }

@@ -45,7 +45,7 @@ function OrderListAdmin(id) {
   return (
     info !== []
       ? (
-        <div id={styles.orders}>
+        <div className={styles.orders}>
           <div className={styles.head}>Order Details: </div>
           <div className={styles.wrapper}>
             <div>
@@ -85,7 +85,7 @@ function OrderListAdmin(id) {
               {' '}
               {info && info.Date}
             </div>
-            <div className={styles.status}>
+            <div className={styles.print}>
               <button
                 type="button"
                 id="printform"
