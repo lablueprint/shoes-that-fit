@@ -1,0 +1,50 @@
+
+@font-face {
+    font-family: Hartwell;
+    src: url(../assets/HartwellRegular.otf);
+  }
+
+.container {
+    width:100%;
+  }
+
+.head {
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 1000;
+    font-size: 40px;
+    color: #000000;
+    margin-left: 5%;
+    
+}
+
+@font-face {
+  font-family: Hartwell;
+  src: url(../assets/HartwellBold.otf);
+  font-weight: bold;
+}
+
+.wrapper {
+ display: flex;
+ flex-direction: row;
+}
+
+.row {
+    display:flex;
+    flex-direction: column;
+    text-align: left;
+    width: 100%;
+}
+
+.title {
+  font-weight: bold;
+}
+
+
+.hello{
+    display: flex;
+    flex-direction: row;
+    padding: 4%;
+    width: 80%;
+    align-items:center;
+}

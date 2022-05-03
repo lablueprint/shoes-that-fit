@@ -5,8 +5,19 @@ import { Routes, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Nav } from './components';
 import {
-  MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records,
-  AdminDashboard, Donations, DonationConfirmation, OrderListAdmin, OrderHistory, SchoolsForm,
+  MainInventory,
+  NewShoeForm,
+  AdminList,
+  OrderForm,
+  LoginPage,
+  Records,
+  AdminDashboard,
+  Donations,
+  DonationConfirmation,
+  OrderListAdmin,
+  OrderHistory,
+  SchoolsForm,
+  SchoolsDetail,
 } from './pages';
 
 function App({
@@ -26,7 +37,7 @@ function App({
                 username={username}
                 onLogout={logout}
               />
-          )}
+            )}
           />
           <Route
             exact
@@ -37,7 +48,7 @@ function App({
                 username={username}
                 onLogin={login}
               />
-          )}
+            )}
           />
           <Route
             path="/newshoeform"
@@ -47,7 +58,7 @@ function App({
                 username={username}
                 onLogout={logout}
               />
-          )}
+            )}
           />
           <Route
             path="/orderform"
@@ -57,7 +68,7 @@ function App({
                 username={username}
                 onLogout={logout}
               />
-          )}
+            )}
           />
           <Route
             path="/adminlist"
@@ -67,7 +78,7 @@ function App({
                 username={username}
                 onLogout={logout}
               />
-          )}
+            )}
           />
           <Route path="/records" element={<Records />} />
           <Route path="/admindashboard" element={<AdminDashboard />} />
@@ -76,6 +87,7 @@ function App({
           <Route path="/donations" element={<Donations />} />
           <Route path="/confirmdonation" element={<DonationConfirmation />} />
           <Route path="/schoolsform" element={<SchoolsForm />} />
+          <Route path="/schoolsdetail" element={<SchoolsDetail />} />
         </Routes>
       </div>
     </div>
