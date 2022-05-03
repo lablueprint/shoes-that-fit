@@ -51,102 +51,101 @@ function App({
     <div className="App">
       <Nav onLogout={logout} />
       <div className="App-container">
-      <Routes>
-        <Route
-          path="/admindashboard"
-          element={(
-            <AdminDashboard
-              isLoggedIn={isLoggedIn}
-              username={username}
-              password={password}
-              onLogin={login}
-              role={role}
-              register={register}
-              reRegister={reRegister}
-              base={base}
-            />
+        <Routes>
+          <Route
+            path="/admindashboard"
+            element={(
+              <AdminDashboard
+                isLoggedIn={isLoggedIn}
+                username={username}
+                password={password}
+                onLogin={login}
+                role={role}
+                register={register}
+                reRegister={reRegister}
+                base={base}
+              />
         )}
-        />
-        <Route
-          path="/inventory"
-          element={(
-            <MainInventory
-              isLoggedIn={isLoggedIn}
-              username={username}
-              password={password}
-              base={base}
-
-            />
+          />
+          <Route
+            path="/inventory"
+            element={(
+              <MainInventory
+                isLoggedIn={isLoggedIn}
+                username={username}
+                password={password}
+                base={base}
+              />
         )}
-        />
-        <Route
-          exact
-          path="/"
-          element={(
-            <LoginPage
-              isLoggedIn={isLoggedIn}
-              onLogin={login}
-              base={base}
-            />
+          />
+          <Route
+            exact
+            path="/"
+            element={(
+              <LoginPage
+                isLoggedIn={isLoggedIn}
+                onLogin={login}
+                base={base}
+              />
         )}
-        />
-        <Route
-          path="/newshoeform"
-          element={(
-            <NewShoeForm
-              isLoggedIn={isLoggedIn}
-              base={base}
-            />
+          />
+          <Route
+            path="/newshoeform"
+            element={(
+              <NewShoeForm
+                isLoggedIn={isLoggedIn}
+                base={base}
+              />
         )}
-        />
-        <Route
-          path="/orderform"
-          element={(
-            <OrderForm
-              isLoggedIn={isLoggedIn}
-              base={base}
-            />
+          />
+          <Route
+            path="/orderform"
+            element={(
+              <OrderForm
+                isLoggedIn={isLoggedIn}
+                base={base}
+              />
         )}
-        />
-        <Route
-          path="/adminlist"
-          element={(
-            <AdminList
-              isLoggedIn={isLoggedIn}
-              base={base}
-            />
+          />
+          <Route
+            path="/adminlist"
+            element={(
+              <AdminList
+                isLoggedIn={isLoggedIn}
+                base={base}
+              />
         )}
-        />
-        <Route
-          path="/records"
-          element={(
-            <Records
-              isLoggedIn={isLoggedIn}
-              base={base}
-            />
+          />
+          <Route
+            path="/records"
+            element={(
+              <Records
+                isLoggedIn={isLoggedIn}
+                base={base}
+              />
 )}
-        />
-        <Route
-          path="/changePass"
-          element={(
-            <ChangePass
-              isLoggedIn={isLoggedIn}
-              reRegister={reRegister}
-              prevUser={username}
-              prevRole={role}
-              prevPass={password}
-              onLogin={login}
-              base={base}
-            />
+          />
+          <Route
+            path="/changePass"
+            element={(
+              <ChangePass
+                isLoggedIn={isLoggedIn}
+                reRegister={reRegister}
+                prevUser={username}
+                prevRole={role}
+                prevPass={password}
+                onLogin={login}
+                base={base}
+              />
         )}
-        />
-<Route path="/viewhistory" element={<OrderListAdmin />} />
+          />
+          <Route path="/viewhistory" element={<OrderListAdmin />} />
           <Route path="/orderhistory" element={<OrderHistory />} />
           <Route path="/donations" element={<Donations />} />
           <Route path="/confirmdonation" element={<DonationConfirmation />} />
-      </Routes>
-  </div>
-</div>
+        </Routes>
+      </div>
+    </div>
   );
 }
 

@@ -141,12 +141,6 @@ function MainInventory({
   );
 
   useEffect(() => {
-    const getInventory = async () => {
-      await base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
-        .then((records) => {
-          setRows(records);
-        });
-    };
     getInventory();
   }, []);
 
