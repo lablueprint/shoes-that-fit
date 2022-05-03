@@ -3,37 +3,10 @@ import React, {
   useState, useEffect, useRef, useCallback,
 } from 'react';
 import ReactSelect from 'react-select';
+import { Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import base from '../lib/airtable';
 import { TableFooter, PageLengthForm } from '../components';
 import styles from './MainInventory.module.css';
-
-// const Airtable = require('airtable');
-
-// const airtableConfig = {
-//   apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-//   baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-// };
-
-// const base = new Airtable({
-//   apiKey: airtableConfig.apiKey,
-//   endpointURL: 'http://localhost:3000',
-// }).base(airtableConfig.baseKey);
-
-const loginUser = async (email, password) => {
-  try {
-    const res = await base.login({ username: email, password });
-    if (!res.body.success) {
-      return { match: false, found: false };
-    }
-    return { match: true, found: true };
-  } catch (err) {
-    if (err.error === 'AUTHENTICATION_REQUIRED') {
-      return { match: false, found: true };
-    }
-    return { match: false, found: false };
-  }
-};
 
 const calculateRange = (tableData, numRows) => {
   const range = [];
@@ -47,8 +20,10 @@ const calculateRange = (tableData, numRows) => {
 // eslint-disable-next-line max-len
 const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * numRows, page * numRows);
 
-function MainInventory({ loggedIn, username, onLogout }) {
-  console.log(loggedIn);
+function MainInventory({
+  isLoggedIn, username, onLogout, base,
+}) {
+  console.log(isLoggedIn);
   console.log(username);
 
   const [rows, setRows] = useState([]);
@@ -80,12 +55,6 @@ function MainInventory({ loggedIn, username, onLogout }) {
   const categories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description', 'Quantity'];
   const filterableCategories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description'];
 
-  const getInventory = () => {
-    base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
-      .then((records) => {
-        setRows(records);
-      });
-  };
   const createOptions = (category, optionList) => {
     categoryOptions[category] = optionList;
     setCategoryOptions(categoryOptions);
@@ -105,13 +74,14 @@ function MainInventory({ loggedIn, username, onLogout }) {
   };
 
   useEffect(() => {
-    if (loggedIn) {
-    // eslint-disable-next-line max-len
-      console.log(loginUser(process.env.REACT_APP_AIRTABLE_EMAIL, process.env.REACT_APP_AIRTABLE_PASSWORD));
-    }
+    const getInventory = async () => {
+      await base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
+        .then((records) => {
+          setRows(records);
+        });
+    };
+    getInventory();
   }, []);
-
-  useEffect(getInventory, []);
 
   // Retrieves number of entries for each bin and
   useEffect(() => {
@@ -170,9 +140,8 @@ function MainInventory({ loggedIn, username, onLogout }) {
     setInventoryTotal(sum);
   }, [items]);
   return (
-    !loggedIn
-      ? (<thead> Please Login </thead>
-      )
+    !isLoggedIn
+      ? (<Navigate to="/" />)
       : (
         <>
           <PageLengthForm setNumRows={setNumRows} />
@@ -233,7 +202,8 @@ function MainInventory({ loggedIn, username, onLogout }) {
 export default MainInventory;
 
 MainInventory.propTypes = {
-  loggedIn: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,
   onLogout: PropTypes.func.isRequired,
+  base: PropTypes.func.isRequired,
 };

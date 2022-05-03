@@ -1,18 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { Navigate } from 'react-router-dom';
 import Card from '../components/card';
 
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(
-  airtableConfig.baseKey,
-);
-
-function AdminList() {
+function AdminList({ isLoggedIn, base }) {
   const [cards, setCards] = useState([]);
   let unique = [];
 
@@ -34,10 +25,13 @@ function AdminList() {
   };
 
   return (
-    <>
-      {getId()}
-      <h1>ADMINLIST: </h1>
-      {
+    !isLoggedIn
+      ? (<Navigate to="/" />)
+      : (
+        <>
+          {getId()}
+          <h1>ADMINLIST: </h1>
+          {
         unique.map((value) => (
           <div>
             <h2>
@@ -73,11 +67,17 @@ function AdminList() {
           </div>
         ))
       }
-    </>
+        </>
+      )
   );
 }
 
 export default AdminList;
+
+AdminList.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  base: PropTypes.objectOf(PropTypes.object).isRequired,
+};
 
 // cards.filter((card) => card.fields.Time === `${value}`).map((card, index) => (
 //   // eslint-disable-next-line react/no-array-index-key
