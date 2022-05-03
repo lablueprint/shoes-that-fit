@@ -11,9 +11,9 @@ import stfLogo from '../assets/STF_logo.png';
 export default function Nav({ onLogout }) {
   const location = useLocation();
   const [selected, setSelected] = useState(location.pathname);
-  const linkArray = ['/inventory', '/newshoeform', '/orderform', '/adminlist', '/admindashboard'];
-  const textArray = ['Inventory', 'New Shoe Form', 'Order Form', 'Admin List', 'Admin Dashboard'];
-  const iconArray = [ClipboardList, Gift, ListOrdered, GraduationCap, Home];
+  const linkArray = ['/admindashboard', '/inventory', '/newshoeform', '/orderform', '/adminlist', '/donations'];
+  const textArray = ['Admin Dashboard', 'Inventory', 'New Shoe Form', 'Order Form', 'Admin List', 'Donations'];
+  const iconArray = [Home, ClipboardList, Gift, ListOrdered, GraduationCap, Gift];
 
   return (
     <div className={styles.sidebar}>
@@ -45,7 +45,6 @@ export default function Nav({ onLogout }) {
       <Link to="/" onClick={onLogout}>
         Logout
       </Link>
-      ;
     </div>
   );
 }
