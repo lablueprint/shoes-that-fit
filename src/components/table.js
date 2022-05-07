@@ -43,6 +43,8 @@ export default function Table({
     }
 
     setReady(true);
+
+    console.log(data);
   }
 
   useEffect(() => {
@@ -52,6 +54,7 @@ export default function Table({
   return (
     ready && (
     <div className={styles.container}>
+      {console.log(data)}
       {checkbox && (
       <div className={styles.checkboxColumn}>
         <header className={styles.cellContainer}>
@@ -116,15 +119,13 @@ export default function Table({
                 backgroundColor: '#F6F6F6',
               } : { backgroundColor: '#FFFFFF' }}
             >
-              {React.isValidElement(d)
-                ? <div className={styles.cell}>{d}</div>
-                : (
-                  <p className={styles.cell}>
-                    {dataProps.length > 0
-                      ? (d[dataProps[hIndex]] && d[dataProps[hIndex]].toString())
-                      : (d[headers[hIndex]] && d[headers[hIndex]].toString())}
-                  </p>
-                )}
+              {console.log(dIndex)}
+              {dataProps.length > 0 && (React.isValidElement(d[dataProps[hIndex]])
+                ? <div className={styles.cell}>{d[dataProps[hIndex]]}</div>
+                : <p className={styles.cell}>{d[dataProps[hIndex]]}</p>)}
+              {dataProps.length === 0 && (React.isValidElement(d[headers[hIndex]])
+                ? <div className={styles.cell}>{d[headers[hIndex]]}</div>
+                : <p className={styles.cell}>{d[headers[hIndex]]}</p>)}
             </div>
           ))}
         </div>

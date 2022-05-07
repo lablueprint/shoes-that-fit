@@ -1,24 +1,26 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable max-len */
 import React, {
   useState, useEffect, useRef, useCallback,
 } from 'react';
 import ReactSelect from 'react-select';
+import { Box, Smile, AlertTriangle } from 'lucide-react';
 import PropTypes from 'prop-types';
-import base from '../lib/airtable';
-import { TableFooter, PageLengthForm } from '../components';
+// import base from '../lib/airtable';
+import { Table, TableFooter, PageLengthForm } from '../components';
 import styles from './MainInventory.module.css';
 
-// const Airtable = require('airtable');
+const Airtable = require('airtable');
 
-// const airtableConfig = {
-//   apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-//   baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-// };
+const airtableConfig = {
+  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
+  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
+};
 
-// const base = new Airtable({
-//   apiKey: airtableConfig.apiKey,
-//   endpointURL: 'http://localhost:3000',
-// }).base(airtableConfig.baseKey);
+const base = new Airtable({
+  apiKey: airtableConfig.apiKey,
+  endpointURL: 'http://localhost:3000',
+}).base(airtableConfig.baseKey);
 
 const loginUser = async (email, password) => {
   try {
@@ -48,10 +50,12 @@ const calculateRange = (tableData, numRows) => {
 const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * numRows, page * numRows);
 
 function MainInventory({ loggedIn, username, onLogout }) {
-  console.log(loggedIn);
-  console.log(username);
+  // console.log(loggedIn);
+  // console.log(username);
 
   const [rows, setRows] = useState([]);
+  const [cards, setCards] = useState([]);
+  const [tableInfo, setTableInfo] = useState([]);
   const [allChecked, setAllChecked] = useState(false);
   const [items, setItems] = useState([]);
   const [inventoryTotal, setInventoryTotal] = useState(0);
@@ -65,26 +69,103 @@ function MainInventory({ loggedIn, username, onLogout }) {
   const [selectedRows, setSelectedRows] = useState([]);
   const [tableRange, setTableRange] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState({
-    'Location Name': [],
+    'Bin Name': [],
     'Part Name': [],
     Quantity: [],
   });
   const [optionsSelected, setOptionsSelected] = useState({
-    'Location Name': [],
+    'Bin Name': [],
     'Part Name': [],
     Quantity: [],
   });
-  const categories = ['Location Name', 'Part Name', 'Quantity'];
-  const filterableCategories = ['Location Name', 'Part Name'];
+  const categories = ['Bin Name', 'Part Name', 'Quantity'];
+  const filterableCategories = ['Bin Name', 'Part Name'];
   // eslint-disable-next-line no-unused-vars
   const tableContents = useRef(); // For setting/ unsetting navigation
   const inputBoxes = useRef();
   const getInventory = () => {
     // base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
-    base('InventoryTestRevamp').select({ view: 'Grid view' }).all().then((records) => {
+    base('TestInventory').select({ view: 'Grid view' }).all().then((records) => {
       setRows(records);
+      setCards(records.map((r) => {
+        const record = r.fields;
+
+        let Part;
+        let Quantity;
+        if (record['Wide Width'] === true) {
+          Part = (
+            <div className={styles.table}>
+              <p>
+                {`${record['Part Name']} `}
+              </p>
+              &nbsp;
+              <p className={styles.WStyling}>
+                W
+              </p>
+            </div>
+          );
+        } else {
+          Part = (
+            <div>
+              {record['Part Name']}
+            </div>
+          );
+        }
+        if (record.Quantity < 5) {
+          Quantity = (
+            <div className={styles.table}>
+              <div>
+                {record.Quantity}
+              </div>
+              <div>
+                <AlertTriangle color="#000000" className={styles.caution} />
+              </div>
+            </div>
+          );
+        } else {
+          Quantity = (
+            <div>
+              {record.Quantity}
+            </div>
+          );
+        }
+        return {
+          'Bin Name': record['Bin Name'], 'Part Name': Part.props.children, Quantity: Quantity.props.children, id: r.id,
+        };
+      }));
+      console.log(records);
     });
   };
+  const sortIndices = [0, 1, 2];
+  const headers = ['Bin Name', 'Part Name', 'Quantity'];
+  const dataProps = ['Bin Name', 'Part Name', 'Quantity', 'id'];
+  const dataKeyProp = 'id';
+
+  const [headerInfo, setheaderInfo] = useState([]);
+  const [quantityFulfilled, setQuantityFulfilled] = useState(0);
+
+  const getQuantityFulfilled = () => {
+    let quantity = 0;
+    for (let i = 0; i < headerInfo.length; i += 1) {
+      if (headerInfo[i].fields.Active === true) {
+        const arr = headerInfo[i].fields.Orders.split('},{');
+        quantity += (arr.length || 0);
+      }
+    }
+    setQuantityFulfilled(quantity);
+  };
+
+  const getOrders = () => {
+    base('Orders').select({
+      view: 'Grid view',
+    }).all()
+      .then((records) => {
+        setheaderInfo(records);
+      });
+  };
+
+  useEffect(getOrders, []);
+  useEffect(getQuantityFulfilled, [headerInfo]);
 
   const createOptions = (category, optionList) => {
     categoryOptions[category] = optionList;
@@ -146,7 +227,7 @@ function MainInventory({ loggedIn, username, onLogout }) {
         return;
       }
       records.forEach((record) => {
-        console.log(`Edited entry at row ${(page - 1) * numRows + index}: ${record.get('Client Name')}, ${record.get('Location Name')}, ${record.get('Bin Name')}, ${record.get('Part Name')}, ${record.get('Part Description')}`);
+        console.log(`Edited entry at row ${(page - 1) * numRows + index}: ${record.get('Client Name')}, ${record.get('Bin Name')}, ${record.get('Bin Name')}, ${record.get('Part Name')}, ${record.get('Part Description')}`);
       });
     });
   });
@@ -168,11 +249,54 @@ function MainInventory({ loggedIn, username, onLogout }) {
   useEffect(() => {
     if (loggedIn) {
     // eslint-disable-next-line max-len
-      console.log(loginUser(process.env.REACT_APP_AIRTABLE_EMAIL, process.env.REACT_APP_AIRTABLE_PASSWORD));
+    //  console.log(loginUser(process.env.REACT_APP_AIRTABLE_EMAIL, process.env.REACT_APP_AIRTABLE_PASSWORD));
     }
   }, []);
 
   useEffect(getInventory, []);
+  const processInventory = () => {
+    if (cards.length === 0) { return; }
+    const arr = [];
+    for (let i = 0; i < cards.length; i += 1) {
+      const Bin = cards[i]['Bin Name'];
+      let Part;
+      let Quantity;
+      if (cards[i]['Wide Width'] === true) {
+        Part = (
+          <div>
+            {`${cards[i]['Part Name']} W`}
+          </div>
+        );
+      } else {
+        Part = (
+          <div>
+            {cards[i]['Part Name']}
+          </div>
+        );
+      }
+      console.log(Part);
+      if (cards[i].Quantity < 5) {
+        Quantity = (
+          <div>
+            {`${cards[i].Quantity} LOW`}
+          </div>
+        );
+      } else {
+        Quantity = (
+          <div>
+            {cards[i].Quantity}
+          </div>
+        );
+      }
+      const elem = { 'Bin Name': Bin, 'Part Name': Part.props.children, Quantity: Quantity.props.children };
+      console.log(elem);
+      arr.push(elem);
+    }
+    setTableInfo(arr);
+    console.log(cards);
+  };
+
+  useEffect(processInventory, [cards]);
 
   // Retrieves number of entries for each bin and
   useEffect(() => {
@@ -275,8 +399,41 @@ function MainInventory({ loggedIn, username, onLogout }) {
       ? (<thead> Please Login </thead>
       )
       : (
-        <>
-          <PageLengthForm setNumRows={setNumRows} />
+        <div>
+          <div className={styles.headers}>
+            <div className={styles.iconBox}>
+              <Box color="#6BB7E8" className={styles.icon} />
+              <h3 className={styles.iconTitle}>Total Quantity</h3>
+              <p>{inventoryTotal}</p>
+            </div>
+            <div>
+              <Smile color="#D66330" className={styles.icon} />
+              <h3>Kids Helped</h3>
+              <p>{quantityFulfilled}</p>
+            </div>
+          </div>
+          <Table
+            headers={headers}
+            sortIndices={sortIndices}
+            data={cards}
+            dataProps={dataProps}
+            dataKeyProp={dataKeyProp}
+          />
+
+        </div>
+      )
+  );
+}
+
+export default MainInventory;
+
+MainInventory.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
+  username: PropTypes.string.isRequired,
+  onLogout: PropTypes.func.isRequired,
+};
+
+/* <PageLengthForm setNumRows={setNumRows} />
           <table>
             <thead>
               <tr>
@@ -342,16 +499,4 @@ function MainInventory({ loggedIn, username, onLogout }) {
             Total Item Inventory:
             {' '}
             {inventoryTotal}
-          </span>
-        </>
-      )
-  );
-}
-
-export default MainInventory;
-
-MainInventory.propTypes = {
-  loggedIn: PropTypes.bool.isRequired,
-  username: PropTypes.string.isRequired,
-  onLogout: PropTypes.func.isRequired,
-};
+          </span> */

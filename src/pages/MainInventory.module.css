@@ -1,4 +1,4 @@
-.inventoryTable {
+/* .inventoryTable {
     border-collapse: collapse;
     margin-left: 10px;
     margin-right: 10px;
@@ -29,4 +29,57 @@
 
 .inventoryHeader {
     background: #E9E9E9;
+} */
+
+.WStyling {
+    width: 20px;
+    height: 20px;
+    background: #C4C4C4;
+    border-radius: 7px;
+
+    padding-left: .75px;
+}
+
+.table {
+    display: flex;
+    flex-direction: row;
+}
+
+.caution {
+    display: flex;
+    flex-direction: row;
+    width: 16px;
+    height: 16px;
+}
+
+.headers {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+}
+
+.iconBox {
+    width: 229px;
+    height: 92px;
+    background: #F2F2F2;
+}
+
+.icon {
+    justify-self: left;
+    width: 54px;
+    height: 54px;
+}
+
+.iconTitle {
+    height: 25px;
+    left: 501px;
+    top: 203px;
+
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 23px;
+
+    color: #000000;
 }
