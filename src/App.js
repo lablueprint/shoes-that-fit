@@ -6,7 +6,9 @@ import PropTypes from 'prop-types';
 import Airtable from '@calblueprint/airlock';
 import { Nav } from './components';
 import {
-  MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records, AdminDashboard, ChangePass,
+  MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records,
+  AdminDashboard, Donations, DonationConfirmation, OrderListAdmin, OrderHistory,
+  ChangePass,
 } from './pages';
 
 const BASE_ID = process.env.REACT_APP_AIRTABLE_BASE_KEY;
@@ -50,7 +52,6 @@ function App({
       <Nav isLoggedIn={isLoggedIn} onLogout={logout} />
       <Routes>
         <Route
-          exact
           path="/admindashboard"
           element={(
             <AdminDashboard
@@ -138,8 +139,13 @@ function App({
             />
         )}
         />
+<Route path="/viewhistory" element={<OrderListAdmin />} />
+          <Route path="/orderhistory" element={<OrderHistory />} />
+          <Route path="/donations" element={<Donations />} />
+          <Route path="/confirmdonation" element={<DonationConfirmation />} />
       </Routes>
-    </div>
+  </div>
+</div>
   );
 }
 
