@@ -6,8 +6,19 @@ import PropTypes from 'prop-types';
 import Airtable from '@calblueprint/airlock';
 import { Nav } from './components';
 import {
-  MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records,
-  AdminDashboard, Donations, DonationConfirmation, OrderListAdmin, OrderHistory,
+  MainInventory,
+  NewShoeForm,
+  AdminList,
+  OrderForm,
+  LoginPage,
+  Records,
+  AdminDashboard,
+  Donations,
+  DonationConfirmation,
+  OrderListAdmin,
+  OrderHistory,
+  SchoolsForm,
+  SchoolsDetail,
   ChangePass,
 } from './pages';
 
@@ -139,10 +150,35 @@ function App({
             />
         )}
         />
+        <Route
+          path="/records"
+          element={(
+            <Records
+              isLoggedIn={isLoggedIn}
+              base={base}
+            />
+         )}
+        />
+        <Route
+          path="/changePass"
+          element={(
+            <ChangePass
+              isLoggedIn={isLoggedIn}
+              reRegister={reRegister}
+              prevUser={username}
+              prevProfile={profile}
+              prevPass={password}
+              onLogin={login}
+              base={base}
+            />
+            )}
+        />
         <Route path="/viewhistory" element={<OrderListAdmin />} />
         <Route path="/orderhistory" element={<OrderHistory />} />
         <Route path="/donations" element={<Donations />} />
         <Route path="/confirmdonation" element={<DonationConfirmation />} />
+        <Route path="/schoolsform" element={<SchoolsForm />} />
+        <Route path="/schoolsdetail" element={<SchoolsDetail />} />
       </Routes>
     </div>
   );
