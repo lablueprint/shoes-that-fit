@@ -8,7 +8,7 @@ import styles from './AdminDashboard.module.css';
 
 function AdminDashboard({
   // eslint-disable-next-line no-unused-vars
-  isLoggedIn, username, password, role, register, reRegister, onLogin, base,
+  isLoggedIn, username, password, profile, register, reRegister, onLogin, base,
 }) {
   useEffect(() => {
     const setProfile = async () => {
@@ -16,14 +16,21 @@ function AdminDashboard({
         {
           fields: {
             Username: username,
-            Role: role,
+            Role: profile.role,
+            Address: profile.address,
+            City: profile.city,
+            State: profile.state,
+            Phone: profile.phone,
+            ContactName: profile.contactName,
+            SchoolName: profile.schoolName,
+            ZipCode: profile.zipCode,
           },
         },
       ], async (err) => {
         if (err) {
           console.error(err);
         } else {
-          await onLogin(username, password, role, false, false);
+          await onLogin(username, password, profile, false, false);
         }
       });
     };
@@ -43,7 +50,7 @@ function AdminDashboard({
         .then(async (response) => {
           if (response.status === 200) {
             console.log('CHANGED');
-            await onLogin(username, password, role, false, false);
+            await onLogin(username, password, profile, false, false);
           }
         })
         .catch((e2) => {
@@ -74,7 +81,7 @@ export default AdminDashboard;
 AdminDashboard.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,
-  role: PropTypes.string.isRequired,
+  profile: PropTypes.string.isRequired,
   onLogin: PropTypes.func.isRequired,
   password: PropTypes.string.isRequired,
   register: PropTypes.bool.isRequired,

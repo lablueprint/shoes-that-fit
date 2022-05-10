@@ -22,7 +22,7 @@ const base = Airtable.base(BASE_ID);
 
 function App({
   // eslint-disable-next-line react/prop-types
-  isLoggedIn, username, password, role, register, reRegister, login, logout,
+  isLoggedIn, username, password, profile, register, reRegister, login, logout,
 }) {
   useEffect(() => {
     const loginUser = async (user, pass) => {
@@ -47,7 +47,7 @@ function App({
 
   return (
     <div className="App">
-      <Nav onLogout={logout} />
+      <Nav isLoggedIn={isLoggedIn} onLogout={logout} />
       <Routes>
         <Route
           exact
@@ -58,7 +58,7 @@ function App({
               username={username}
               password={password}
               onLogin={login}
-              role={role}
+              profile={profile}
               register={register}
               reRegister={reRegister}
               base={base}
@@ -131,7 +131,7 @@ function App({
               isLoggedIn={isLoggedIn}
               reRegister={reRegister}
               prevUser={username}
-              prevRole={role}
+              prevProfile={profile}
               prevPass={password}
               onLogin={login}
               base={base}
@@ -150,16 +150,16 @@ function mapStateToProps(state) {
     password: state.password,
     register: state.register,
     reRegister: state.reRegister,
-    role: state.role,
+    profile: state.profile,
   };
 }
 
 const mapDispatchToProps = (dispatch) => ({
   // dispatching plain actions
-  login: (username, password, role, register, reRegister) => dispatch({
+  login: (username, password, profile, register, reRegister) => dispatch({
     type: 'LOG_IN',
     payload: {
-      username, password, role, register, reRegister,
+      username, password, profile, register, reRegister,
     },
   }),
   logout: () => dispatch({ type: 'LOG_OUT' }),
@@ -171,7 +171,7 @@ App.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
-  role: PropTypes.string.isRequired,
+  profile: PropTypes.string.isRequired,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
   register: PropTypes.bool.isRequired,
