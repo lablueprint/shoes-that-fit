@@ -290,7 +290,7 @@ function LogDonations() {
       <Link className={styles.cancelLink} to="/">
         <input className={styles.cancelButton} type="submit" id="submit" name="submit" value="Cancel" />
       </Link>
-      <Link to="/confirmdonation" state={{ valid: true, donor, donations }}>
+      <Link to="/confirmdonation" state={{ donor, donations }}>
         <input className={styles.confirmButton} type="submit" id="submit" name="submit" value="Save and Continue" />
       </Link>
     </div>
