@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
 import PropTypes from 'prop-types';
 
-export default function LoginPage({ isLoggedIn, onLogin }) {
+export default function LoginPage({ isLoggedIn, onLogin, base }) {
   console.log(isLoggedIn);
   const [error, setError] = useState('');
   const [username, setUsername] = useState('');
@@ -45,37 +45,55 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
       return;
     }
 
-    const json = JSON.stringify({ username, password });
+    // const json = JSON.stringify({ username, password });
 
-    await axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_register__', json, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(async (response) => {
-        if (response.status === 200) {
-          console.log('YAY');
-          const profile = {
-            role,
-            contactName,
-            schoolName,
-            address,
-            city,
-            state,
-            zipCode,
-            phone,
-          };
-          await onLogin(username, password, profile, true, false);
-          // go to home page and/or confirm email
-          // set redux that user is logged in
-        }
-      })
-      .catch((e2) => {
-        console.log(e2);
-        curError = 'Error: Incorrect password.';
-        setError(curError);
-        // incorrect username or password
-      });
+    // await axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_register__', json, {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    //   .then(async (response) => {
+    //     if (response.status === 200) {
+    //       console.log('YAY');
+    //       const profile = {
+    //         role,
+    //         contactName,
+    //         schoolName,
+    //         address,
+    //         city,
+    //         state,
+    //         zipCode,
+    //         phone,
+    //       };
+    //       await onLogin(username, password, profile, true, false);
+    //       // go to home page and/or confirm email
+    //       // set redux that user is logged in
+    //     }
+    //   })
+    //   .catch((e2) => {
+    //     console.log(e2);
+    //     curError = 'Error: Incorrect password.';
+    //     setError(curError);
+    //     // incorrect username or password
+    //   });
+
+    base.register({ username, password }).then(async (res) => {
+      const profile = {
+        role,
+        contactName,
+        schoolName,
+        address,
+        city,
+        state,
+        zipCode,
+        phone,
+      };
+      await onLogin(username, res.body.user.fields.Password, profile, true, false);
+    }).catch((err) => {
+      console.log(err);
+      curError = 'Error: Incorrect password.';
+      setError(curError);
+    });
   };
 
   const handleSignIn = async (e) => {
@@ -93,36 +111,53 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
       return;
     }
 
-    const json = JSON.stringify({ username, password });
+    // const json = JSON.stringify({ username, password });
+    // await axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_login__', json, {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    //   .then(async (response) => {
+    //     if (response.status === 200) {
+    //       const profile = {
+    //         role,
+    //         contactName,
+    //         schoolName,
+    //         address,
+    //         city,
+    //         state,
+    //         zipCode,
+    //         phone,
+    //       };
 
-    await axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_login__', json, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(async (response) => {
-        if (response.status === 200) {
-          const profile = {
-            role,
-            contactName,
-            schoolName,
-            address,
-            city,
-            state,
-            zipCode,
-            phone,
-          };
+    //       await onLogin(username, password, profile, false, false);
+    //       // go to home page and set login user in redux
+    //     }
+    //   })
+    //   .catch((e2) => {
+    //     console.log(e2);
+    //     curError = 'Error: Incorrect username or password.';
+    //     setError(curError);
+    //     // incorrect username or password
+    //   });
 
-          await onLogin(username, password, profile, false, false);
-          // go to home page and set login user in redux
-        }
-      })
-      .catch((e2) => {
-        console.log(e2);
-        curError = 'Error: Incorrect username or password.';
-        setError(curError);
-        // incorrect username or password
-      });
+    base.login({ username, password }).then(async (res) => {
+      const profile = {
+        role,
+        contactName,
+        schoolName,
+        address,
+        city,
+        state,
+        zipCode,
+        phone,
+      };
+      await onLogin(username, res.body.user.fields.Password, profile, true, false);
+    }).catch((err) => {
+      console.log(err);
+      curError = 'Error: Incorrect username or password.';
+      setError(curError);
+    });
   };
 
   return (
@@ -253,4 +288,5 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
 LoginPage.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   onLogin: PropTypes.func.isRequired,
+  base: PropTypes.func.isRequired,
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { /* useEffect */ } from 'react';
 import './styles/App.css';
 import { connect } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
@@ -36,26 +36,26 @@ function App({
   // eslint-disable-next-line react/prop-types
   isLoggedIn, username, password, profile, register, reRegister, login, logout,
 }) {
-  useEffect(() => {
-    const loginUser = async (user, pass) => {
-      try {
-        const res = await base.login({ user, pass });
-        if (!res.body.success) {
-          return { match: false, found: false };
-        }
-        return { match: true, found: true };
-      } catch (err) {
-        if (err.error === 'AUTHENTICATION_REQUIRED') {
-          return { match: false, found: true };
-        }
-        return { match: false, found: false };
-      }
-    };
+  // useEffect(() => {
+  //   const loginUser = async (user, pass) => {
+  //     try {
+  //       const res = await base.login({ user, pass });
+  //       if (!res.body.success) {
+  //         return { match: false, found: false };
+  //       }
+  //       return { match: true, found: true };
+  //     } catch (err) {
+  //       if (err.error === 'AUTHENTICATION_REQUIRED') {
+  //         return { match: false, found: true };
+  //       }
+  //       return { match: false, found: false };
+  //     }
+  //   };
 
-    if (isLoggedIn) {
-      loginUser(username, password);
-    }
-  }, [isLoggedIn, username, password]);
+  //   if (isLoggedIn) {
+  //     loginUser(username, password);
+  //   }
+  // }, [isLoggedIn, username, password]);
 
   return (
     <div className="App">
