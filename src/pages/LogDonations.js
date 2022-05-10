@@ -3,9 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   Trash2, Pencil,
 } from 'lucide-react';
-import styles from './Donations.module.css';
+import styles from './LogDonations.module.css';
 
-function Donations() {
+function LogDonations() {
   const [donor, setDonor] = useState({});
   const [donations, setDonations] = useState([]);
   const [donorError, setDonorError] = useState('');
@@ -99,14 +99,6 @@ function Donations() {
       <h2 className={styles.header2}>Step 1. Add donor info</h2>
       {!editingDonor ? (
         <table className={styles.logTable}>
-          {/* <thead>
-            <tr>
-              {donorFields.map((field) => (
-                <th id={field}>{field}</th>
-              ))}
-              <th id="edit">Edit</th>
-            </tr>
-          </thead> */}
           <tbody>
             <tr>
               {donorFields.map((field) => (
@@ -207,26 +199,21 @@ function Donations() {
       )}
       {donorError}
       <h2 className={styles.header2}>Step 2. Add donation info</h2>
-      <table className={styles.logTable}>
-        {/* <thead>
-          <tr>
-            {donationFields.map((field) => (
-              <th id={field}>{field}</th>
-            ))}
-            <th id="delete">Delete</th>
-          </tr>
-        </thead> */}
-        <tbody>
-          {donations.map((donation, index) => (
-            <tr>
-              {donationFields.map((field) => (
-                <td>{donation[field]}</td>
+      {donations.length > 0
+        ? (
+          <table className={styles.logTable}>
+            <tbody>
+              {donations.map((donation, index) => (
+                <tr>
+                  {donationFields.map((field) => (
+                    <td>{donation[field]}</td>
+                  ))}
+                  <td className={styles.buttonEntry}><button aria-label="Delete" type="button" onClick={(e) => deleteDonation(e, index)}><Trash2 /></button></td>
+                </tr>
               ))}
-              <td className={styles.buttonEntry}><button aria-label="Delete" type="button" onClick={(e) => deleteDonation(e, index)}><Trash2 /></button></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            </tbody>
+          </table>
+        ) : null}
       <form onSubmit={addDonation}>
         <div className={styles.donationForm}>
           <div className={styles.donationFormField}>
@@ -295,12 +282,12 @@ function Donations() {
                 {' '}
               </label>
             </div>
-            <textarea required className={styles.notes} type="text" id="notes" name="notes" />
+            <input required className={styles.notes} type="text" id="notes" name="notes" />
           </div>
           <input className={styles.addSaveButton} type="submit" id="add" name="add" value="Add" />
         </div>
       </form>
-      <Link to="/">
+      <Link className={styles.cancelLink} to="/">
         <input className={styles.cancelButton} type="submit" id="submit" name="submit" value="Cancel" />
       </Link>
       <Link to="/confirmdonation" state={{ valid: true, donor, donations }}>
@@ -310,4 +297,4 @@ function Donations() {
   );
 }
 
-export default Donations;
+export default LogDonations;

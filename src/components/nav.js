@@ -8,7 +8,7 @@ import styles from './nav.module.css';
 import stfLogo from '../assets/STF_logo.png';
 
 export default function Nav({ loggedIn }) {
-  const linkArray = ['/home', '/inventory', '/newshoeform', '/orderform', '/adminlist', '/admindashboard', '/donations'];
+  const linkArray = ['/home', '/inventory', '/newshoeform', '/orderform', '/adminlist', '/admindashboard', '/logdonations'];
   const textArray = ['Home', 'Inventory', 'New Shoe Form', 'Order Form', 'Admin List', 'Admin Dashboard', 'Donations'];
   const iconArray = [Home, ClipboardList, Gift, ListOrdered, GraduationCap, Home, Gift];
 
