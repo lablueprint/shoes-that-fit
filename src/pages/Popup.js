@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Popup.css';
+import styles from './Popup.module.css';
 
 function Message({ success, message }) {
   return (success) ? (
@@ -20,10 +20,10 @@ function Popup({
   closePopup, success, message,
 }) {
   return (
-    <div className="popup">
-      <div className="popup-inner">
+    <div className={styles.popup}>
+      <div className={styles['popup-inner']}>
         <Message success={success} message={message} />
-        <button onClick={closePopup} type="submit" className="close-btn">Close</button>
+        <button onClick={closePopup} type="submit" className={styles['close-btn']}>Close</button>
       </div>
     </div>
   );

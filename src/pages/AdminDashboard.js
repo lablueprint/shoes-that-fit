@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import DashboardOrders from '../components/DashboardOrders';
 import InventorySummary from '../components/InventorySummary';
+import Records from '../components/Records';
 import styles from './AdminDashboard.module.css';
 
 function AdminDashboard({
@@ -65,13 +66,16 @@ function AdminDashboard({
       <Navigate to="/" />
     )
       : (
-        <>
+        <div className={styles.container}>
           <h1 className={styles.welcome}>Welcome Back, Admin</h1>
           <div className={styles.topComponents}>
             <DashboardOrders base={base} />
             <InventorySummary base={base} />
           </div>
-        </>
+          <div className={styles.recordContainer}>
+            <Records />
+          </div>
+        </div>
       )
   );
 }

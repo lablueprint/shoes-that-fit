@@ -11,7 +11,7 @@ import {
   AdminList,
   OrderForm,
   LoginPage,
-  Records,
+  RecordPage,
   AdminDashboard,
   Donations,
   DonationConfirmation,
@@ -130,7 +130,7 @@ function App({
           <Route
             path="/records"
             element={(
-              <Records
+              <RecordPage
                 isLoggedIn={isLoggedIn}
                 base={base}
               />
@@ -153,7 +153,7 @@ function App({
           <Route
             path="/records"
             element={(
-              <Records
+              <RecordPage
                 isLoggedIn={isLoggedIn}
                 base={base}
               />

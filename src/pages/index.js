@@ -1,7 +1,7 @@
 import MainInventory from './MainInventory';
 import LoginPage from './login';
 import NewShoeForm from './NewShoeForm';
-import Records from './Records';
+import RecordPage from './RecordPage';
 import AdminList from './AdminList';
 import OrderForm from './OrderForm';
 import OrderHistory from './OrderHistory';
@@ -14,7 +14,7 @@ import SchoolsForm from './SchoolsForm';
 import SchoolsDetail from './SchoolsDetail';
 
 export {
-  MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records, AdminDashboard,
+  MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, RecordPage, AdminDashboard,
   Donations, DonationConfirmation, OrderListAdmin, OrderHistory, SchoolsForm, SchoolsDetail,
   ChangePass,
 };
