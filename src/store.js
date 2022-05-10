@@ -10,7 +10,7 @@ const persistConfig = {
 };
 
 const loginReducer = (state = {
-  isLoggedIn: false, username: '', password: '', role: '', register: false, reRegister: false,
+  isLoggedIn: false, username: '', password: '', profile: {}, register: false, reRegister: false,
 }, action) => {
   switch (action.type) {
     case 'LOG_IN':
@@ -18,7 +18,7 @@ const loginReducer = (state = {
         isLoggedIn: true,
         username: action.payload.username,
         password: action.payload.password,
-        role: action.payload.role,
+        profile: action.payload.profile,
         register: action.payload.register,
         reRegister: action.payload.reRegister,
       };
@@ -28,7 +28,7 @@ const loginReducer = (state = {
         isLoggedIn: false,
         username: '',
         password: '',
-        role: '',
+        profile: {},
         register: false,
         reRegister: false,
       };
