@@ -41,13 +41,12 @@ export default function Nav({ isLoggedIn, onLogout }) {
               </ul>
             );
           })}
-          <Link to="/changePass">
+          <Link to="/changePass" style={{ color: 'white' }}>
             Reset Password
           </Link>
-          <Link to="/" onClick={onLogout}>
+          <Link to="/" onClick={onLogout} style={{ color: 'white' }}>
             Logout
           </Link>
-          ;
         </div>
       )
       : null

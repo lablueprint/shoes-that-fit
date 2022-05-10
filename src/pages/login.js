@@ -97,16 +97,15 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
       return;
     }
 
-    await base('Users')
+    await base('Profile')
       .select({
-        filterByFormula: `{Username} = ${username}`,
+        filterByFormula: `Username = "${username}"`,
       })
-      .firstPage((err, records) => {
+      .all((err, records) => {
         if (err) {
           setError(curError);
-          console.error(err);
         }
-        setSavedRole(records[0].role);
+        setSavedRole(records[0].fields.Role);
       });
 
     if (savedRole !== role) {
