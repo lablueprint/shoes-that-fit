@@ -39,6 +39,8 @@ td {
   padding-left: 8%;
   padding-top: 5%;
   font-weight: bold;
+  display: flex;
+  flex-direction: row;
 }
 
 .sub {
@@ -122,4 +124,8 @@ input {
   flex-direction: row;
   margin-top: 5%;
   margin-left: 15%;
+}
+
+.backButton {
+  cursor: pointer;
 }

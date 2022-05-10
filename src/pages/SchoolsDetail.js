@@ -15,15 +15,14 @@ const airtableConfig = {
 const base = new Airtable({ apiKey: airtableConfig.apiKey })
   .base(airtableConfig.baseKey);
 
-function SchoolsDetail() {
+function SchoolsDetail(input) {
+  const { id, backButton } = input;
   const [info, setInfo] = useState([]);
-  const id = 'recyXJY3yFJKQHYD2';
   const getCards = () => {
     base('Schools')
       .select({ filterByFormula: `ID="${id}"` })
       .all()
       .then((records) => {
-        console.log(records[0].fields);
         setInfo(records[0].fields);
       });
   };
@@ -36,7 +35,13 @@ function SchoolsDetail() {
     <div className={styles.orderFormContainer}>
       <script src="print.js" />
       <div className={styles.header}>
-        <ChevronLeft size={30} type="button" />
+        <div className={styles.backButton}>
+          <ChevronLeft
+            size={30}
+            type="button"
+            onClick={backButton}
+          />
+        </div>
         Directory
       </div>
       <div className={styles.format}>

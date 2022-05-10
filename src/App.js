@@ -20,6 +20,7 @@ import {
   SchoolsForm,
   SchoolsDetail,
   ChangePass,
+  Schools,
 } from './pages';
 
 const BASE_ID = process.env.REACT_APP_AIRTABLE_BASE_KEY;
@@ -156,6 +157,7 @@ function App({
           <Route path="/confirmdonation" element={<DonationConfirmation />} />
           <Route path="/schoolsform" element={<SchoolsForm />} />
           <Route path="/schoolsdetail" element={<SchoolsDetail />} />
+          <Route path="/schools" element={<Schools />} />
         </Routes>
       </div>
     </div>

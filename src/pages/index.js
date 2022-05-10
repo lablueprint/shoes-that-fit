@@ -10,11 +10,12 @@ import AdminDashboard from './AdminDashboard';
 import ChangePass from './ChangePass';
 import Donations from './Donations';
 import DonationConfirmation from './DonationConfirmation';
+import Schools from './Schools';
 import SchoolsForm from './SchoolsForm';
 import SchoolsDetail from './SchoolsDetail';
 
 export {
   MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records, AdminDashboard,
-  Donations, DonationConfirmation, OrderListAdmin, OrderHistory, SchoolsForm, SchoolsDetail,
-  ChangePass,
+  Donations, DonationConfirmation, OrderListAdmin, OrderHistory, Schools, SchoolsForm,
+  SchoolsDetail, ChangePass,
 };
