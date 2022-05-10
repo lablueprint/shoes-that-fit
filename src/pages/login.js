@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-export default function LoginPage({ isLoggedIn, onLogin }) {
+export default function LoginPage({ isLoggedIn, onLogin, base }) {
   console.log(isLoggedIn);
   const [error, setError] = useState('');
   const [username, setUsername] = useState('');
@@ -19,6 +19,8 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [zipCode, setZipCode] = useState('');
+
+  const [savedRole, setSavedRole] = useState('');
 
   const handleSignUp = async (e) => {
     let curError = '';
@@ -67,7 +69,7 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
             zipCode,
             phone,
           };
-          onLogin(username, password, profile, true, false);
+          await onLogin(username, password, profile, true, false);
           // go to home page and/or confirm email
           // set redux that user is logged in
         }
@@ -95,6 +97,24 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
       return;
     }
 
+    await base('Users')
+      .select({
+        filterByFormula: `{Username} = ${username}`,
+      })
+      .firstPage((err, records) => {
+        if (err) {
+          setError(curError);
+          console.error(err);
+        }
+        setSavedRole(records[0].role);
+      });
+
+    if (savedRole !== role) {
+      curError = 'Error: Incorrect Role for this User.';
+      setError(curError);
+      return;
+    }
+
     const json = JSON.stringify({ username, password });
     const token = process.env.REACT_APP_AIRTABLE_USER_KEY;
 
@@ -104,7 +124,7 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((response) => {
+      .then(async (response) => {
         if (response.status === 200) {
           const profile = {
             role,
@@ -116,13 +136,14 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
             zipCode,
             phone,
           };
-          onLogin(username, password, profile, false, false);
+
+          await onLogin(username, password, profile, false, false);
           // go to home page and set login user in redux
         }
       })
       .catch((e2) => {
         console.log(e2);
-        curError = 'Error: Incorrect password.';
+        curError = 'Error: Incorrect username or password.';
         setError(curError);
         // incorrect username or password
       });
@@ -260,4 +281,5 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
 LoginPage.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   onLogin: PropTypes.func.isRequired,
+  base: PropTypes.func.isRequired,
 };

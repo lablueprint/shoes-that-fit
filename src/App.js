@@ -134,7 +134,7 @@ function App({
               isLoggedIn={isLoggedIn}
               base={base}
             />
-)}
+          )}
         />
         <Route
           path="/changePass"
