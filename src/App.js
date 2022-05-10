@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './styles/App.css';
 import { connect } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Airtable from '@calblueprint/airlock';
 import { Nav } from './components';
 import {
   MainInventory,
@@ -18,24 +19,73 @@ import {
   OrderHistory,
   SchoolsForm,
   SchoolsDetail,
+  ChangePass,
 } from './pages';
 
+const BASE_ID = process.env.REACT_APP_AIRTABLE_BASE_KEY;
+const API_KEY = process.env.REACT_APP_AIRTABLE_USER_KEY;
+const ENDPOINT_URL = 'http://localhost:8000';
+
+Airtable.configure({
+  endpointUrl: ENDPOINT_URL,
+  apiKey: API_KEY,
+});
+
+const base = Airtable.base(BASE_ID);
+
 function App({
-  isLoggedIn, username, login, logout,
+  // eslint-disable-next-line react/prop-types
+  isLoggedIn, username, password, role, register, reRegister, login, logout,
 }) {
-  console.log(isLoggedIn);
+  useEffect(() => {
+    const loginUser = async (user, pass) => {
+      try {
+        const res = await base.login({ user, pass });
+        if (!res.body.success) {
+          return { match: false, found: false };
+        }
+        return { match: true, found: true };
+      } catch (err) {
+        if (err.error === 'AUTHENTICATION_REQUIRED') {
+          return { match: false, found: true };
+        }
+        return { match: false, found: false };
+      }
+    };
+
+    if (isLoggedIn) {
+      loginUser(username, password);
+    }
+  }, [isLoggedIn, username, password]);
+
   return (
     <div className="App">
-      <Nav loggedIn={isLoggedIn} />
+      <Nav onLogout={logout} />
       <div className="App-container">
         <Routes>
+          <Route
+            path="/admindashboard"
+            element={(
+              <AdminDashboard
+                isLoggedIn={isLoggedIn}
+                username={username}
+                password={password}
+                onLogin={login}
+                role={role}
+                register={register}
+                reRegister={reRegister}
+                base={base}
+              />
+        )}
+          />
           <Route
             path="/inventory"
             element={(
               <MainInventory
-                loggedIn={isLoggedIn}
+                isLoggedIn={isLoggedIn}
                 username={username}
-                onLogout={logout}
+                password={password}
+                base={base}
               />
             )}
           />
@@ -44,9 +94,9 @@ function App({
             path="/"
             element={(
               <LoginPage
-                loggedIn={isLoggedIn}
-                username={username}
+                isLoggedIn={isLoggedIn}
                 onLogin={login}
+                base={base}
               />
             )}
           />
@@ -54,9 +104,8 @@ function App({
             path="/newshoeform"
             element={(
               <NewShoeForm
-                loggedIn={isLoggedIn}
-                username={username}
-                onLogout={logout}
+                isLoggedIn={isLoggedIn}
+                base={base}
               />
             )}
           />
@@ -64,9 +113,8 @@ function App({
             path="/orderform"
             element={(
               <OrderForm
-                loggedIn={isLoggedIn}
-                username={username}
-                onLogout={logout}
+                isLoggedIn={isLoggedIn}
+                base={base}
               />
             )}
           />
@@ -74,14 +122,34 @@ function App({
             path="/adminlist"
             element={(
               <AdminList
-                loggedIn={isLoggedIn}
-                username={username}
-                onLogout={logout}
+                isLoggedIn={isLoggedIn}
+                base={base}
+              />
+        )}
+          />
+          <Route
+            path="/records"
+            element={(
+              <Records
+                isLoggedIn={isLoggedIn}
+                base={base}
+              />
+         )}
+          />
+          <Route
+            path="/changePass"
+            element={(
+              <ChangePass
+                isLoggedIn={isLoggedIn}
+                reRegister={reRegister}
+                prevUser={username}
+                prevRole={role}
+                prevPass={password}
+                onLogin={login}
+                base={base}
               />
             )}
           />
-          <Route path="/records" element={<Records />} />
-          <Route path="/admindashboard" element={<AdminDashboard />} />
           <Route path="/viewhistory" element={<OrderListAdmin />} />
           <Route path="/orderhistory" element={<OrderHistory />} />
           <Route path="/donations" element={<Donations />} />
@@ -96,14 +164,23 @@ function App({
 
 function mapStateToProps(state) {
   return {
-    isLoggedIn: state.loggedIn,
+    isLoggedIn: state.isLoggedIn,
     username: state.username,
+    password: state.password,
+    register: state.register,
+    reRegister: state.reRegister,
+    role: state.role,
   };
 }
 
 const mapDispatchToProps = (dispatch) => ({
   // dispatching plain actions
-  login: (username) => dispatch({ type: 'LOG_IN', payload: username }),
+  login: (username, password, role, register, reRegister) => dispatch({
+    type: 'LOG_IN',
+    payload: {
+      username, password, role, register, reRegister,
+    },
+  }),
   logout: () => dispatch({ type: 'LOG_OUT' }),
 });
 
@@ -112,6 +189,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(App);
 App.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  role: PropTypes.string.isRequired,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
+  register: PropTypes.bool.isRequired,
+  reRegister: PropTypes.bool.isRequired,
 };

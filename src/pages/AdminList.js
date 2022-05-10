@@ -1,20 +1,11 @@
 /* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { Navigate } from 'react-router-dom';
 // import Card from '../components/card';
 import { Table } from '../components';
 
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(
-  airtableConfig.baseKey,
-);
-
-function AdminList() {
+function AdminList({ isLoggedIn, base }) {
   const [cards, setCards] = useState([]);
   // let unique = [];
   // Card ex:
@@ -56,11 +47,20 @@ function AdminList() {
   // };
 
   return (
-    cards && cards.length > 0 && <Table headers={headers} sortIndices={sortIndices} data={cards} dataProps={dataProps} dataKeyProp={dataKeyProp} />
+    !isLoggedIn
+      ? (<Navigate to="/" />)
+      : (
+        cards && cards.length > 0 && <Table headers={headers} sortIndices={sortIndices} data={cards} dataProps={dataProps} dataKeyProp={dataKeyProp} />
+      )
   );
 }
 
 export default AdminList;
+
+AdminList.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  base: PropTypes.objectOf(PropTypes.object).isRequired,
+};
 
 // cards.filter((card) => card.fields.Time === `${value}`).map((card, index) => (
 //   // eslint-disable-next-line react/no-array-index-key

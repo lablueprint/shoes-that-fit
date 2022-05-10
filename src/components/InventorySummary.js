@@ -1,23 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Smile } from 'lucide-react';
+import PropTypes from 'prop-types';
 import styles from './InventorySummaryDashboard.module.css';
 
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-// eslint-disable-next-line no-unused-vars
-const base = new Airtable({
-  apiKey: airtableConfig.apiKey,
-  endpointURL: 'http://localhost:3000',
-})
-  .base(airtableConfig.baseKey);
-
-function InventorySummary() {
+function InventorySummary({ base }) {
   // eslint-disable-next-line no-unused-vars
   const [rows, setRows] = useState([]);
   const [quantityFulfilled, setQuantityFulfilled] = useState(0);
@@ -31,17 +18,19 @@ function InventorySummary() {
     setQuantityFulfilled(quantity);
   };
 
-  const getOrders = () => {
-    base('Orders').select({
-      view: 'Grid view',
-      filterByFormula: `SEARCH("${'y'}",{Active})`,
-    }).all()
-      .then((records) => {
-        setRows(records);
-      });
-  };
+  useEffect(() => {
+    const getOrders = async () => {
+      await base('Orders').select({
+        view: 'Grid view',
+        filterByFormula: `SEARCH("${'y'}",{Active})`,
+      }).all()
+        .then((records) => {
+          setRows(records);
+        });
+    };
+    getOrders();
+  }, []);
 
-  useEffect(getOrders, []);
   useEffect(getQuantityFulfilled, [rows]);
 
   // console.log(rows.length);
@@ -70,3 +59,7 @@ function InventorySummary() {
 }
 
 export default InventorySummary;
+
+InventorySummary.propTypes = {
+  base: PropTypes.func.isRequired,
+};

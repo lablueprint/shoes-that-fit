@@ -26,6 +26,7 @@
   flex-direction: column;
   width: fit-content;
   background: #24275E;
+  z-index: 1;
 }
 
 .linkStyles {

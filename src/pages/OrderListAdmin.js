@@ -1,44 +1,33 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import print from 'print-js';
-// import './OrderListAdmin.css';
-import styles from './OrderListAdmin.module.css';
 // import { AdminCard } from '../components';
+import styles from './OrderListAdmin.module.css';
 
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({ apiKey: airtableConfig.apiKey })
-  .base(airtableConfig.baseKey);
-
-function printForm() {
-  print({
-    printable: 'orders',
-    type: 'html',
-    // ignoreElements: ['print', 'bigSubmit'],
-    css: './OrderListAdmin.css',
-    targetStyles: ['*'],
-  });
-}
-
-function OrderListAdmin(id) {
+function OrderListAdmin({ base, id }) {
   const [cards, setCards] = useState([]);
   const [info, setInfo] = useState([]);
 
-  const getCards = () => {
-    base('Orders')
-      .select({ filterByFormula: `ID="${JSON.parse(JSON.stringify(id)).id}"` })
-      .all()
-      .then((records) => {
-        setCards(JSON.parse(records[0].fields.Orders));
-        setInfo(records[0].fields);
-      });
-  };
+  function printForm() {
+    print({
+      printable: 'orders',
+      type: 'html',
+      // ignoreElements: ['print', 'bigSubmit'],
+      css: './OrderListAdmin.css',
+      targetStyles: ['*'],
+    });
+  }
 
   useEffect(() => {
+    const getCards = () => {
+      base('Orders')
+        .select({ filterByFormula: `ID="${JSON.parse(JSON.stringify(id)).id}"` })
+        .all()
+        .then((records) => {
+          setCards(JSON.parse(records[0].fields.Orders));
+          setInfo(records[0].fields);
+        });
+    };
     getCards();
   }, []);
 
@@ -136,3 +125,8 @@ function OrderListAdmin(id) {
 }
 
 export default OrderListAdmin;
+
+OrderListAdmin.propTypes = {
+  base: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+};
