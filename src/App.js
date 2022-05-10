@@ -6,8 +6,19 @@ import PropTypes from 'prop-types';
 import Airtable from '@calblueprint/airlock';
 import { Nav } from './components';
 import {
-  MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records,
-  AdminDashboard, Donations, DonationConfirmation, OrderListAdmin, OrderHistory,
+  MainInventory,
+  NewShoeForm,
+  AdminList,
+  OrderForm,
+  LoginPage,
+  Records,
+  AdminDashboard,
+  Donations,
+  DonationConfirmation,
+  OrderListAdmin,
+  OrderHistory,
+  SchoolsForm,
+  SchoolsDetail,
   ChangePass,
 } from './pages';
 
@@ -76,7 +87,7 @@ function App({
                 password={password}
                 base={base}
               />
-        )}
+            )}
           />
           <Route
             exact
@@ -87,7 +98,7 @@ function App({
                 onLogin={login}
                 base={base}
               />
-        )}
+            )}
           />
           <Route
             path="/newshoeform"
@@ -96,7 +107,7 @@ function App({
                 isLoggedIn={isLoggedIn}
                 base={base}
               />
-        )}
+            )}
           />
           <Route
             path="/orderform"
@@ -105,7 +116,7 @@ function App({
                 isLoggedIn={isLoggedIn}
                 base={base}
               />
-        )}
+            )}
           />
           <Route
             path="/adminlist"
@@ -123,7 +134,7 @@ function App({
                 isLoggedIn={isLoggedIn}
                 base={base}
               />
-)}
+         )}
           />
           <Route
             path="/changePass"
@@ -137,12 +148,14 @@ function App({
                 onLogin={login}
                 base={base}
               />
-        )}
+            )}
           />
           <Route path="/viewhistory" element={<OrderListAdmin />} />
           <Route path="/orderhistory" element={<OrderHistory />} />
           <Route path="/donations" element={<Donations />} />
           <Route path="/confirmdonation" element={<DonationConfirmation />} />
+          <Route path="/schoolsform" element={<SchoolsForm />} />
+          <Route path="/schoolsdetail" element={<SchoolsDetail />} />
         </Routes>
       </div>
     </div>
