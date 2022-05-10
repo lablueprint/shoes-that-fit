@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-export default function LoginPage({ isLoggedIn, onLogin, base }) {
+export default function LoginPage({ isLoggedIn, onLogin }) {
   console.log(isLoggedIn);
   const [error, setError] = useState('');
   const [username, setUsername] = useState('');
@@ -19,8 +19,6 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [zipCode, setZipCode] = useState('');
-
-  const [savedRole, setSavedRole] = useState('');
 
   const handleSignUp = async (e) => {
     let curError = '';
@@ -48,12 +46,10 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
     }
 
     const json = JSON.stringify({ username, password });
-    const token = process.env.REACT_APP_AIRTABLE_USER_KEY;
 
     await axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_register__', json, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
       },
     })
       .then(async (response) => {
@@ -97,30 +93,11 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
       return;
     }
 
-    await base('Profile')
-      .select({
-        filterByFormula: `Username = "${username}"`,
-      })
-      .all((err, records) => {
-        if (err) {
-          setError(curError);
-        }
-        setSavedRole(records[0].fields.Role);
-      });
-
-    if (savedRole !== role) {
-      curError = 'Error: Incorrect Role for this User.';
-      setError(curError);
-      return;
-    }
-
     const json = JSON.stringify({ username, password });
-    const token = process.env.REACT_APP_AIRTABLE_USER_KEY;
 
     await axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_login__', json, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
       },
     })
       .then(async (response) => {
@@ -244,10 +221,6 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
                 </>
               ) : (
                 <>
-                  <select value={role} onChange={(e) => setRole(e.target.value)}>
-                    <option> Educator</option>
-                    <option> Administrator</option>
-                  </select>
                   <br />
                   <button type="button" onClick={handleSignIn}>
                     {' '}
@@ -280,5 +253,4 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
 LoginPage.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   onLogin: PropTypes.func.isRequired,
-  base: PropTypes.func.isRequired,
 };

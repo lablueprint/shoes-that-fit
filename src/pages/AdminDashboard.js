@@ -40,12 +40,10 @@ function AdminDashboard({
     }
 
     if (reRegister) {
-      const token = process.env.REACT_APP_AIRTABLE_USER_KEY;
       const json = JSON.stringify({ username, password });
       axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_register__', json, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
         },
       })
         .then(async (response) => {
@@ -73,7 +71,7 @@ function AdminDashboard({
             <InventorySummary base={base} />
           </div>
           <div className={styles.recordContainer}>
-            <Records />
+            <Records base={base} />
           </div>
         </div>
       )

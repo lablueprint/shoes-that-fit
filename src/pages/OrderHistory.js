@@ -1,21 +1,12 @@
 // import React, { useState, useEffect } from 'react';
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft } from 'lucide-react';
+import PropTypes from 'prop-types';
 import Card from '../components/card';
 import styles from './OrderHistory.module.css';
 import OrderListAdmin from './OrderListAdmin';
 
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({ apiKey: airtableConfig.apiKey })
-  .base(airtableConfig.baseKey);
-
-function OrderHistory() {
+function OrderHistory({ base }) {
   const [cards, setCards] = useState([]);
   const [specificCardID, setSpecificCardID] = useState('');
 
@@ -98,5 +89,9 @@ function OrderHistory() {
       )
   );
 }
+
+OrderHistory.propTypes = {
+  base: PropTypes.func.isRequired,
+};
 
 export default OrderHistory;
