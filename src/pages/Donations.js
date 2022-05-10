@@ -10,14 +10,21 @@ function Donations() {
   const [donations, setDonations] = useState([]);
   const [donorError, setDonorError] = useState('');
   const [editingDonor, setEditingDonor] = useState(true);
-  const donorFields = ['Name', 'Phone', 'Address Line 1', 'Address Line 2', 'City', 'State', 'Zip Code'];
+  const donorFields = ['Name', 'Email', 'Phone', 'Address Line 1', 'Address Line 2', 'City', 'State', 'Zip Code'];
   const donationFields = ['Quantity', 'Gender', 'Category', 'Wide', 'Size', 'Notes'];
   const location = useLocation();
+  const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const validateEmail = (email) => String(email)
+    .toLowerCase()
+    .match(
+      EMAIL_REGEX,
+    );
 
   useEffect(() => {
     if (location.state) {
       setDonor(location.state.donor);
       setDonations(location.state.donations);
+      setEditingDonor(false);
     } else {
       console.log('No donor/donations field');
     }
@@ -30,7 +37,12 @@ function Donations() {
       const tempDonor = {};
       tempDonor.Name = document.getElementById('name').value;
       tempDonor.Phone = document.getElementById('phone').value;
-      tempDonor.Email = document.getElementById('email').value;
+      const email = document.getElementById('email').value;
+      if (!validateEmail(email)) {
+        setDonorError(<p className={styles.error}>Bad Email!</p>);
+        return;
+      }
+      tempDonor.Email = email;
       tempDonor['Address Line 1'] = document.getElementById('addressline1').value;
       const addressline2Element = document.getElementById('addressline2');
       if (addressline2Element) {
@@ -42,7 +54,7 @@ function Donations() {
       tempDonor.State = document.getElementById('state').value;
       const zipcode = parseInt(document.getElementById('zipcode').value, 10);
       if (!zipcode || zipcode < 10000 || zipcode > 99999) {
-        setDonorError(<p>Bad Zip Code</p>);
+        setDonorError(<p className={styles.error}>Bad Zip Code!</p>);
         return;
       }
       tempDonor['Zip Code'] = zipcode;
@@ -83,18 +95,18 @@ function Donations() {
 
   return (
     <div>
-      <h1>Log a Donation</h1>
-      <h2>Step 1. Add donor info</h2>
+      <h1 className={styles.header1}>Log a Donation</h1>
+      <h2 className={styles.header2}>Step 1. Add donor info</h2>
       {!editingDonor ? (
         <table className={styles.logTable}>
-          <thead>
+          {/* <thead>
             <tr>
               {donorFields.map((field) => (
-                <th>{field}</th>
+                <th id={field}>{field}</th>
               ))}
-              <th>Edit</th>
+              <th id="edit">Edit</th>
             </tr>
-          </thead>
+          </thead> */}
           <tbody>
             <tr>
               {donorFields.map((field) => (
@@ -107,100 +119,103 @@ function Donations() {
       ) : (
         <form onSubmit={donorUpdate}>
           <div className={styles.donationForm}>
-            <div className={styles.donationFormField}>
-              <div>
-                <label htmlFor="name">
-                  Donor/organization name:
-                  {' '}
-                </label>
+            <div>
+              <div className={styles.donationFormField}>
+                <div>
+                  <label htmlFor="name">
+                    Donor/organization name
+                    {' '}
+                  </label>
+                </div>
+                <input required className={styles.name} type="text" id="name" name="name" defaultValue={donor.Name} />
               </div>
-              <input required type="text" id="name" name="name" defaultValue={donor.Name} />
-            </div>
 
-            <div className={styles.donationFormField}>
-              <div>
-                <label htmlFor="phone">
-                  Phone #:
-                  {' '}
-                </label>
+              <div className={styles.donationFormField}>
+                <div>
+                  <label htmlFor="phone">
+                    Phone #
+                    {' '}
+                  </label>
+                </div>
+                <input required className={styles.phone} type="text" id="phone" name="phone" defaultValue={donor.Phone} />
               </div>
-              <input required type="text" id="phone" name="phone" defaultValue={donor.Phone} />
-            </div>
 
-            <div className={styles.donationFormField}>
-              <div>
-                <label htmlFor="email">
-                  Email address:
-                  {' '}
-                </label>
+              <div className={styles.donationFormField}>
+                <div>
+                  <label htmlFor="email">
+                    Email address
+                    {' '}
+                  </label>
+                </div>
+                <input required className={styles.email} type="text" id="email" name="email" defaultValue={donor.Email} />
               </div>
-              <input required type="text" id="email" name="email" defaultValue={donor.Email} />
             </div>
+            <div>
+              <div className={styles.donationFormField}>
+                <div>
+                  <label htmlFor="addressline1">
+                    Address line 1
+                    {' '}
+                  </label>
+                </div>
+                <input required className={styles.addressline1} type="text" id="addressline1" name="addressline1" defaultValue={donor['Address Line 1']} />
+              </div>
 
-            <div className={styles.donationFormField}>
-              <div>
-                <label htmlFor="addressline1">
-                  Address line 1:
-                  {' '}
-                </label>
+              <div className={styles.donationFormField}>
+                <div>
+                  <label htmlFor="addressline2">
+                    Address line 2 (optional)
+                    {' '}
+                  </label>
+                </div>
+                <input className={styles.addressline2} type="text" id="addressline2" name="addressline2" defaultValue={donor['Address Line 2']} />
               </div>
-              <input required type="text" id="addressline1" name="addressline1" defaultValue={donor['Address Line 1']} />
-            </div>
 
-            <div className={styles.donationFormField}>
-              <div>
-                <label htmlFor="addressline2">
-                  Address line 2 (optional):
-                  {' '}
-                </label>
+              <div className={styles.donationFormField}>
+                <div>
+                  <label htmlFor="city">
+                    City
+                    {' '}
+                  </label>
+                </div>
+                <input required className={styles.city} type="text" id="city" name="city" defaultValue={donor.City} />
               </div>
-              <input type="text" id="addressline2" name="addressline2" defaultValue={donor['Address Line 2']} />
-            </div>
 
-            <div className={styles.donationFormField}>
-              <div>
-                <label htmlFor="city">
-                  City:
-                  {' '}
-                </label>
+              <div className={styles.donationFormField}>
+                <div>
+                  <label htmlFor="state">
+                    State
+                    {' '}
+                  </label>
+                </div>
+                <input required className={styles.state} type="text" id="state" name="state" defaultValue={donor.State} />
               </div>
-              <input required type="text" id="city" name="city" defaultValue={donor.City} />
-            </div>
 
-            <div className={styles.donationFormField}>
-              <div>
-                <label htmlFor="state">
-                  State:
-                  {' '}
-                </label>
+              <div className={styles.donationFormField}>
+                <div>
+                  <label htmlFor="zipcode">
+                    Zip code
+                    {' '}
+                  </label>
+                </div>
+                <input required className={styles.zipcode} type="text" id="zipcode" name="zipcode" defaultValue={donor['Zip Code']} />
               </div>
-              <input required type="text" id="state" name="state" defaultValue={donor.State} />
+              <input className={styles.addSaveButton} type="submit" id="save" name="save" value="Save" />
             </div>
-
-            <div className={styles.donationFormField}>
-              <div>
-                <label htmlFor="zipcode">
-                  Zip code:
-                  {' '}
-                </label>
-              </div>
-              <input required type="text" id="zipcode" name="zipcode" defaultValue={donor['Zip Code']} />
-            </div>
-            <input className={styles.addSaveButton} type="submit" id="save" name="save" value="Save" />
           </div>
         </form>
       )}
       {donorError}
-      <h2>Step 2. Add donation info</h2>
+      <h2 className={styles.header2}>Step 2. Add donation info</h2>
       <table className={styles.logTable}>
-        <thead>
+        {/* <thead>
           <tr>
             {donationFields.map((field) => (
-              <th>{field}</th>
+              <th id={field}>{field}</th>
             ))}
-            <th> Delete </th>
+            <th id="delete">Delete</th>
           </tr>
-        </thead>
+        </thead> */}
         <tbody>
           {donations.map((donation, index) => (
             <tr>
@@ -217,21 +232,21 @@ function Donations() {
           <div className={styles.donationFormField}>
             <div>
               <label htmlFor="quantity">
-                Quantity:
+                Quantity
                 {' '}
               </label>
             </div>
-            <input required type="number" id="quantity" name="quantity" />
+            <input required className={styles.quantity} type="number" id="quantity" name="quantity" />
           </div>
 
           <div className={styles.donationFormField}>
             <div>
               <label htmlFor="gender">
-                Gender:
+                Gender
                 {' '}
               </label>
             </div>
-            <select name="gender" id="gender">
+            <select className={styles.gender} name="gender" id="gender">
               <option value="none" selected disabled hidden>Select an Option</option>
               <option value="Boys">Boys</option>
               <option value="Girls">Girls</option>
@@ -241,11 +256,11 @@ function Donations() {
           <div className={styles.donationFormField}>
             <div>
               <label htmlFor="category">
-                Category:
+                Category
                 {' '}
               </label>
             </div>
-            <select name="category" id="category">
+            <select className={styles.category} name="category" id="category">
               <option value="none" selected disabled hidden>Select an Option</option>
               <option value="Infant/Child">Infant/Child</option>
               <option value="Youth">Youth</option>
@@ -256,31 +271,31 @@ function Donations() {
           <div className={styles.donationFormField}>
             <div>
               <label htmlFor="size">
-                Size:
+                Size
                 {' '}
               </label>
             </div>
-            <input required type="text" id="size" name="size" />
+            <input required className={styles.size} type="text" id="size" name="size" />
           </div>
 
           <div className={styles.donationFormField}>
             <div>
               <label htmlFor="wide">
-                Wide:
+                Wide
                 {' '}
               </label>
             </div>
-            <input type="checkbox" id="wide" name="wide" />
+            <input className={styles.wide} type="checkbox" id="wide" name="wide" />
           </div>
 
           <div className={styles.donationFormField}>
             <div>
               <label htmlFor="notes">
-                Notes:
+                Notes
                 {' '}
               </label>
             </div>
-            <textarea required type="text" id="notes" name="notes" />
+            <textarea required className={styles.notes} type="text" id="notes" name="notes" />
           </div>
           <input className={styles.addSaveButton} type="submit" id="add" name="add" value="Add" />
         </div>

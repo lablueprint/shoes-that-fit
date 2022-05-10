@@ -14,7 +14,6 @@
     border: 1px solid black;
     margin: 1rem;
     padding: 2rem 2rem;
-    text-align: center;
 }
 
 .donationFormField {
@@ -30,14 +29,110 @@
     line-height: 21px;
 }
 
+.header1 {
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 56px;
+    color: black;
+    text-align: left;
+    padding-left: 15px;
+}
+
+.header2 {
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    color: black;
+    text-align: left;
+    padding-left: 15px;
+}
+
+.error {
+    background: white;
+    border: 2px solid #FF6622;
+    border-radius: 5px;
+    box-sizing: border-box;
+    color: #e4571a;
+    width: 200px;
+    height: 100px;
+}
+
+.donationFormField input, select, textarea {
+    height: 30px;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-size: 14px;
+}
+.name {
+    width: 280px;
+}
+.phone {
+    width: 130px;
+}
+.email {
+    width: 200px;
+}
+.addressline1 {
+    width: 150px;
+}
+.addressline2 {
+    width: 150px;
+}
+.city {
+    width: 130px;
+}
+.state {
+    width: 65px;
+}
+.zipcode {
+    width: 75px;
+}
+.quantity {
+    width: 55px;
+}
+.gender {
+    width: 50px;
+}
+.category {
+    width: 90px;
+}
+.size {
+    width: 45px;
+}
+.wide {
+    width: 30px;
+    height: 30px;
+}
+.notes {
+    width: 325px;
+}
+
 .logTable {
     margin-left: auto;
     margin-right: auto;
-    border: 1px solid gray;
+    background: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    box-sizing: border-box;
+
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    color: black;
+
+    table-layout: auto;
+    width: 850px;
 }
 
 .addSaveButton {
-    background: #FFA73E;
+    background: #AEECFF;
+    border: 2px solid #AEECFF;
     border-radius: 5px;
 
     font-family: 'Hartwell';
@@ -46,26 +141,28 @@
     font-size: 20px;
     line-height: 23px;
 
-    width: 75px;
-    height: 42px;
+    width: 60px;
+    height: 40px;
 }
-
 .cancelButton {
-    background: #FFA73E;
+    background: white;
+    border: 2px solid #FF6622;
     border-radius: 5px;
+    box-sizing: border-box;
 
     font-family: 'Hartwell';
     font-style: normal;
     font-weight: 600;
     font-size: 24px;
     line-height: 28px;
+    color: black;
 
     width: 144px;
     height: 48px;
 }
-
 .confirmButton {
     background: #AEECFF;
+    border: 2px solid #AEECFF;
     border-radius: 5px;
 
     font-family: 'Hartwell';
