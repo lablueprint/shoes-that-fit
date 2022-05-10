@@ -139,13 +139,12 @@ function App({
             />
         )}
         />
-<Route path="/viewhistory" element={<OrderListAdmin />} />
-          <Route path="/orderhistory" element={<OrderHistory />} />
-          <Route path="/donations" element={<Donations />} />
-          <Route path="/confirmdonation" element={<DonationConfirmation />} />
+        <Route path="/viewhistory" element={<OrderListAdmin />} />
+        <Route path="/orderhistory" element={<OrderHistory />} />
+        <Route path="/donations" element={<Donations />} />
+        <Route path="/confirmdonation" element={<DonationConfirmation />} />
       </Routes>
-  </div>
-</div>
+    </div>
   );
 }
 
