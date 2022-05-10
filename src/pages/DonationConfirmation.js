@@ -1,17 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({ apiKey: airtableConfig.apiKey })
-  .base(airtableConfig.baseKey);
-
-export default function DonationConfirmation() {
+export default function DonationConfirmation({ base }) {
   const location = useLocation();
   const { valid, donor, donations } = location.state;
   const [error, setError] = useState('');
@@ -116,3 +107,7 @@ export default function DonationConfirmation() {
     </div>
   );
 }
+
+DonationConfirmation.propTypes = {
+  base: PropTypes.func.isRequired,
+};

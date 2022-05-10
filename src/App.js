@@ -23,12 +23,11 @@ import {
 } from './pages';
 
 const BASE_ID = process.env.REACT_APP_AIRTABLE_BASE_KEY;
-const API_KEY = process.env.REACT_APP_AIRTABLE_USER_KEY;
 const ENDPOINT_URL = 'http://localhost:8000';
 
 Airtable.configure({
   endpointUrl: ENDPOINT_URL,
-  apiKey: API_KEY,
+  apiKey: 'airlock',
 });
 
 const base = Airtable.base(BASE_ID);
@@ -173,12 +172,17 @@ function App({
               />
             )}
           />
-          <Route path="/viewhistory" element={<OrderListAdmin />} />
-          <Route path="/orderhistory" element={<OrderHistory />} />
-          <Route path="/donations" element={<Donations />} />
-          <Route path="/confirmdonation" element={<DonationConfirmation />} />
-          <Route path="/schoolsform" element={<SchoolsForm />} />
-          <Route path="/schoolsdetail" element={<SchoolsDetail />} />
+          <Route
+            path="/viewhistory"
+            element={(
+              <OrderListAdmin base={base} />
+              )}
+          />
+          <Route path="/orderhistory" element={<OrderHistory base={base} />} />
+          <Route path="/donations" element={<Donations base={base} />} />
+          <Route path="/confirmdonation" element={<DonationConfirmation base={base} />} />
+          <Route path="/schoolsform" element={<SchoolsForm base={base} />} />
+          <Route path="/schoolsdetail" element={<SchoolsDetail base={base} />} />
         </Routes>
       </div>
     </div>

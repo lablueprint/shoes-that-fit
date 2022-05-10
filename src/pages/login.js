@@ -46,12 +46,10 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
     }
 
     const json = JSON.stringify({ username, password });
-    const token = process.env.REACT_APP_AIRTABLE_USER_KEY;
 
     await axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_register__', json, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
       },
     })
       .then(async (response) => {
@@ -67,7 +65,7 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
             zipCode,
             phone,
           };
-          onLogin(username, password, profile, true, false);
+          await onLogin(username, password, profile, true, false);
           // go to home page and/or confirm email
           // set redux that user is logged in
         }
@@ -96,15 +94,13 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
     }
 
     const json = JSON.stringify({ username, password });
-    const token = process.env.REACT_APP_AIRTABLE_USER_KEY;
 
     await axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_login__', json, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
       },
     })
-      .then((response) => {
+      .then(async (response) => {
         if (response.status === 200) {
           const profile = {
             role,
@@ -116,13 +112,14 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
             zipCode,
             phone,
           };
-          onLogin(username, password, profile, false, false);
+
+          await onLogin(username, password, profile, false, false);
           // go to home page and set login user in redux
         }
       })
       .catch((e2) => {
         console.log(e2);
-        curError = 'Error: Incorrect password.';
+        curError = 'Error: Incorrect username or password.';
         setError(curError);
         // incorrect username or password
       });
@@ -224,10 +221,6 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
                 </>
               ) : (
                 <>
-                  <select value={role} onChange={(e) => setRole(e.target.value)}>
-                    <option> Educator</option>
-                    <option> Administrator</option>
-                  </select>
                   <br />
                   <button type="button" onClick={handleSignIn}>
                     {' '}

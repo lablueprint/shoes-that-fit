@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import styles from './Records.module.css';
 
 // Airtable stuff
-const Airtable = require('airtable');
 
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(airtableConfig.baseKey);
-
-function Records() {
+function Records({ base }) {
   const [records, setRecords] = useState([]);
   const [toggle, setToggle] = useState(false);
   const getPosts = () => {
@@ -135,5 +128,9 @@ function Records() {
     </div>
   );
 }
+
+Records.propTypes = {
+  base: PropTypes.func.isRequired,
+};
 
 export default Records;
