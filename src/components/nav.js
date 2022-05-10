@@ -3,20 +3,21 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   Home, ClipboardList, ListOrdered, Gift, GraduationCap,
 } from 'lucide-react';
+
 import PropTypes from 'prop-types';
 import styles from './nav.module.css';
 import stfLogo from '../assets/STF_logo.png';
 
-export default function Nav({ loggedIn }) {
+export default function Nav({ isLoggedIn, onLogout }) {
   const location = useLocation();
   const [selected, setSelected] = useState(location.pathname);
-  const linkArray = ['/home', '/inventory', '/newshoeform', '/orderform', '/adminlist', '/admindashboard'];
-  const textArray = ['Home', 'Inventory', 'New Shoe Form', 'Order Form', 'Admin List', 'Admin Dashboard'];
-  const iconArray = [Home, ClipboardList, Gift, ListOrdered, GraduationCap, Home];
+  const linkArray = ['/admindashboard', '/inventory', '/newshoeform', '/orderform', '/adminlist', '/donations'];
+  const textArray = ['Admin Dashboard', 'Inventory', 'New Shoe Form', 'Order Form', 'Admin List', 'Donations'];
+  const iconArray = [Home, ClipboardList, Gift, ListOrdered, GraduationCap, Gift];
 
   return (
-    !loggedIn ? (null)
-      : (
+    isLoggedIn
+      ? (
         <div className={styles.sidebar}>
           <img className={styles.stfLogo} src={stfLogo} alt="Shoes That Fit" />
           {iconArray.map((Icon, index) => {
@@ -40,11 +41,19 @@ export default function Nav({ loggedIn }) {
               </ul>
             );
           })}
+          <Link to="/changePass" style={{ color: 'white' }}>
+            Reset Password
+          </Link>
+          <Link to="/" onClick={onLogout} style={{ color: 'white' }}>
+            Logout
+          </Link>
         </div>
       )
+      : null
   );
 }
 
 Nav.propTypes = {
-  loggedIn: PropTypes.bool.isRequired,
+  onLogout: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
 };

@@ -1,42 +1,28 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-// import React from 'react';
-// import { makeStyles } from '@material-ui/core/styles';
-
-// const Airtable = require('airtable');
-
-// const airtableConfig = {
-//   apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-//   baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-// };
-
-// const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(airtableConfig.baseKey);
-
-export default function LoginPage({ loggedIn, onLogin }) {
+export default function LoginPage({ isLoggedIn, onLogin }) {
+  console.log(isLoggedIn);
   const [error, setError] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('Educator');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [hasAccount, setHasAccount] = useState(false);
-  const [isLoggedIn, setLoggedIn] = useState(loggedIn);
+  const [string, setString] = useState('Log In');
+  const [hasAccount, setHasAccount] = useState(true);
+  const [contactName, setContactName] = useState('');
+  const [schoolName, setSchoolName] = useState('');
+  const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [zipCode, setZipCode] = useState('');
 
-  // const clearState = (errorMsg) => {
-  //   setError(errorMsg);
-  //   setPassword('');
-  //   setUsername('');
-  //   setConfirmPassword('');
-  //   setRole('Educator');
-  // };
-
-  const handleSignup = async (e) => {
+  const handleSignUp = async (e) => {
     let curError = '';
     setError('');
-    console.log(role);
     e.preventDefault();
     if (username.length === 0) {
       curError = 'Error: username cannot be empty.';
@@ -53,25 +39,35 @@ export default function LoginPage({ loggedIn, onLogin }) {
       setError(curError);
       return;
     }
-    if (role.length === 0) {
-      console.log(role);
-      curError = 'Error: must choose a role.';
+    if (confirmPassword !== password) {
+      curError = 'Error: confirm password must match password.';
       setError(curError);
-      // return;
+      return;
     }
 
     const json = JSON.stringify({ username, password });
-    const token = 'keyYheV6VxT2I65Z3';
+    const token = process.env.REACT_APP_AIRTABLE_USER_KEY;
 
-    axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_register__', json, {
+    await axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_register__', json, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((response) => {
+      .then(async (response) => {
         if (response.status === 200) {
           console.log('YAY');
+          const profile = {
+            role,
+            contactName,
+            schoolName,
+            address,
+            city,
+            state,
+            zipCode,
+            phone,
+          };
+          onLogin(username, password, profile, true, false);
           // go to home page and/or confirm email
           // set redux that user is logged in
         }
@@ -82,52 +78,27 @@ export default function LoginPage({ loggedIn, onLogin }) {
         setError(curError);
         // incorrect username or password
       });
-
-    // base('Users').select({ filterByFormula: `Username = "${username}"` }).all().then((res) => {
-    //   if (res.length !== 0) {
-    //     curError = 'Error: Username already exists';
-    //     clearState(curError);
-    //   } else if (curError.length === 0) {
-    //     if (password === confirmPassword) {
-    //       base('Users').create(
-    //         [
-    //           {
-    //             fields: {
-    //               Username: username,
-    //               Password: password,
-    //               Role: role,
-    //               // Role: role,
-    //             },
-    //           }],
-    //         (err, records) => {
-    //           if (err) {
-    //             console.error(err);
-    //             return;
-    //           }
-    //           records.forEach((record) => {
-    //             console.log(record.getId());
-    //           });
-    //         },
-    //       );
-    //       clearState('');
-    //     } else {
-    //       console.log("passwords don't match");
-    //     }
-    //   }
-    // });
   };
 
   const handleSignIn = async (e) => {
-    e.preventDefault();
     let curError = '';
     setError('');
-    // base('Users').select({ filterByFormula: `Username = "${username}"` }).all().then((res) => {
-    //   console.log(res);
-    // });
-    const json = JSON.stringify({ username, password });
-    const token = 'keyYheV6VxT2I65Z3';
+    e.preventDefault();
+    if (username.length === 0) {
+      curError = 'Error: username cannot be empty.';
+      setError(curError);
+      return;
+    }
+    if (password.length === 0) {
+      curError = 'Error: password cannot be empty.';
+      setError(curError);
+      return;
+    }
 
-    axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_login__', json, {
+    const json = JSON.stringify({ username, password });
+    const token = process.env.REACT_APP_AIRTABLE_USER_KEY;
+
+    await axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_login__', json, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -135,8 +106,17 @@ export default function LoginPage({ loggedIn, onLogin }) {
     })
       .then((response) => {
         if (response.status === 200) {
-          onLogin();
-          setLoggedIn(true);
+          const profile = {
+            role,
+            contactName,
+            schoolName,
+            address,
+            city,
+            state,
+            zipCode,
+            phone,
+          };
+          onLogin(username, password, profile, false, false);
           // go to home page and set login user in redux
         }
       })
@@ -151,38 +131,94 @@ export default function LoginPage({ loggedIn, onLogin }) {
   return (
     isLoggedIn
       ? (
-        <Navigate to="/home" />
+        <Navigate to="/admindashboard" />
       )
       : (
         <div className="loginWrapper">
-          <h1>Please Log In</h1>
-          {/* <form onSubmit={onSubmit}> */}
+          <h1>
+            Please
+            {` ${string}`}
+          </h1>
           <form>
-            <label>
-              <p>Username</p>
-              <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-            </label>
-            <label>
-              <p>Password</p>
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </label>
-            <label>
-              <p>Confirm Password</p>
-              <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-            </label>
-            {error.length > 0 && <div><p>{error}</p></div>}
+            {string === 'Log In' && (
+              <>
+                <label>
+                  <p>Email </p>
+                  <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                </label>
+                <label>
+                  <p>Password </p>
+                  <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                </label>
+              </>
+            )}
             <div>
-              {hasAccount ? (
+              {!hasAccount ? (
                 <>
-                  <button type="button" onClick={handleSignIn}> Sign In</button>
+                  {string === 'Register' && (
+                  <>
+                    <div>
+                      <select value={role} onChange={(e) => setRole(e.target.value)}>
+                        <option> Educator</option>
+                        <option> Administrator</option>
+                      </select>
+                      <h3>
+                        Contact Information
+                      </h3>
+                      <p>Email </p>
+                      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                      <p>Contact Name </p>
+                      <input type="text" value={contactName} onChange={(e) => setContactName(e.target.value)} />
+                      <p>Phone </p>
+                      <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                    </div>
+                    {role === 'Educator'
+                    && (
+                    <div>
+                      <h3>
+                        School Information
+                      </h3>
+                      <p>School Name </p>
+                      <input type="text" value={schoolName} onChange={(e) => setSchoolName(e.target.value)} />
+                      <p>Address </p>
+                      <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
+                      <p>City </p>
+                      <input type="text" value={city} onChange={(e) => setCity(e.target.value)} />
+                      <p>State </p>
+                      <input type="text" value={state} onChange={(e) => setState(e.target.value)} />
+                      <p>Zip Code </p>
+                      <input type="text" value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
+                    </div>
+                    )}
+
+                    <br />
+                    <label>
+                      <p>Password </p>
+                      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    </label>
+                    <label>
+                      <p>Confirm Password </p>
+                      <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                    </label>
+                  </>
+                  )}
+                  <br />
+                  <br />
+
+                  <button type="button" onClick={handleSignUp}> Register</button>
+                  <br />
+
                   <p className="accountStatusParagraph">
-                    No account?
+                    Have an account?
                     {/* toggle the state when you click the button */}
                     <button
                       type="button"
-                      onClick={() => setHasAccount(!hasAccount)}
+                      onClick={() => {
+                        setHasAccount(!hasAccount);
+                        setString('Log In');
+                      }}
                     >
-                      Sign up
+                      Sign In
                     </button>
                   </p>
                 </>
@@ -193,20 +229,28 @@ export default function LoginPage({ loggedIn, onLogin }) {
                     <option> Administrator</option>
                   </select>
                   <br />
-                  <button type="button" onClick={handleSignup}> Sign up</button>
+                  <button type="button" onClick={handleSignIn}>
+                    {' '}
+                    Log In
+                  </button>
+                  <br />
                   <p className="accountStatusParagraph">
                     {' '}
-                    Have an account?
+                    Don&apos;t have an account?
                     <button
                       type="button"
-                      onClick={() => setHasAccount(!hasAccount)}
+                      onClick={() => {
+                        setHasAccount(!hasAccount);
+                        setString('Register');
+                      }}
                     >
-                      Sign In
+                      Register
                     </button>
                   </p>
                 </>
               )}
             </div>
+            {error.length > 0 && <div><p>{error}</p></div>}
           </form>
         </div>
       )
@@ -214,6 +258,6 @@ export default function LoginPage({ loggedIn, onLogin }) {
 }
 
 LoginPage.propTypes = {
-  loggedIn: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
   onLogin: PropTypes.func.isRequired,
 };

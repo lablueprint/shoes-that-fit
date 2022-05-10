@@ -4,6 +4,7 @@ import AdminCard from './admincard';
 import TableFooter from './TableFooter';
 import PageLengthForm from './PageLengthForm';
 import Nav from './nav';
+import Table from './table';
 
 export {
   Header,
@@ -12,4 +13,5 @@ export {
   TableFooter,
   PageLengthForm,
   Nav,
+  Table,
 };

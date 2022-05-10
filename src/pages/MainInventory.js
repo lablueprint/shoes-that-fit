@@ -3,37 +3,10 @@ import React, {
   useState, useEffect, useRef, useCallback,
 } from 'react';
 import ReactSelect from 'react-select';
+import { Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import base from '../lib/airtable';
 import { TableFooter, PageLengthForm } from '../components';
 import styles from './MainInventory.module.css';
-
-// const Airtable = require('airtable');
-
-// const airtableConfig = {
-//   apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-//   baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-// };
-
-// const base = new Airtable({
-//   apiKey: airtableConfig.apiKey,
-//   endpointURL: 'http://localhost:3000',
-// }).base(airtableConfig.baseKey);
-
-const loginUser = async (email, password) => {
-  try {
-    const res = await base.login({ username: email, password });
-    if (!res.body.success) {
-      return { match: false, found: false };
-    }
-    return { match: true, found: true };
-  } catch (err) {
-    if (err.error === 'AUTHENTICATION_REQUIRED') {
-      return { match: false, found: true };
-    }
-    return { match: false, found: false };
-  }
-};
 
 const calculateRange = (tableData, numRows) => {
   const range = [];
@@ -47,10 +20,14 @@ const calculateRange = (tableData, numRows) => {
 // eslint-disable-next-line max-len
 const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * numRows, page * numRows);
 
-function MainInventory({ loggedIn, onLogout }) {
-  console.log(loggedIn);
+function MainInventory({
+  isLoggedIn, username, onLogout, base,
+}) {
+  console.log(isLoggedIn);
+  console.log(username);
 
   const [rows, setRows] = useState([]);
+  const [allChecked, setAllChecked] = useState(false);
   const [items, setItems] = useState([]);
   const [inventoryTotal, setInventoryTotal] = useState(0);
   const [quantityMin, setQuantityMin] = useState(0);
@@ -60,36 +37,30 @@ function MainInventory({ loggedIn, onLogout }) {
   const [numRows, setNumRows] = useState(10);
   const [slice, setSlice] = useState([]);
   const [highlightedRow, setHighlightedRow] = useState(0);
+  const [selectedRows, setSelectedRows] = useState([]);
   const [tableRange, setTableRange] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState({
-    'Client Name': [],
     'Location Name': [],
-    'Bin Name': [],
     'Part Name': [],
-    'Part Description': [],
     Quantity: [],
   });
   const [optionsSelected, setOptionsSelected] = useState({
-    'Client Name': [],
     'Location Name': [],
-    'Bin Name': [],
     'Part Name': [],
-    'Part Description': [],
     Quantity: [],
   });
-  const categories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description', 'Quantity'];
-  const filterableCategories = ['Client Name', 'Location Name', 'Bin Name', 'Part Name', 'Part Description'];
+  const categories = ['Location Name', 'Part Name', 'Quantity'];
+  const filterableCategories = ['Location Name', 'Part Name'];
   // eslint-disable-next-line no-unused-vars
   const tableContents = useRef(); // For setting/ unsetting navigation
-  // eslint-disable-next-line no-unused-vars
-  const inputRefs = useRef([]); // For setting / unsetting input focus
+  const inputBoxes = useRef();
   const getInventory = () => {
     // base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
-    base('table editing test').select({ view: 'Grid view' }).all()
-      .then((records) => {
-        setRows(records);
-      });
+    base('InventoryTestRevamp').select({ view: 'Grid view' }).all().then((records) => {
+      setRows(records);
+    });
   };
+
   const createOptions = (category, optionList) => {
     categoryOptions[category] = optionList;
     setCategoryOptions(categoryOptions);
@@ -163,20 +134,15 @@ function MainInventory({ loggedIn, onLogout }) {
           console.log(highlightedRow);
         }
       } else {
-        console.log(typeof e.target.className);
+        // console.log(typeof e.target.className);
       }
     },
     [tableContents, highlightedRow],
   );
 
   useEffect(() => {
-    if (loggedIn) {
-    // eslint-disable-next-line max-len
-      console.log(loginUser(process.env.REACT_APP_AIRTABLE_EMAIL, process.env.REACT_APP_AIRTABLE_PASSWORD));
-    }
+    getInventory();
   }, []);
-
-  useEffect(getInventory, []);
 
   // Retrieves number of entries for each bin and
   useEffect(() => {
@@ -214,13 +180,14 @@ function MainInventory({ loggedIn, onLogout }) {
       include = include && (item.fields.Quantity >= quantityMin && (!quantityMax || item.fields.Quantity <= quantityMax));
       return include;
     });
+    // eslint-disable-next-line max-len
+    // filteredProducts = filteredProducts.filter((item) => item.fields.Quantity >= quantityMin && (!quantityMax || item.fields.Quantity <= quantityMax));
     setItems(filteredProducts);
   }, [quantityMin, quantityMax, optionsSelected, rows, updateFilter]);
 
   useEffect(() => {
     const singleslice = sliceRows(items, page, numRows);
     setSlice([...singleslice]);
-    setHighlightedRow(-1);
 
     const range = calculateRange(items, numRows);
     setTableRange(range);
@@ -233,6 +200,7 @@ function MainInventory({ loggedIn, onLogout }) {
     }
     setInventoryTotal(sum);
   }, [items]);
+
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('mousedown', handleMouseDown);
@@ -245,7 +213,7 @@ function MainInventory({ loggedIn, onLogout }) {
   useEffect(() => {
     const quantityTDElement = document.getElementById('editableQuantity');
     if (!quantityTDElement) {
-      console.log('Waiting for selected row');
+      // console.log('Waiting for selected row');
       return null;
     }
     quantityTDElement.addEventListener('input', () => {
@@ -258,18 +226,34 @@ function MainInventory({ loggedIn, onLogout }) {
     };
   });
 
+  const updateRowStatus = (e) => {
+    setSelectedRows([...selectedRows, parseInt(e.target.className, 10)]);
+    console.log(selectedRows);
+  };
+
+  const removeRowStatus = (e) => {
+    const newRows = selectedRows.filter((index) => index !== parseInt(e.target.className, 10));
+    setSelectedRows(newRows);
+  };
+
+  const updateAllRows = () => {
+    if (allChecked) { setSelectedRows([]); setAllChecked(false); } else { setAllChecked(true); }
+  };
+
   return (
-    !loggedIn
-      ? (<thead> Please Login </thead>
-      )
+    !isLoggedIn
+      ? (<Navigate to="/" />)
       : (
         <>
           <PageLengthForm setNumRows={setNumRows} />
-          <table className={styles.inventoryTable}>
-            <thead className={styles.inventoryHeader}>
+          <table>
+            <thead>
               <tr>
+                <th>
+                  <input type="checkbox" onChange={() => updateAllRows()} />
+                </th>
                 {filterableCategories.map((category) => (
-                  <th>
+                  <th key={category}>
                     {category}
                     <ReactSelect
                       isMulti
@@ -291,16 +275,30 @@ function MainInventory({ loggedIn, onLogout }) {
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody ref={tableContents}>
               {slice.map((row, index) => {
-                let trClassName = 'evenRow';
-                if (index % 2 === 1) {
-                  trClassName = 'oddRow';
+                if (selectedRows.includes(index) || allChecked) {
+                  return (
+                    <tr className={index} style={{ color: 'red' }}>
+                      <input type="checkbox" className={index} onClick={(e) => removeRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
+                      {categories.map((category) => {
+                        if (category === 'Quantity') {
+                          return (
+                            <td className={index} contentEditable="true" id="editableQuantity" suppressContentEditableWarning>{row.fields[category]}</td>
+                          );
+                        }
+                        return (
+                          <td className={index}>{row.fields[category]}</td>
+                        );
+                      })}
+                    </tr>
+                  );
                 }
                 return (
-                  <tr className={styles[trClassName]}>
+                  <tr className={index}>
+                    <input type="checkbox" ref={inputBoxes} className={index} onClick={(e) => updateRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
                     {categories.map((category) => (
-                      <td>{row.fields[category]}</td>
+                      <td className={index} classID="tableData">{row.fields[category]}</td>
                     ))}
                   </tr>
                 );
@@ -322,6 +320,8 @@ function MainInventory({ loggedIn, onLogout }) {
 export default MainInventory;
 
 MainInventory.propTypes = {
-  loggedIn: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  username: PropTypes.string.isRequired,
   onLogout: PropTypes.func.isRequired,
+  base: PropTypes.func.isRequired,
 };

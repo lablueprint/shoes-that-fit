@@ -1,18 +1,10 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Navigate } from 'react-router-dom';
 import Popup from './Popup';
 import styles from './NewShoeForm.module.css';
 
-// Airtable stuff
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(airtableConfig.baseKey);
-
-function NewShoeForm() {
+function NewShoeForm({ isLoggedIn, base }) {
   const [location, setLocation] = useState('');
   const [part, setPart] = useState('');
   const [isWide, setWide] = useState(false);
@@ -47,7 +39,7 @@ function NewShoeForm() {
   // base('TestInventory').select().all().then((records) => { records.forEach(cleanRecord); })
   const inputForm = (
     <form
-      onSubmit={(evt) => {
+      onSubmit={async (evt) => {
         evt.preventDefault();
         // check for valid input
         const quantityToInt = parseInt(quantity, 10);
@@ -72,10 +64,10 @@ function NewShoeForm() {
         // find the total quantity of all existing matching records and delete the records
         clear();
 
-        base('TestInventory').select({ filterByFormula: filter }).eachPage(
-          (records) => {
+        await base('TestInventory').select({ filterByFormula: filter }).eachPage(
+          async (records) => {
             if (records.length === 0) { // create a new record if there are no matching ones
-              base('TestInventory').create([
+              await base('TestInventory').create([
                 {
                   fields: {
                     'Part Name': part,
@@ -94,10 +86,10 @@ function NewShoeForm() {
             }
 
             let currentLength = records.length;
-            records.forEach((record) => {
+            records.forEach(async (record) => {
               totalQuantity += parseInt(record.fields.Quantity, 10);
               if (currentLength === 1) {
-                base('TestInventory').update([
+                await base('TestInventory').update([
                   {
                     id: record.id,
                     fields: {
@@ -110,7 +102,7 @@ function NewShoeForm() {
                   }
                 });
               } else {
-                base('TestInventory').destroy(record.id, (err) => {
+                await base('TestInventory').destroy(record.id, (err) => {
                   if (err) {
                     console.log(err);
                   }
@@ -167,17 +159,26 @@ function NewShoeForm() {
   );
 
   return (
-    <div>
-      {popup && (
-      <Popup
-        closePopup={closePopup}
-        success={success}
-        message={popupMessage}
-      />
-      )}
-      {inputForm}
-    </div>
+    !isLoggedIn
+      ? (<Navigate to="/" />)
+      : (
+        <div>
+          {popup && (
+          <Popup
+            closePopup={closePopup}
+            success={success}
+            message={popupMessage}
+          />
+          )}
+          {inputForm}
+        </div>
+      )
   );
 }
 
 export default NewShoeForm;
+
+NewShoeForm.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  base: PropTypes.func.isRequired,
+};

@@ -15,12 +15,6 @@ function RecordPage() {
   const [records, setRecords] = useState([]);
   const [index, setIndex] = useState(0);
   const [toggle, setToggle] = useState(false);
-  const getPosts = () => {
-    base('Records').select({ view: 'Grid view' }).all()
-      .then((e) => {
-        setRecords(e);
-      });
-  };
 
   function incrementIndex(evt) {
     evt.preventDefault();
@@ -96,7 +90,15 @@ function RecordPage() {
     return label;
   }
 
-  useEffect(getPosts, []);
+  useEffect(() => {
+    const getPosts = async () => {
+      await base('Records').select({ view: 'Grid view' }).all()
+        .then((e) => {
+          setRecords(e);
+        });
+    };
+    getPosts();
+  }, []);
 
   let maxIndex = index + 9;
   if (maxIndex >= records.length) {
