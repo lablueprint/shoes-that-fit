@@ -1,35 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { AdminCard } from '../components';
-import styles from './OrderListAdmin.module.css';
 import print from 'print-js';
+// import { AdminCard } from '../components';
+import styles from './OrderListAdmin.module.css';
 
-function OrderListAdmin({base, id}) {
+function OrderListAdmin({ base, id }) {
   const [cards, setCards] = useState([]);
   const [info, setInfo] = useState([]);
 
   function printForm() {
-  print({
-    printable: 'orders',
-    type: 'html',
-    // ignoreElements: ['print', 'bigSubmit'],
-    css: './OrderListAdmin.css',
-    targetStyles: ['*'],
-  });
-}
-  
-  
+    print({
+      printable: 'orders',
+      type: 'html',
+      // ignoreElements: ['print', 'bigSubmit'],
+      css: './OrderListAdmin.css',
+      targetStyles: ['*'],
+    });
+  }
 
   useEffect(() => {
     const getCards = () => {
-    base('Orders')
-      .select({ filterByFormula: `ID="${JSON.parse(JSON.stringify(id)).id}"` })
-      .all()
-      .then((records) => {
-        setCards(JSON.parse(records[0].fields.Orders));
-        setInfo(records[0].fields);
-      });
-  };
+      base('Orders')
+        .select({ filterByFormula: `ID="${JSON.parse(JSON.stringify(id)).id}"` })
+        .all()
+        .then((records) => {
+          setCards(JSON.parse(records[0].fields.Orders));
+          setInfo(records[0].fields);
+        });
+    };
     getCards();
   }, []);
 
@@ -130,4 +128,5 @@ export default OrderListAdmin;
 
 OrderListAdmin.propTypes = {
   base: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
 };
