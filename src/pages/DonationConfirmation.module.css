@@ -6,6 +6,7 @@
     line-height: 28px;
     color: #FF6622;
     text-align: left;
+    padding: 0 0 10px 15px;
 }
 
 .allInfo {
@@ -97,4 +98,27 @@
 
     width: 220px;
     height: 50px;
+}
+.header1 {
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 56px;
+    color: black;
+    text-align: left;
+    padding-left: 15px;
+}
+.error {
+    background: #FFEBE2;
+    border: 2px solid #FF6622;
+    border-radius: 5px;
+    box-sizing: border-box;
+    width: 150px;
+    height: auto;
+    margin: 10px auto;
+    color: #e4571a;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-size: 18px;
 }

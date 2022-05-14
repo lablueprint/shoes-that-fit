@@ -52,13 +52,17 @@
 }
 
 .error {
-    background: white;
+    background: #FFEBE2;
     border: 2px solid #FF6622;
     border-radius: 5px;
     box-sizing: border-box;
+    width: 150px;
+    height: auto;
+    margin: 10px auto;
     color: #e4571a;
-    width: 200px;
-    height: 100px;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-size: 18px;
 }
 
 .donationFormField input, select, textarea {
@@ -95,10 +99,10 @@
     width: 55px;
 }
 .gender {
-    width: 50px;
+    width: 70px;
 }
 .category {
-    width: 90px;
+    width: 110px;
 }
 .size {
     width: 45px;
@@ -108,7 +112,7 @@
     height: 30px;
 }
 .notes {
-    width: 325px;
+    width: 285px;
 }
 
 .logTable {

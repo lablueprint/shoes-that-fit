@@ -9,6 +9,7 @@ function LogDonations() {
   const [donor, setDonor] = useState({});
   const [donations, setDonations] = useState([]);
   const [donorError, setDonorError] = useState('');
+  const [donationError, setDonationError] = useState('');
   const [editingDonor, setEditingDonor] = useState(true);
   const donorFields = ['Name', 'Email', 'Phone', 'Address Line 1', 'Address Line 2', 'City', 'State', 'Zip Code'];
   const donationFields = ['Quantity', 'Gender', 'Category', 'Wide', 'Size', 'Notes'];
@@ -25,21 +26,18 @@ function LogDonations() {
       setDonor(location.state.donor);
       setDonations(location.state.donations);
       setEditingDonor(false);
-    } else {
-      console.log('No donor/donations field');
     }
   }, []);
 
   const donorUpdate = (e) => {
     e.preventDefault();
-    console.log(editingDonor);
     if (editingDonor) {
       const tempDonor = {};
       tempDonor.Name = document.getElementById('name').value;
       tempDonor.Phone = document.getElementById('phone').value;
       const email = document.getElementById('email').value;
       if (!validateEmail(email)) {
-        setDonorError(<p className={styles.error}>Bad Email!</p>);
+        setDonorError('Please provide a valid email address.');
         return;
       }
       tempDonor.Email = email;
@@ -54,12 +52,12 @@ function LogDonations() {
       tempDonor.State = document.getElementById('state').value;
       const zipcode = parseInt(document.getElementById('zipcode').value, 10);
       if (!zipcode || zipcode < 10000 || zipcode > 99999) {
-        setDonorError(<p className={styles.error}>Bad Zip Code!</p>);
+        setDonorError('Please provide a valid zip code.');
         return;
       }
       tempDonor['Zip Code'] = zipcode;
       setDonor(tempDonor);
-      setDonorError('');
+      setDonorError(null);
     }
     setEditingDonor(!editingDonor);
   };
@@ -70,12 +68,12 @@ function LogDonations() {
     donation.Quantity = document.getElementById('quantity').value;
     donation.Gender = document.getElementById('gender').value;
     if (donation.Gender === 'none') {
-      console.log('Select a gender');
+      setDonationError(<p className={styles.error}>Select a gender.</p>);
       return;
     }
     donation.Category = document.getElementById('category').value;
     if (donation.Category === 'none') {
-      console.log('Select a category');
+      setDonationError(<p className={styles.error}>Select a category.</p>);
       return;
     }
     donation.Size = document.getElementById('size').value;
@@ -91,6 +89,16 @@ function LogDonations() {
     e.preventDefault();
     console.log(index);
     setDonations(donations.splice(0, index).concat(donations.splice(1)));
+  };
+  const checkState = (e) => {
+    if (Object.keys(donor).length === 0) {
+      e.preventDefault();
+      setDonorError('Please save your donor information.');
+    }
+    if (donations.length === 0) {
+      e.preventDefault();
+      setDonationError('Please add at least one donation.');
+    }
   };
 
   return (
@@ -197,7 +205,11 @@ function LogDonations() {
           </div>
         </form>
       )}
-      {donorError}
+      {donorError ? (
+        <div className={styles.error}>
+          {donorError}
+        </div>
+      ) : null}
       <h2 className={styles.header2}>Step 2. Add donation info</h2>
       {donations.length > 0
         ? (
@@ -223,7 +235,7 @@ function LogDonations() {
                 {' '}
               </label>
             </div>
-            <input required className={styles.quantity} type="number" id="quantity" name="quantity" />
+            <input required className={styles.quantity} type="number" id="quantity" name="quantity" min="1" />
           </div>
 
           <div className={styles.donationFormField}>
@@ -234,7 +246,7 @@ function LogDonations() {
               </label>
             </div>
             <select className={styles.gender} name="gender" id="gender">
-              <option value="none" selected disabled hidden>Select an Option</option>
+              <option value="none" selected disabled hidden>(Select)</option>
               <option value="Boys">Boys</option>
               <option value="Girls">Girls</option>
             </select>
@@ -248,7 +260,7 @@ function LogDonations() {
               </label>
             </div>
             <select className={styles.category} name="category" id="category">
-              <option value="none" selected disabled hidden>Select an Option</option>
+              <option value="none" selected disabled hidden>(Select)</option>
               <option value="Infant/Child">Infant/Child</option>
               <option value="Youth">Youth</option>
               <option value="Adult">Adult</option>
@@ -287,11 +299,16 @@ function LogDonations() {
           <input className={styles.addSaveButton} type="submit" id="add" name="add" value="Add" />
         </div>
       </form>
+      {donationError ? (
+        <div className={styles.error}>
+          {donationError}
+        </div>
+      ) : null}
       <Link className={styles.cancelLink} to="/">
         <input className={styles.cancelButton} type="submit" id="submit" name="submit" value="Cancel" />
       </Link>
       <Link to="/confirmdonation" state={{ donor, donations }}>
-        <input className={styles.confirmButton} type="submit" id="submit" name="submit" value="Save and Continue" />
+        <input className={styles.confirmButton} type="submit" id="submit" name="submit" value="Save and Continue" onClick={checkState} />
       </Link>
     </div>
   );

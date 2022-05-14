@@ -23,9 +23,9 @@ function DonationConfirmation() {
   const sum = donations.reduce((accumulator, object) => accumulator + parseInt(object.Quantity, 10), 0);
   const date = new Date();
   const submitDonations = (e) => {
-    e.preventDefault();
     if (!donor) {
-      console.log('Need a donor');
+      e.preventDefault();
+      console.error('Need a donor');
       return;
     }
     base('Donors').create([
@@ -44,12 +44,9 @@ function DonationConfirmation() {
       },
     ], (err, records) => {
       if (err) {
+        e.preventDefault();
         console.error(err);
-        setError(
-          <p>
-            {err.message}
-          </p>,
-        );
+        setError(err.message);
         return;
       }
       records.forEach((record) => {
@@ -60,28 +57,13 @@ function DonationConfirmation() {
 
   return (
     <div>
+      <h1 className={styles.header1}>Log a Donation</h1>
       {/* eslint-disable-next-line max-len */}
-      <p className={styles.confirmMessage}>Please confirm you would like to log the following donations.</p>
+      <div className={styles.confirmMessage}>Please confirm you would like to log the following donations.</div>
       <Table headers={donationFields} data={donations} checkbox={false} dataKeyProp="ID" />
       <div className={styles.allInfo}>
         <div>
           <h2 className={styles.sectionHeader}>Donor Info</h2>
-          {/* <table>
-            <thead>
-              <tr>
-                {donorFields.map((field) => (
-                  <th>{field}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                {donorFields.map((field) => (
-                  <td>{donor[field]}</td>
-                ))}
-              </tr>
-            </tbody>
-          </table> */}
           <div className={styles.donorInfo}>
             <div className={styles.donorInfoEntries}>
               <div className={styles.topEntry}>
@@ -137,7 +119,11 @@ function DonationConfirmation() {
       <Link to="/admindashboard">
         <button className={styles.submitButton} type="button" id="submit" name="submit" onClick={submitDonations}>Submit Donations</button>
       </Link>
-      {error}
+      {error ? (
+        <div className={styles.error}>
+          {error}
+        </div>
+      ) : null}
     </div>
   );
 }
