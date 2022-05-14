@@ -1,0 +1,9 @@
+.school-information > div, .personal-information > div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.main {
+    outline: 1px solid black;
+    /* width: 80%; */
+}

@@ -13,9 +13,10 @@
 
 .popup-inner {
     position: relative;
-    height: 20%;
+    justify-self: flex-end;
+    height: 22%;
     width: 70%;
-    max-width: 640 px;
+    /* max-width: 640 px; */
     background-color: #FFF;
 }
 

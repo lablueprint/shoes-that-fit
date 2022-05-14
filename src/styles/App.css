@@ -45,6 +45,9 @@
   width: 100%;
 }
 
-.flex-child.label {
-  width: 25%;
-} 
+.App-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(100% - 250px);
+}

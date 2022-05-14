@@ -6,7 +6,7 @@ import styles from './NewShoeForm.module.css';
 
 // Airtable stuff
 
-function NewShoeForm({ isLoggedIn, base }) {
+function RemoveShoeForm({ isLoggedIn, base }) {
   const [location, setLocation] = useState('');
   const [part, setPart] = useState('');
   const [isWide, setWide] = useState(false);
@@ -122,7 +122,7 @@ function NewShoeForm({ isLoggedIn, base }) {
     >
       <div className={styles.container}>
         <div>
-          <h2>Add Inventory</h2>
+          <h2>Remove Inventory</h2>
         </div>
         <div className={styles.fields}>
           <div>
@@ -152,7 +152,7 @@ function NewShoeForm({ isLoggedIn, base }) {
         </div>
         <div className={styles.submitBtn}>
           <input
-            value="Add"
+            value="Remove"
             type="submit"
           />
         </div>
@@ -178,9 +178,9 @@ function NewShoeForm({ isLoggedIn, base }) {
   );
 }
 
-export default NewShoeForm;
+export default RemoveShoeForm;
 
-NewShoeForm.propTypes = {
+RemoveShoeForm.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   base: PropTypes.func.isRequired,
 };
