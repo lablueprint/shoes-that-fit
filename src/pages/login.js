@@ -19,6 +19,7 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [zipCode, setZipCode] = useState('');
+  // const [choseRole, setChoseRole] = useState(true);
 
   const handleSignUp = async (e) => {
     let curError = '';
@@ -158,10 +159,6 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
                   {string === 'Register' && (
                   <>
                     <div>
-                      <select value={role} onChange={(e) => setRole(e.target.value)}>
-                        <option> Educator</option>
-                        <option> Administrator</option>
-                      </select>
                       <h3>
                         Contact Information
                       </h3>

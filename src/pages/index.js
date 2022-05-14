@@ -12,9 +12,10 @@ import Donations from './Donations';
 import DonationConfirmation from './DonationConfirmation';
 import SchoolsForm from './SchoolsForm';
 import SchoolsDetail from './SchoolsDetail';
+import Portal from './Portal';
 
 export {
   MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records, AdminDashboard,
   Donations, DonationConfirmation, OrderListAdmin, OrderHistory, SchoolsForm, SchoolsDetail,
-  ChangePass,
+  ChangePass, Portal,
 };

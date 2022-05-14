@@ -1,0 +1,52 @@
+.stfLogo {
+    max-width: 210px;
+    /* height: auto; */
+    padding-top: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+
+  }
+
+  .sidebar {
+    overflow-x: hidden;     /* Disable horizontal scroll */
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    background: #24275E;
+    z-index: 1;
+    color: white;
+  }
+
+.column {
+display: flex;
+flex-direction: column;
+padding: 40px
+
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    }
+
+.center{
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+    justify-content: center;
+}
+    
+.options {
+    align-items: center;
+    width: 100%;
+    
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+  }
+  
