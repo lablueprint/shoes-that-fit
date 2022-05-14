@@ -1,19 +1,9 @@
 import React, { useState, useEffect } from 'react';
 //  import reactDom from 'react-dom';
+import PropTypes from 'prop-types';
 import { Table } from '../components';
 
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(
-  airtableConfig.baseKey,
-);
-
-function Schools() {
+function Schools({ base }) {
   const [cards, setCards] = useState([]);
 
   const headers = ['School Name', 'Point of Contact', 'Email Address', 'Phone Number', 'Details'];
@@ -54,3 +44,7 @@ function Schools() {
 }
 
 export default Schools;
+
+Schools.propTypes = {
+  base: PropTypes.func.isRequired,
+};

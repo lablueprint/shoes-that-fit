@@ -31,7 +31,7 @@ function AdminList({ isLoggedIn, base }) {
 
   const getCards = () => {
     base('Orders')
-      .select({ view: 'Grid View' })
+      .select({ view: 'Grid view' })
       .all()
       .then((records) => {
         setCards(records.map((r) => (r.fields)));

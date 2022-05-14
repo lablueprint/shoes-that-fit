@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+// import axios from 'axios';
 import DashboardOrders from '../components/DashboardOrders';
 import InventorySummary from '../components/InventorySummary';
 import Records from '../components/Records';
@@ -40,24 +40,28 @@ function AdminDashboard({
     }
 
     if (reRegister) {
-      const token = process.env.REACT_APP_AIRTABLE_USER_KEY;
-      const json = JSON.stringify({ username, password });
-      axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_register__', json, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then(async (response) => {
-          if (response.status === 200) {
-            console.log('CHANGED');
-            await onLogin(username, password, profile, false, false);
-          }
-        })
-        .catch((e2) => {
-          console.log(e2);
-        // incorrect username or password
-        });
+      // const json = JSON.stringify({ username, password });
+      // axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_register__', json, {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // })
+      //   .then(async (response) => {
+      //     if (response.status === 200) {
+      //       console.log('CHANGED');
+      //       await onLogin(username, password, profile, false, false);
+      //     }
+      //   })
+      //   .catch((e2) => {
+      //     console.log(e2);
+      //   // incorrect username or password
+      //   });
+
+      base.register({ username, password }).then(async () => {
+        await onLogin(username, password, profile, false, false);
+      }).catch((err) => {
+        console.log(err);
+      });
     }
   }, []);
 
@@ -73,7 +77,7 @@ function AdminDashboard({
             <InventorySummary base={base} />
           </div>
           <div className={styles.recordContainer}>
-            <Records />
+            <Records base={base} />
           </div>
         </div>
       )
