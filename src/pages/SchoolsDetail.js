@@ -3,18 +3,17 @@ import React, { useState, useEffect } from 'react';
 import { ChevronLeft } from 'lucide-react';
 import PropTypes from 'prop-types';
 import styles from './SchoolsDetail.module.css';
-
 // import { AdminCard } from '../components';
 
-function SchoolsDetail({ base }) {
+function SchoolsDetail({ base, input }) {
   const [info, setInfo] = useState([]);
-  const id = 'recyXJY3yFJKQHYD2';
+  const { id, backButton } = input;
+  
   const getCards = () => {
     base('Schools')
       .select({ filterByFormula: `ID="${id}"` })
       .all()
       .then((records) => {
-        console.log(records[0].fields);
         setInfo(records[0].fields);
       });
   };
@@ -27,7 +26,13 @@ function SchoolsDetail({ base }) {
     <div className={styles.orderFormContainer}>
       <script src="print.js" />
       <div className={styles.header}>
-        <ChevronLeft size={30} type="button" />
+        <div className={styles.backButton}>
+          <ChevronLeft
+            size={30}
+            type="button"
+            onClick={backButton}
+          />
+        </div>
         Directory
       </div>
       <div className={styles.format}>
