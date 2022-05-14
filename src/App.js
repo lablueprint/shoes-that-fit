@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { /* useEffect */ } from 'react';
 import './styles/App.css';
 import { connect } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
@@ -25,44 +25,42 @@ import {
 } from './pages';
 
 const BASE_ID = process.env.REACT_APP_AIRTABLE_BASE_KEY;
-const API_KEY = process.env.REACT_APP_AIRTABLE_USER_KEY;
 const ENDPOINT_URL = 'http://localhost:8000';
 
 Airtable.configure({
   endpointUrl: ENDPOINT_URL,
-  apiKey: API_KEY,
+  apiKey: 'airlock',
 });
 
 const base = Airtable.base(BASE_ID);
 
 function App({
   // eslint-disable-next-line react/prop-types
-  isLoggedIn, username, password, role, register, reRegister, login, logout,
+  isLoggedIn, username, password, profile, register, reRegister, login, logout,
 }) {
-  useEffect(() => {
-    const loginUser = async (user, pass) => {
-      try {
-        const res = await base.login({ user, pass });
-        if (!res.body.success) {
-          return { match: false, found: false };
-        }
-        return { match: true, found: true };
-      } catch (err) {
-        if (err.error === 'AUTHENTICATION_REQUIRED') {
-          return { match: false, found: true };
-        }
-        return { match: false, found: false };
-      }
-    };
-
-    if (isLoggedIn) {
-      loginUser(username, password);
-    }
-  }, [isLoggedIn, username, password]);
+  // useEffect(() => {
+  //   const loginUser = async (user, pass) => {
+  //     try {
+  //       const res = await base.login({ user, pass });
+  //       if (!res.body.success) {
+  //         return { match: false, found: false };
+  //       }
+  //       return { match: true, found: true };
+  //     } catch (err) {
+  //       if (err.error === 'AUTHENTICATION_REQUIRED') {
+  //         return { match: false, found: true };
+  //       }
+  //       return { match: false, found: false };
+  //     }
+  //   };
+  //   if (isLoggedIn) {
+  //     loginUser(username, password);
+  //   }
+  // }, [isLoggedIn, username, password]);
 
   return (
     <div className="App">
-      <Nav onLogout={logout} />
+      <Nav isLoggedIn={isLoggedIn} onLogout={logout} />
       <div className="App-container">
         <Routes>
           <Route
@@ -73,12 +71,12 @@ function App({
                 username={username}
                 password={password}
                 onLogin={login}
-                role={role}
+                profile={profile}
                 register={register}
                 reRegister={reRegister}
                 base={base}
               />
-        )}
+            )}
           />
           <Route
             path="/inventory"
@@ -136,7 +134,7 @@ function App({
                 isLoggedIn={isLoggedIn}
                 base={base}
               />
-        )}
+            )}
           />
           <Route
             path="/records"
@@ -145,7 +143,7 @@ function App({
                 isLoggedIn={isLoggedIn}
                 base={base}
               />
-         )}
+            )}
           />
           <Route
             path="/changePass"
@@ -154,20 +152,49 @@ function App({
                 isLoggedIn={isLoggedIn}
                 reRegister={reRegister}
                 prevUser={username}
-                prevRole={role}
+                prevProfile={profile}
                 prevPass={password}
                 onLogin={login}
                 base={base}
               />
             )}
           />
+          <Route
+            path="/records"
+            element={(
+              <RecordPage
+                isLoggedIn={isLoggedIn}
+                base={base}
+              />
+            )}
+          />
+          <Route
+            path="/changePass"
+            element={(
+              <ChangePass
+                isLoggedIn={isLoggedIn}
+                reRegister={reRegister}
+                prevUser={username}
+                prevProfile={profile}
+                prevPass={password}
+                onLogin={login}
+                base={base}
+              />
+            )}
+          />
+          <Route
+            path="/viewhistory"
+            element={(
+              <OrderListAdmin base={base} />
+              )}
+          />
+          <Route path="/orderhistory" element={<OrderHistory base={base} />} />
+          <Route path="/donations" element={<Donations base={base} />} />
+          <Route path="/confirmdonation" element={<DonationConfirmation base={base} />} />
+          <Route path="/schoolsform" element={<SchoolsForm base={base} />} />
+          <Route path="/schoolsdetail" element={<SchoolsDetail base={base} />} />
           <Route path="/viewhistory" element={<OrderListAdmin />} />
-          <Route path="/orderhistory" element={<OrderHistory />} />
-          <Route path="/donations" element={<Donations />} />
-          <Route path="/confirmdonation" element={<DonationConfirmation />} />
-          <Route path="/schoolsform" element={<SchoolsForm />} />
-          <Route path="/schoolsdetail" element={<SchoolsDetail />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile username={username} base={base} />} />
         </Routes>
       </div>
     </div>
@@ -181,16 +208,16 @@ function mapStateToProps(state) {
     password: state.password,
     register: state.register,
     reRegister: state.reRegister,
-    role: state.role,
+    profile: state.profile,
   };
 }
 
 const mapDispatchToProps = (dispatch) => ({
   // dispatching plain actions
-  login: (username, password, role, register, reRegister) => dispatch({
+  login: (username, password, profile, register, reRegister) => dispatch({
     type: 'LOG_IN',
     payload: {
-      username, password, role, register, reRegister,
+      username, password, profile, register, reRegister,
     },
   }),
   logout: () => dispatch({ type: 'LOG_OUT' }),
@@ -202,7 +229,7 @@ App.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
-  role: PropTypes.string.isRequired,
+  profile: PropTypes.string.isRequired,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
   register: PropTypes.bool.isRequired,

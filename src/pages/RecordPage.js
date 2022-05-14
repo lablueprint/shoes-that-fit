@@ -1,17 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Navigate } from 'react-router';
+import PropTypes from 'prop-types';
 import styles from './RecordPage.module.css';
 
-// Airtable stuff
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(airtableConfig.baseKey);
-
-function RecordPage() {
+function RecordPage({ isLoggedIn, base }) {
   const [records, setRecords] = useState([]);
   const [index, setIndex] = useState(0);
   const [toggle, setToggle] = useState(false);
@@ -136,34 +128,41 @@ function RecordPage() {
   }
 
   return (
-    <div className={styles['main-container']}>
-      <div className={styles.header}>
-        <div className={styles.title}>
-          <h1>Recent Activity</h1>
+    !isLoggedIn ? <Navigate to="/" /> : (
+      <div className={styles['main-container']}>
+        <div className={styles.header}>
+          <div className={styles.title}>
+            <h1>Recent Activity</h1>
+          </div>
+          <div className={styles.info}>
+            <form onSubmit={decrementIndex}>
+              <input
+                disabled={index === 0}
+                value="<"
+                type="submit"
+              />
+            </form>
+            <form onSubmit={incrementIndex}>
+              <input
+                disabled={maxIndex === records.length - 1}
+                value=">"
+                type="submit"
+              />
+            </form>
+          </div>
         </div>
-        <div className={styles.info}>
-          <form onSubmit={decrementIndex}>
-            <input
-              disabled={index === 0}
-              value="<"
-              type="submit"
-            />
-          </form>
-          <form onSubmit={incrementIndex}>
-            <input
-              disabled={maxIndex === records.length - 1}
-              value=">"
-              type="submit"
-            />
-          </form>
-        </div>
-      </div>
 
-      <div className={styles.main}>
-        {display}
+        <div className={styles.main}>
+          {display}
+        </div>
       </div>
-    </div>
+    )
   );
 }
 
 export default RecordPage;
+
+RecordPage.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  base: PropTypes.func.isRequired,
+};

@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 export default function ChangePass({
   // eslint-disable-next-line no-unused-vars
-  isLoggedIn, prevUser, prevPass, prevRole, onLogin, reRegister, base,
+  isLoggedIn, prevUser, prevPass, prevProfile, onLogin, reRegister, base,
 }) {
   const [error, setError] = useState('');
   const [password, setPassword] = useState('');
@@ -57,7 +57,7 @@ export default function ChangePass({
             console.error(err);
           } else {
             console.log('DELETED');
-            await onLogin(prevUser, password, prevRole, false, true);
+            await onLogin(prevUser, password, prevProfile, false, true);
           }
         });
       });
@@ -105,7 +105,8 @@ export default function ChangePass({
 ChangePass.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   prevPass: PropTypes.string.isRequired,
-  prevRole: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  prevProfile: PropTypes.object.isRequired,
   reRegister: PropTypes.bool.isRequired,
   prevUser: PropTypes.string.isRequired,
   onLogin: PropTypes.func.isRequired,

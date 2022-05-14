@@ -1,9 +1,29 @@
+.school-information, .personal-information {
+    outline: 1px solid black;
+    padding: 0.05% 2% 2%;
+    margin: 2%;
+}
+
 .school-information > div, .personal-information > div {
     display: flex;
-    justify-content: space-between;
+    margin: 3% 0%;
 }
 
 .main {
-    outline: 1px solid black;
-    /* width: 80%; */
+    width: 80%;
+    padding: 3%;
+}
+
+.label {
+    font-weight: bold;
+    width: 20%;
+}
+
+.top-bar {
+    display: flex;
+    padding: 0% 5%;
+}
+
+div {
+    /* outline: 1px solid black; */
 }

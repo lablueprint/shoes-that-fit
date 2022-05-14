@@ -4,8 +4,6 @@ import { Navigate } from 'react-router-dom';
 import Popup from './Popup';
 import styles from './NewShoeForm.module.css';
 
-// Airtable stuff
-
 function NewShoeForm({ isLoggedIn, base }) {
   const [location, setLocation] = useState('');
   const [part, setPart] = useState('');
@@ -28,7 +26,7 @@ function NewShoeForm({ isLoggedIn, base }) {
     base('Records').create([
       {
         fields: {
-          Message: `Added ${delta} shoes to inventory.`,
+          Message: `Added ${delta} ${(delta === 1) ? ('shoe') : ('shoes')} to inventory.`,
         },
       },
     ], (err) => {
