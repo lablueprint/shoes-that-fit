@@ -219,7 +219,7 @@ App.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
-  profile: PropTypes.string.isRequired,
+  profile: PropTypes.objectOf(PropTypes.string).isRequired,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
   register: PropTypes.bool.isRequired,
