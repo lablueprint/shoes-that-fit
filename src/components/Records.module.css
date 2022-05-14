@@ -1,0 +1,38 @@
+.main {
+    margin-top: 1.5%;
+    padding: 2%;
+    background-color: #F9F9F9;   
+    border-radius: 20px;
+}
+
+form {
+    display: inline;
+    padding: 5px;
+}
+
+.record {
+    display: flex;
+    margin: 0 3% 2.5% 3%;
+    border-bottom: 1px solid black;
+    justify-content: space-between;
+}
+
+.info {
+    display: flex;
+    align-items: flex-end;
+}
+
+.interval-header {
+    display: flex;
+    padding-left: 1.5%;
+}
+
+.main-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+}

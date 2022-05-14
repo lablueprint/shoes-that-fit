@@ -1,20 +1,10 @@
 import React, { useState } from 'react';
 //  import reactDom from 'react-dom';
 import { ChevronLeft } from 'lucide-react';
+import PropTypes from 'prop-types';
 import styles from './SchoolsForm.module.css';
 
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(
-  airtableConfig.baseKey,
-);
-
-function OrderForm() {
+function OrderForm({ base }) {
   const [error, setError] = useState('');
   const [schoolName, setschoolName] = useState('');
   const [address, setAddress] = useState('');
@@ -241,3 +231,7 @@ function OrderForm() {
 }
 
 export default OrderForm;
+
+OrderForm.propTypes = {
+  base: PropTypes.func.isRequired,
+};

@@ -1,23 +1,14 @@
 import React, { useState, useEffect } from 'react';
 // import './OrderListAdmin.css';
 import { ChevronLeft } from 'lucide-react';
+import PropTypes from 'prop-types';
 import styles from './SchoolsDetail.module.css';
-
 // import { AdminCard } from '../components';
 
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({ apiKey: airtableConfig.apiKey })
-  .base(airtableConfig.baseKey);
-
-function SchoolsDetail(input) {
-  const { id, backButton } = input;
+function SchoolsDetail({ base, input }) {
   const [info, setInfo] = useState([]);
+  const { id, backButton } = input;
+  
   const getCards = () => {
     base('Schools')
       .select({ filterByFormula: `ID="${id}"` })
@@ -108,3 +99,7 @@ function SchoolsDetail(input) {
 }
 
 export default SchoolsDetail;
+
+SchoolsDetail.propTypes = {
+  base: PropTypes.func.isRequired,
+};

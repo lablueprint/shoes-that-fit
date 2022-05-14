@@ -1,16 +1,36 @@
 .welcome {
+    display: flex;
+    padding-left: 10%;
+    margin-bottom: 1.5%;
     font-family: 'Hartwell';
     font-style: normal;
     font-weight: 400;
     font-size: 36px;
     line-height: 42px;
     /* identical to box height */
-
+    height: 5%;
 
     color: #000000;
 }
 
 div.topComponents {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
+    padding: 3%;
+    padding-bottom: 0%;
+}
+
+.topComponents > * {
+    width: 38%;
+    padding: 2%
+}
+
+.container {
+    width: 80%;
+    padding: 0.5%;
+}
+
+.recordContainer {
+    padding: 3% 10% 0%;
+
 }
