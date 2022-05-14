@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import styles from './login.module.css';
 
 export default function LoginPage({ isLoggedIn, onLogin }) {
   console.log(isLoggedIn);
+  const location = useLocation();
+  const { role } = location.state;
+  console.log(role);
+  // console.log(check.role);
+
   const [error, setError] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('Educator');
+  // const [role, setRole] = useState('Educator');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [string, setString] = useState('Log In');
   const [hasAccount, setHasAccount] = useState(true);
@@ -19,6 +25,7 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [zipCode, setZipCode] = useState('');
+  const [regAdminStatus, setregAdminStatus] = useState('Password');
   // const [choseRole, setChoseRole] = useState(true);
 
   const handleSignUp = async (e) => {
@@ -135,40 +142,80 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
         <Navigate to="/admindashboard" />
       )
       : (
-        <div className="loginWrapper">
-          <h1>
+        <div className={styles.col}>
+          <h1 className={styles.top}>
             Please
             {` ${string}`}
           </h1>
           <form>
             {string === 'Log In' && (
-              <>
-                <label>
-                  <p>Email </p>
+              <div className={styles.col}>
+                <label className={styles.leftcol}>
+                  <p>Email Address</p>
                   <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </label>
-                <label>
+                <label className={styles.leftcol}>
                   <p>Password </p>
                   <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </label>
-              </>
+              </div>
             )}
             <div>
               {!hasAccount ? (
                 <>
                   {string === 'Register' && (
                   <>
-                    <div>
+                    {regAdminStatus === 'Password' && (
+                      <div>
+                        <h3>
+                          Contact Information
+                        </h3>
+                        <p>Email </p>
+                        <input
+                          type="text"
+                          value={username}
+                          onChange={(e) => setUsername(e.target.value)}
+                        />
+
+                        <label>
+                          <p>Password </p>
+                          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        </label>
+                        <label>
+                          <p>Confirm Password </p>
+                          <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                        </label>
+                        <button type="button" onClick={setregAdminStatus('Login')}> Next</button>
+
+                      </div>
+                    )}
+                    {regAdminStatus === 'Login' && (
+                      <div>
+                        <p>Contact Name </p>
+                        <input
+                          type="text"
+                          value={contactName}
+                          onChange={(e) => setContactName(e.target.value)}
+                        />
+                        <p>Phone </p>
+                        <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+
+                        <button type="button" onClick={handleSignUp}> Register</button>
+                      </div>
+                    )}
+                    {/* <div>
                       <h3>
                         Contact Information
                       </h3>
                       <p>Email </p>
-                      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                      <input type="text" value={username}
+                      onChange={(e) => setUsername(e.target.value)} />
                       <p>Contact Name </p>
-                      <input type="text" value={contactName} onChange={(e) => setContactName(e.target.value)} />
+                      <input type="text" value={contactName}
+                      onChange={(e) => setContactName(e.target.value)} />
                       <p>Phone </p>
                       <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
-                    </div>
+                    </div> */}
                     {role === 'Educator'
                     && (
                     <div>
@@ -187,23 +234,13 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
                       <input type="text" value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
                     </div>
                     )}
-
-                    <br />
-                    <label>
-                      <p>Password </p>
-                      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                    </label>
-                    <label>
-                      <p>Confirm Password </p>
-                      <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-                    </label>
                   </>
                   )}
                   <br />
                   <br />
 
-                  <button type="button" onClick={handleSignUp}> Register</button>
-                  <br />
+                  {/* <button type="button" onClick={handleSignUp}> Register</button>
+                  <br /> */}
 
                   <p className="accountStatusParagraph">
                     Have an account?
@@ -220,31 +257,30 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
                   </p>
                 </>
               ) : (
-                <>
-                  <select value={role} onChange={(e) => setRole(e.target.value)}>
+                <div className={styles.login}>
+                  {/* <select value={role} onChange={(e) => setRole(e.target.value)}>
                     <option> Educator</option>
                     <option> Administrator</option>
-                  </select>
-                  <br />
-                  <button type="button" onClick={handleSignIn}>
-                    {' '}
-                    Log In
+                  </select> */}
+                  <div className={styles.space} />
+                  <button
+                    type="button"
+                    onClick={handleSignIn}
+                  >
+                    Sign In
                   </button>
-                  <br />
-                  <p className="accountStatusParagraph">
-                    {' '}
-                    Don&apos;t have an account?
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setHasAccount(!hasAccount);
-                        setString('Register');
-                      }}
-                    >
-                      Register
-                    </button>
-                  </p>
-                </>
+                  <div className={styles.space} />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setHasAccount(!hasAccount);
+                      setString('Register');
+                    }}
+                    className={styles.registerButton}
+                  >
+                    <p>Don&apos;t have an account? Register</p>
+                  </button>
+                </div>
               )}
             </div>
             {error.length > 0 && <div><p>{error}</p></div>}

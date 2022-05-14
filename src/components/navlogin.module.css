@@ -16,3 +16,14 @@
     z-index: 1;
     color: white;
   }
+
+  .sidebar p {
+    color: white;
+}
+
+.align {
+  display: flex;
+  flex-direction: row; 
+  justify-content: center;
+  align-items: center;
+}

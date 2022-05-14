@@ -63,23 +63,24 @@ function App({
     <div className="App">
 
       {!isLoggedIn ? (
-        <div className="App-container">
-          <Routes>
-            <NavLogin />
-            <Route
-              exact
-              path="/"
-              element={(
-                <LoginPage
-                  isLoggedIn={isLoggedIn}
-                  onLogin={login}
-                  base={base}
-                />
-            )}
-            />
-            <Route path="/Portal" element={<Portal />} />
-          </Routes>
-        </div>
+        <>
+          <NavLogin />
+          <div className="App-container">
+            <Routes>
+              <Route exact path="/" element={<Portal />} />
+              <Route
+                path="/login"
+                element={(
+                  <LoginPage
+                    isLoggedIn={isLoggedIn}
+                    onLogin={login}
+                    base={base}
+                  />
+                )}
+              />
+            </Routes>
+          </div>
+        </>
       ) : (
         <>
           <Nav isLoggedIn={isLoggedIn} onLogout={logout} />

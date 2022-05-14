@@ -1,0 +1,35 @@
+.col {
+    display: flex;
+    flex-direction: column;
+}
+
+.leftcol {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+
+.login button {
+    background-color:  white;
+    border-color: #00B1FF;
+    border-width: 2px;
+    border-style: solid;
+    margin-right: 4%;
+}
+
+.login .registerButton {
+  color: red;
+  border-width: 0px;
+}
+
+.login button p {
+  text-decoration: underline;
+}
+
+.top {
+    margin-top: 20vh;
+}
+
+.space{
+    margin-top: 17%;
+}

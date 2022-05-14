@@ -17,6 +17,14 @@
     color: white;
   }
 
+.portalContainer button {
+    background-color: white; /* Green */
+    border: none;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+
+  }
+
 .column {
 display: flex;
 flex-direction: column;
@@ -39,10 +47,10 @@ padding: 40px
 .options {
     align-items: center;
     width: 100%;
-    
+    margin-top: 6%;
 }
 
-.container {
+.portalContainer {
     display: flex;
     flex-direction: row;
     height: 100%;
