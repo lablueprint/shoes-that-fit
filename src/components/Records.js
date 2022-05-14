@@ -47,26 +47,26 @@ function Records({ base }) {
     /* eslint-disable no-fallthrough */
     switch (interval) {
       case 0:
-        label = 'Today';
+        label = 'TODAY';
         interval = 1;
       case 1:
         if (dayDelta > 1) {
-          label = 'This Week';
+          label = 'THIS WEEK';
           interval = 2;
         }
       case 2:
         if (dayDelta > 7) {
-          label = 'Last Thirty Days';
+          label = 'LAST THIRTY DAYS';
           interval = 3;
         }
       case 3:
         if (dayDelta > 30) {
-          label = 'This Year';
+          label = 'THIS YEAR';
           interval = 4;
         }
       default:
         if (yearDelta > 0) {
-          label = 'All Previous Activity';
+          label = 'ALL PREVIOUS ACTIVITY';
           interval = 5;
         }
     }
@@ -118,10 +118,11 @@ function Records({ base }) {
           <h1>Recent Activity</h1>
         </div>
         <div className={styles.info}>
-          <Link to="/records">view more &gt;</Link>
+          <Link to="/records">
+            view all &gt;
+          </Link>
         </div>
       </div>
-
       <div className={styles.main}>
         {display}
       </div>

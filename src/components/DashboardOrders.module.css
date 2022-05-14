@@ -15,9 +15,9 @@
 .adminDashboardH2 {
     font-family: 'Hartwell';
     font-style: normal;
-    font-weight: 500;
-    font-size: 30px;
-    line-height: 35px;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 37px;
     color: #000000;
 }
 
@@ -55,11 +55,22 @@
  
  /* table wrapper for continuous border */
  .orderDashboardTable {
-     overflow: hidden;
+    overflow: scroll;
      margin-left: 10px;
      margin-right: 10px;
      margin-bottom: 10px;
      border-radius: 20px;
+     width: 100%;
+     border-collapse: collapse; /* removes gap between cells */
+     border-radius: 20px;
+     background-color: #F9F9F9;   
+     font-family: 'Hartwell';
+     font-style: normal;
+     font-weight: 400;
+     font-size: 18px;
+     line-height: 21px;
+     color: #313131;
+     border-spacing: 5px;
  }
  
  /* table border */

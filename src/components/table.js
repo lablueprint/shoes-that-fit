@@ -11,7 +11,7 @@ const sorts = {
 };
 
 export default function Table({
-  headers, sortIndices, data, dataProps, checkbox, dataKeyProp, selectCard,
+  headers, sortIndices, data, dataProps, checkbox, dataKeyProp, selectCard, modify, modifyFuncs,
 }) {
   const [lastIndex, setLast] = useState(0);
   const [sortDir, setDir] = useState(sorts.descending);
@@ -124,7 +124,12 @@ export default function Table({
                     {dataProps.length === 0 && (d[headers[hIndex]]
                       && d[headers[hIndex]].toString())}
                     {dataProps.length !== 0 && dataProps[hIndex] !== 'Details'
-                      ? (d[dataProps[hIndex]] && d[dataProps[hIndex]].toString())
+                      ? (d[dataProps[hIndex]] && ((modify.includes(dataProps[hIndex])
+                      && modifyFuncs.length > modify.indexOf(dataProps[hIndex])
+                      // eslint-disable-next-line max-len
+                      && (modifyFuncs[modify.indexOf(dataProps[hIndex])](d[dataProps[hIndex]])))
+                      || (!modify.includes(dataProps[hIndex])
+                       && d[dataProps[hIndex]].toString())))
                       : (
                         <button type="button" style={{ color: 'black' }} onClick={() => { selectCard(d.ID); }}>
                           <img src={details} alt="details" />
@@ -148,11 +153,17 @@ Table.propTypes = {
   dataProps: PropTypes.arrayOf(PropTypes.string),
   checkbox: PropTypes.bool,
   dataKeyProp: PropTypes.string.isRequired,
-  selectCard: PropTypes.func.isRequired,
+  selectCard: PropTypes.func,
+  modify: PropTypes.arrayOf(PropTypes.string),
+  modifyFuncs: PropTypes.arrayOf(PropTypes.func),
+
 };
 
 Table.defaultProps = {
   sortIndices: [],
   checkbox: true,
   dataProps: [],
+  selectCard: () => null,
+  modify: [],
+  modifyFuncs: [],
 };
