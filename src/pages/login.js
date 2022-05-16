@@ -142,7 +142,10 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
         <Navigate to="/admindashboard" />
       )
       : (
+
         <div className={styles.col}>
+          {console.log(regAdminStatus)}
+
           <h1 className={styles.top}>
             Please
             {` ${string}`}
@@ -166,41 +169,59 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
                   {string === 'Register' && (
                   <>
                     {regAdminStatus === 'Password' && (
-                      <div>
-                        <h3>
-                          Contact Information
-                        </h3>
-                        <p>Email </p>
-                        <input
-                          type="text"
-                          value={username}
-                          onChange={(e) => setUsername(e.target.value)}
-                        />
+                      <div className={styles.center}>
+                        <div className={styles.col}>
+                          <h3>
+                            Contact Information
+                          </h3>
+                          <div className={styles.col}>
+                            <p>Email </p>
+                            <input
+                              type="text"
+                              value={username}
+                              onChange={(e) => setUsername(e.target.value)}
+                            />
+                          </div>
 
-                        <label>
-                          <p>Password </p>
-                          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                        </label>
-                        <label>
-                          <p>Confirm Password </p>
-                          <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-                        </label>
-                        <button type="button" onClick={setregAdminStatus('Login')}> Next</button>
+                          <div className={styles.col}>
+                            <p>Password </p>
+                            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                          </div>
+
+                          <div className={styles.col}>
+                            <p>Confirm Password </p>
+                            <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                          </div>
+
+                          <div className={styles.space} />
+                          <div className={styles.col}>
+                            <button className={styles.blue} type="button" onClick={() => { setregAdminStatus('Login'); }}> Next</button>
+                          </div>
+
+                        </div>
 
                       </div>
+
                     )}
                     {regAdminStatus === 'Login' && (
                       <div>
-                        <p>Contact Name </p>
-                        <input
-                          type="text"
-                          value={contactName}
-                          onChange={(e) => setContactName(e.target.value)}
-                        />
-                        <p>Phone </p>
-                        <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                        <div className={styles.col}>
+                          <p>Contact Name </p>
+                          <input
+                            type="text"
+                            value={contactName}
+                            onChange={(e) => setContactName(e.target.value)}
+                          />
+                        </div>
 
-                        <button type="button" onClick={handleSignUp}> Register</button>
+                        <div className={styles.col}>
+                          <p>Phone </p>
+                          <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                        </div>
+
+                        <div className={styles.space} />
+
+                        <button className={styles.blue} type="button" onClick={handleSignUp}> Register</button>
                       </div>
                     )}
                     {/* <div>
@@ -242,17 +263,17 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
                   {/* <button type="button" onClick={handleSignUp}> Register</button>
                   <br /> */}
 
-                  <p className="accountStatusParagraph">
-                    Have an account?
+                  <p>
                     {/* toggle the state when you click the button */}
                     <button
+                      className={styles.red}
                       type="button"
                       onClick={() => {
                         setHasAccount(!hasAccount);
                         setString('Log In');
                       }}
                     >
-                      Sign In
+                      Have an account? Sign In
                     </button>
                   </p>
                 </>
@@ -275,6 +296,7 @@ export default function LoginPage({ isLoggedIn, onLogin }) {
                     onClick={() => {
                       setHasAccount(!hasAccount);
                       setString('Register');
+                      setregAdminStatus('Password');
                     }}
                     className={styles.registerButton}
                   >

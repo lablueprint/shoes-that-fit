@@ -27,9 +27,30 @@
 }
 
 .top {
-    margin-top: 20vh;
+    margin-top: 10vh;
+    width: 100%;
 }
 
 .space{
     margin-top: 17%;
+}
+.blue {
+    background-color:  white;
+    border-color: #00B1FF;
+    border-width: 2px;
+    border-style: solid;
+}
+
+
+.red {
+    text-decoration: underline;
+    color: red;
+  border-width: 0px;
+  background-color: transparent;
+}
+
+.center {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
 }
