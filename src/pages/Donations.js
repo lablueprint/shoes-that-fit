@@ -24,12 +24,12 @@ function Donations() {
       .all()
       .then((records) => {
         setDonations(records);
+        console.log(records);
       }, (err) => {
         if (err) {
           console.error(err);
         }
       });
-    console.log(donations);
   };
 
   useEffect(() => {
@@ -59,7 +59,6 @@ function Donations() {
       tableEntry.Preview = sizes;
       return tableEntry;
     }));
-    console.log(tableEntries);
   }, []);
 
   return (
@@ -67,7 +66,7 @@ function Donations() {
       <div>
         <h1 className={styles.header1}>Donations</h1>
         <Link className={styles.logLink} to="/logdonations">
-          <input className={styles.logButton} type="submit" id="submit" name="submit" value="Create Donation" />
+          <input className={styles.logButton} type="submit" id="submit" name="submit" value="Log a new donation" />
         </Link>
       </div>
       <div>

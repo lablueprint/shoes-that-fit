@@ -13,7 +13,8 @@
     height: 50px;
 }
 .logLink {
-    margin-right: 20px;
+    float: left;
+    padding-left: 15px;
 }
 .header1 {
     font-family: 'Hartwell';
