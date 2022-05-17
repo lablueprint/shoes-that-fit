@@ -77,7 +77,7 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
     //     // incorrect username or password
     //   });
 
-    base.register({ username, password }).then(async (res) => {
+    await base.register({ username, password }).then(async (res) => {
       const profile = {
         role,
         contactName,
@@ -141,7 +141,7 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
     //     // incorrect username or password
     //   });
 
-    base.login({ username, password }).then(async (res) => {
+    await base.login({ username, password }).then(async (res) => {
       const profile = {
         role,
         contactName,
@@ -152,7 +152,7 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
         zipCode,
         phone,
       };
-      await onLogin(username, res.body.user.fields.Password, profile, true, false);
+      await onLogin(username, res.body.user.fields.Password, profile, false, false);
     }).catch((err) => {
       console.log(err);
       curError = 'Error: Incorrect username or password.';
