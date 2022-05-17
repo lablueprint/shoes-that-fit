@@ -3,13 +3,12 @@
 
     background: #FFFFFF;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.09);
-    border-radius: 20px;
 }
 
 .inventoryDashboardHeader {
     display: flex;
     justify-content: space-between;
-    align-items: end;
+    /* align-items: end; */
     margin-left: 10px;
     margin-right: 10px;
 }
@@ -27,6 +26,7 @@
 
 .LinkStyles { 
     text-decoration: none;
+    text-align: center;
 
     font-family: 'Hartwell';
     font-style: normal;
@@ -34,7 +34,10 @@
     font-size: 20px;
     line-height: 23px;
     color: #24275E;
-    vertical-align: right;
+
+    display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .inventoryDashboardBody {

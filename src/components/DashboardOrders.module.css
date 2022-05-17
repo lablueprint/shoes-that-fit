@@ -1,13 +1,11 @@
 .dashboardComponent {
     background: #FFFFFF;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.09);
-    border-radius: 20px;
 }
 
 .orderDashboardHeader {
     display: flex;
     justify-content: space-between;
-    align-items: end;
     margin-left: 10px;
     margin-right: 10px;
 }
@@ -50,6 +48,10 @@
     font-size: 20px;
     line-height: 23px;
     color: #24275E;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
  
