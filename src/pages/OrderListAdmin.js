@@ -19,11 +19,13 @@ function OrderListAdmin({ base, id }) {
   }
 
   useEffect(() => {
+    console.log(id);
     const getCards = () => {
       base('Orders')
-        .select({ filterByFormula: `ID="${JSON.parse(JSON.stringify(id)).id}"` })
+        .select({ filterByFormula: `ID="${id}"` })
         .all()
         .then((records) => {
+          console.log(records);
           setCards(JSON.parse(records[0].fields.Orders));
           setInfo(records[0].fields);
         });

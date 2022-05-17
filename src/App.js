@@ -179,7 +179,7 @@ function App({
               <OrderListAdmin base={base} />
               )}
           />
-          <Route path="/orderhistory" element={<OrderHistory />} />
+          <Route path="/orderhistory" element={<OrderHistory base={base} />} />
           <Route path="/donations" element={<Donations />} />
           <Route path="/confirmdonation" element={<DonationConfirmation />} />
           <Route path="/schoolsform" element={<SchoolsForm />} />

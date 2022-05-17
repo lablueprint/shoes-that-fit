@@ -8,7 +8,7 @@ import styles from './SchoolsDetail.module.css';
 function SchoolsDetail({ base, input }) {
   const [info, setInfo] = useState([]);
   const { id, backButton } = input;
-  
+
   const getCards = () => {
     base('Schools')
       .select({ filterByFormula: `ID="${id}"` })
@@ -102,4 +102,8 @@ export default SchoolsDetail;
 
 SchoolsDetail.propTypes = {
   base: PropTypes.func.isRequired,
+  input: PropTypes.shape({
+    id: PropTypes.string,
+    backButton: PropTypes.func,
+  }).isRequired,
 };

@@ -47,6 +47,7 @@ function Schools({ base }) {
         dataProps={dataProps}
         dataKeyProp={dataKeyProp}
         selectCard={setCurCard}
+        details
       />
       )
       : <SchoolsDetail id={curCard} backButton={clearCurCards} />
