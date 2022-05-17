@@ -117,11 +117,9 @@ function Records({ base }) {
         <div className={styles.title}>
           <h1>Recent Activity</h1>
         </div>
-        <div className={styles.info}>
-          <Link to="/records">
-            view all &gt;
-          </Link>
-        </div>
+        <Link to="/records" className={styles.info}>
+          view all &gt;
+        </Link>
       </div>
       <div className={styles.main}>
         {display}
