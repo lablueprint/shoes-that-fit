@@ -24,16 +24,11 @@ function Donations() {
       .all()
       .then((records) => {
         setDonations(records);
-        console.log(records);
-      }, (err) => {
-        if (err) {
-          console.error(err);
-        }
       });
   };
 
+  useEffect(getDonations, []);
   useEffect(() => {
-    getDonations();
     setTableEntries(donations.map((donation) => {
       const tableEntry = {};
       const createDate = donation.fields.Created;
@@ -59,18 +54,20 @@ function Donations() {
       tableEntry.Preview = sizes;
       return tableEntry;
     }));
-  }, []);
+  }, [donations]);
 
   return (
     <div>
       <div>
         <h1 className={styles.header1}>Donations</h1>
-        <Link className={styles.logLink} to="/logdonations">
-          <input className={styles.logButton} type="submit" id="submit" name="submit" value="Log a new donation" />
-        </Link>
+        <div className={styles.headers}>
+          <Link className={styles.logLink} to="/logdonations">
+            <input className={styles.logButton} type="submit" id="submit" name="submit" value="Log a new donation" />
+          </Link>
+        </div>
       </div>
       <div>
-        <Table headers={tableFields} data={tableEntries} checkbox dataKeyProp="ID" />
+        {tableEntries.length > 0 && <Table headers={tableFields} data={tableEntries} checkbox dataKeyProp="ID" />}
       </div>
     </div>
   );
