@@ -59,7 +59,7 @@ export default AdminList;
 
 AdminList.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-  base: PropTypes.objectOf(PropTypes.object).isRequired,
+  base: PropTypes.func.isRequired,
 };
 
 // cards.filter((card) => card.fields.Time === `${value}`).map((card, index) => (

@@ -30,7 +30,7 @@ export default function Nav({ isLoggedIn, onLogout }) {
               linkClass = styles.selectedLinkStyles;
             }
             return (
-              <ul className={ulNavClass}>
+              <ul key={linkArray[index]} className={ulNavClass}>
                 {/* eslint-disable-next-line max-len */}
                 <Link to={linkArray[index]} className={linkClass} onClick={() => setSelected(linkArray[index])}>
                   <div className={styles.navButtonText}>

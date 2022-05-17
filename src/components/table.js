@@ -123,13 +123,18 @@ export default function Table({
                   <div className={styles.cell}>
                     {dataProps.length === 0 && (d[headers[hIndex]]
                       && <p>{d[headers[hIndex]].toString()}</p>)}
-                    {dataProps.length !== 0 && dataProps[hIndex] !== 'Details' && !details
-                      ? (d[dataProps[hIndex]] && <p>{d[dataProps[hIndex]].toString()}</p>)
-                      : (
-                        <button type="button" style={{ color: 'black' }} onClick={() => { selectCard(d.ID); }}>
-                          <img src={detailsIcon} alt="details" />
-                        </button>
-                      )}
+                    {details ? (
+                      <div>
+                        {(dataProps.length !== 0 && dataProps[hIndex] !== 'Details'
+                          ? (d[dataProps[hIndex]] && <p>{d[dataProps[hIndex]].toString()}</p>)
+                          : (
+                            <button type="button" style={{ color: 'black' }} onClick={() => { selectCard(d); }}>
+                              <img src={detailsIcon} alt="details" />
+                            </button>
+                          ))}
+                      </div>
+                    ) : dataProps.length !== 0
+                    && d[dataProps[hIndex]] && <p>{d[dataProps[hIndex]].toString()}</p>}
                   </div>
                 )}
             </div>

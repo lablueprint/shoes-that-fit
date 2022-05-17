@@ -130,5 +130,9 @@ export default OrderListAdmin;
 
 OrderListAdmin.propTypes = {
   base: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
+};
+
+OrderListAdmin.defaultProps = {
+  id: '',
 };

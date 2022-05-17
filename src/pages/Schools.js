@@ -10,7 +10,7 @@ function Schools({ base }) {
 
   const headers = ['School Name', 'Point of Contact', 'Email Address', 'Phone Number', 'Details'];
   // card.Orders will go into details page, unsure how to implement this right now
-  const dataProps = ['School Name', 'Point of Contact', 'Email Address', 'Phone Number', 'Details'];
+  const dataProps = ['School Name', 'Point of Contact', 'Email Address', 'Phone Number', 'Details', 'ID'];
   const dataKeyProp = 'ID';
   const sortIndices = [0, 1];
 
@@ -50,7 +50,7 @@ function Schools({ base }) {
         details
       />
       )
-      : <SchoolsDetail id={curCard} backButton={clearCurCards} />
+      : <SchoolsDetail id={curCard.ID} backButton={clearCurCards} base={base} />
 
   );
 }
