@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
+import { ChevronLeft } from 'lucide-react';
 import { Table } from '../components';
 import styles from './DonationConfirmation.module.css';
 
@@ -40,6 +41,8 @@ function DonationConfirmation() {
           State: donor.State,
           'Zip Code': donor['Zip Code'],
           Donations: JSON.stringify(donations),
+          'Logged By': 'Sidd',
+          'Total Quantity': sum,
         },
       },
     ], (err, records) => {
@@ -57,7 +60,10 @@ function DonationConfirmation() {
 
   return (
     <div>
-      <h1 className={styles.header1}>Log a Donation</h1>
+      <h1 className={styles.header1}>
+        <Link className={styles.cancelLink} to="/donations"><ChevronLeft color="black" size="30" /></Link>
+        Log a Donation
+      </h1>
       {/* eslint-disable-next-line max-len */}
       <div className={styles.confirmMessage}>Please confirm you would like to log the following donations.</div>
       <Table headers={donationFields} data={donations} checkbox={false} dataKeyProp="ID" />

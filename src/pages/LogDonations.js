@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
-  Trash2, Pencil,
+  Trash2, Pencil, ChevronLeft,
 } from 'lucide-react';
 import styles from './LogDonations.module.css';
 
@@ -103,7 +103,10 @@ function LogDonations() {
 
   return (
     <div>
-      <h1 className={styles.header1}>Log a Donation</h1>
+      <h1 className={styles.header1}>
+        <Link className={styles.cancelLink} to="/donations"><ChevronLeft color="black" size="30" /></Link>
+        Log a Donation
+      </h1>
       <h2 className={styles.header2}>Step 1. Add donor info</h2>
       {!editingDonor ? (
         <table className={styles.logTable}>
@@ -304,7 +307,7 @@ function LogDonations() {
           {donationError}
         </div>
       ) : null}
-      <Link className={styles.cancelLink} to="/">
+      <Link className={styles.cancelLink} to="/donations">
         <input className={styles.cancelButton} type="submit" id="submit" name="submit" value="Cancel" />
       </Link>
       <Link to="/confirmdonation" state={{ donor, donations }}>
