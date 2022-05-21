@@ -60,7 +60,7 @@ function App({
 
   return (
     <div className="App">
-      <Nav isLoggedIn={isLoggedIn} onLogout={logout} />
+      <Nav isLoggedIn={isLoggedIn} onLogout={logout} profile={profile} />
       <div className="App-container">
         <Routes>
           <Route
@@ -219,7 +219,16 @@ App.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
-  profile: PropTypes.objectOf(PropTypes.string).isRequired,
+  profile: PropTypes.shape({
+    role: PropTypes.string,
+    address: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+    phone: PropTypes.string,
+    contactName: PropTypes.string,
+    schoolName: PropTypes.string,
+    zipCode: PropTypes.string,
+  }).isRequired,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
   register: PropTypes.bool.isRequired,
