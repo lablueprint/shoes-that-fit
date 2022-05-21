@@ -76,7 +76,13 @@ function LogDonations() {
       setDonationError(<p className={styles.error}>Select a category.</p>);
       return;
     }
-    donation.Size = document.getElementById('size').value;
+    const size = document.getElementById('size').value;
+    if (!(!Number.isNaN(size) && (Number.isInteger(Number(size)) || (size.substring(size.length - 2, size.length) === '.5')))) {
+      setDonationError('Please enter a valid shoe size.');
+      return;
+    }
+    donation.Size = Number(size);
+    console.log(donation.Size);
     if (document.getElementById('wide').checked) {
       donation.Wide = 'W';
     } else {
