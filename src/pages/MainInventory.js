@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 import React, {
@@ -52,7 +53,8 @@ const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * num
 function MainInventory({ loggedIn, username, onLogout }) {
   // console.log(loggedIn);
   // console.log(username);
-
+  const [selected, setSelected] = useState([]);
+  const [editable, setEditable] = useState(false);
   const [rows, setRows] = useState([]);
   const [cards, setCards] = useState([]);
   const [tableInfo, setTableInfo] = useState([]);
@@ -85,7 +87,7 @@ function MainInventory({ loggedIn, username, onLogout }) {
   const inputBoxes = useRef();
   const getInventory = () => {
     // base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
-    base('TestInventory').select({ view: 'Grid view' }).all().then((records) => {
+    base('LargerTestInventory').select({ view: 'Grid view' }).all().then((records) => {
       setRows(records);
       setCards(records.map((r) => {
         const record = r.fields;
@@ -133,7 +135,6 @@ function MainInventory({ loggedIn, username, onLogout }) {
           'Bin Name': record['Bin Name'], 'Part Name': Part.props.children, Quantity: Quantity.props.children, id: r.id,
         };
       }));
-      console.log(records);
     });
   };
   const sortIndices = [0, 1, 2];
@@ -153,6 +154,14 @@ function MainInventory({ loggedIn, username, onLogout }) {
       }
     }
     setQuantityFulfilled(quantity);
+  };
+
+  const updateSelectedItems = (id, command) => {
+    if (command === 0) { // add item
+      setSelected((prev) => [...prev, id]);
+    } else if (command === 1) { // remove item
+      setSelected((prev) => (prev.filter((index) => index !== id)));
+    }
   };
 
   const getOrders = () => {
@@ -232,6 +241,21 @@ function MainInventory({ loggedIn, username, onLogout }) {
     });
   });
 
+  const removeItems = (() => {
+    let i = 0;
+    for (i; i < selected.length; i += 1) {
+      // eslint-disable-next-line no-loop-func
+      console.log(selected[i]);
+      base('LargerTestInventory').destroy([selected[i]], (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
+    }
+    setCards((prev) => (prev.filter((index) => !selected.includes(index.id))));
+    setSelected([]);
+  });
+
   const handleMouseDown = useCallback(
     (e) => {
       if (tableContents.current && tableContents.current.contains(e.target)) {
@@ -274,7 +298,6 @@ function MainInventory({ loggedIn, username, onLogout }) {
           </div>
         );
       }
-      console.log(Part);
       if (cards[i].Quantity < 5) {
         Quantity = (
           <div>
@@ -288,12 +311,10 @@ function MainInventory({ loggedIn, username, onLogout }) {
           </div>
         );
       }
-      const elem = { 'Bin Name': Bin, 'Part Name': Part.props.children, Quantity: Quantity.props.children };
-      console.log(elem);
+      const elem = { 'Bin Name': Bin, 'Part Name': Part.props.children, Quantity };
       arr.push(elem);
     }
     setTableInfo(arr);
-    console.log(cards);
   };
 
   useEffect(processInventory, [cards]);
@@ -380,15 +401,15 @@ function MainInventory({ loggedIn, username, onLogout }) {
     };
   });
 
-  const updateRowStatus = (e) => {
-    setSelectedRows([...selectedRows, parseInt(e.target.className, 10)]);
-    console.log(selectedRows);
-  };
+  // const updateRowStatus = (e) => {
+  //   setSelectedRows([...selectedRows, parseInt(e.target.className, 10)]);
+  //   console.log(selectedRows);
+  // };
 
-  const removeRowStatus = (e) => {
-    const newRows = selectedRows.filter((index) => index !== parseInt(e.target.className, 10));
-    setSelectedRows(newRows);
-  };
+  // const removeRowStatus = (e) => {
+  //   const newRows = selectedRows.filter((index) => index !== parseInt(e.target.className, 10));
+  //   setSelectedRows(newRows);
+  // };
 
   const updateAllRows = () => {
     if (allChecked) { setSelectedRows([]); setAllChecked(false); } else { setAllChecked(true); }
@@ -400,7 +421,9 @@ function MainInventory({ loggedIn, username, onLogout }) {
       )
       : (
         <div>
+          <h1>Inventory</h1>
           <div className={styles.headers}>
+
             <div className={styles.iconBox}>
               <Box color="#6BB7E8" className={styles.icon} />
               <h3 className={styles.iconTitle}>Total Quantity</h3>
@@ -412,14 +435,23 @@ function MainInventory({ loggedIn, username, onLogout }) {
               <p>{quantityFulfilled}</p>
             </div>
           </div>
+
+          <button type="button" onClick={() => setEditable(!editable)}>Edit</button>
+          <div>
+            <button type="button">+ Add Inventory</button>
+            <button type="button" onClick={() => removeItems()}>- Remove Inventory</button>
+          </div>
           <Table
+            editable={editable}
             headers={headers}
             sortIndices={sortIndices}
             data={cards}
             dataProps={dataProps}
             dataKeyProp={dataKeyProp}
+            selected={selected}
+            setSelected={updateSelectedItems}
           />
-
+          {console.log(cards)}
         </div>
       )
   );

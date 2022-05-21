@@ -166,7 +166,6 @@ export default function Table({
         </div>
 
         <div className={styles.container}>
-          {console.log(data)}
           {checkbox && (
           <div className={styles.checkboxColumn}>
             <header className={styles.cellContainer}>
