@@ -20,6 +20,7 @@ import {
   SchoolsForm,
   SchoolsDetail,
   ChangePass,
+  Schools,
 } from './pages';
 
 const BASE_ID = process.env.REACT_APP_AIRTABLE_BASE_KEY;
@@ -59,7 +60,7 @@ function App({
 
   return (
     <div className="App">
-      <Nav isLoggedIn={isLoggedIn} onLogout={logout} />
+      <Nav isLoggedIn={isLoggedIn} onLogout={logout} profile={profile} />
       <div className="App-container">
         <Routes>
           <Route
@@ -183,6 +184,7 @@ function App({
           <Route path="/confirmdonation" element={<DonationConfirmation base={base} />} />
           <Route path="/schoolsform" element={<SchoolsForm base={base} />} />
           <Route path="/schoolsdetail" element={<SchoolsDetail base={base} />} />
+          <Route path="/schools" element={<Schools base={base} />} />
         </Routes>
       </div>
     </div>
@@ -217,7 +219,16 @@ App.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
-  profile: PropTypes.string.isRequired,
+  profile: PropTypes.shape({
+    role: PropTypes.string,
+    address: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+    phone: PropTypes.string,
+    contactName: PropTypes.string,
+    schoolName: PropTypes.string,
+    zipCode: PropTypes.string,
+  }).isRequired,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
   register: PropTypes.bool.isRequired,

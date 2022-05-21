@@ -77,7 +77,7 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
     //     // incorrect username or password
     //   });
 
-    base.register({ username, password }).then(async (res) => {
+    await base.register({ username, password }).then(async (res) => {
       const profile = {
         role,
         contactName,
@@ -141,18 +141,27 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
     //     // incorrect username or password
     //   });
 
-    base.login({ username, password }).then(async (res) => {
-      const profile = {
-        role,
-        contactName,
-        schoolName,
-        address,
-        city,
-        state,
-        zipCode,
-        phone,
-      };
-      await onLogin(username, res.body.user.fields.Password, profile, true, false);
+    await base.login({ username, password }).then(async (res) => {
+      let profile = {};
+      await base('Profile')
+        .select({
+          view: 'Grid view',
+          filterByFormula: `{Username} = "${username}"`,
+        }).all()
+        .then((records) => {
+          const tempProfile = records[0].fields;
+          profile = {
+            role: tempProfile.Role,
+            contactName: tempProfile.ContactName,
+            schoolName: tempProfile.SchoolName,
+            address: tempProfile.Address,
+            city: tempProfile.City,
+            state: tempProfile.State,
+            zipCode: tempProfile.ZipCode,
+            phone: tempProfile.Phone,
+          };
+        });
+      await onLogin(username, res.body.user.fields.Password, profile, false, false);
     }).catch((err) => {
       console.log(err);
       curError = 'Error: Incorrect username or password.';
