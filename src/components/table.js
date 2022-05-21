@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp, faCircle } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
+import { Info } from 'lucide-react';
 import styles from './table.module.css';
-import details from '../assets/DetailsIcon.svg';
+// import detailsIcon from '../assets/DetailsIcon.svg';
 
 const sorts = {
   descending: 0,
@@ -11,7 +12,7 @@ const sorts = {
 };
 
 export default function Table({
-  headers, sortIndices, data, dataProps, checkbox, dataKeyProp, selectCard,
+  headers, sortIndices, data, dataProps, checkbox, dataKeyProp, selectCard, details,
 }) {
   const [lastIndex, setLast] = useState(0);
   const [sortDir, setDir] = useState(sorts.descending);
@@ -120,22 +121,49 @@ export default function Table({
               {React.isValidElement(d)
                 ? <div className={styles.cell}>{d}</div>
                 : (
-                  <p className={styles.cell}>
+                  <div className={styles.cell}>
                     {dataProps.length === 0 && (d[headers[hIndex]]
-                      && d[headers[hIndex]].toString())}
-                    {dataProps.length !== 0 && dataProps[hIndex] !== 'Details'
-                      ? (d[dataProps[hIndex]] && d[dataProps[hIndex]].toString())
-                      : (
-                        <button type="button" style={{ color: 'black' }} onClick={() => { selectCard(d.ID); }}>
-                          <img src={details} alt="details" />
-                        </button>
-                      )}
-                  </p>
+                      && <p>{d[headers[hIndex]].toString()}</p>)}
+                  </div>
                 )}
             </div>
           ))}
         </div>
       ))}
+      {details
+        ? (
+          <div key="Details">
+            <header className={styles.cellContainer}>
+              <div className={styles.cell}>
+                <p>Details</p>
+              </div>
+            </header>
+            {data.map((d, dIndex) => (
+              <div
+                key={d[dataKeyProp]}
+                className={styles.cellContainer}
+                style={dIndex % 2 === 0 ? {
+                  backgroundColor: '#F6F6F6',
+                } : { backgroundColor: '#FFFFFF' }}
+              >
+                {React.isValidElement(d)
+                  ? <div className={styles.cell}>{d}</div>
+                  : (
+                    <div className={styles.cell}>
+                      <div>
+                        <Info onClick={() => { selectCard(d); }} />
+                        {/* eslint-disable-next-line max-len */}
+                        {/* <button type="button" style={{ color: 'black' }} onClick={() => { selectCard(d); }}>
+                          <img src={detailsIcon} alt="details" />
+                        </button> */}
+                      </div>
+                    </div>
+                  )}
+              </div>
+            ))}
+          </div>
+        )
+        : null}
     </div>
     )
   );
@@ -148,11 +176,14 @@ Table.propTypes = {
   dataProps: PropTypes.arrayOf(PropTypes.string),
   checkbox: PropTypes.bool,
   dataKeyProp: PropTypes.string.isRequired,
-  selectCard: PropTypes.func.isRequired,
+  selectCard: PropTypes.func,
+  details: PropTypes.bool,
 };
 
 Table.defaultProps = {
   sortIndices: [],
   checkbox: true,
   dataProps: [],
+  selectCard: () => null,
+  details: false,
 };

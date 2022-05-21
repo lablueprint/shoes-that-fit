@@ -79,7 +79,7 @@ function Donations() {
       </div>
       <div>
         {tableEntries.length > 0
-          ? <Table headers={tableFields} data={tableEntries} checkbox dataKeyProp="ID" />
+          ? <Table headers={tableFields} data={tableEntries} checkbox dataKeyProp="ID" details />
           : <p>No donations found</p>}
       </div>
     </div>
