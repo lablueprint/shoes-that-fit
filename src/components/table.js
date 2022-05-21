@@ -151,7 +151,7 @@ export default function Table({
                   : (
                     <div className={styles.cell}>
                       <div>
-                        <Info onClick={() => { selectCard(d); }} />
+                        <Info onClick={(e) => { selectCard(e, d, d.recordID); }} />
                         {/* eslint-disable-next-line max-len */}
                         {/* <button type="button" style={{ color: 'black' }} onClick={() => { selectCard(d); }}>
                           <img src={detailsIcon} alt="details" />

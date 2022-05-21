@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Printer } from 'lucide-react';
 import printJS from 'print-js';
 import { Table } from '../components';
@@ -19,6 +19,7 @@ function Donations() {
   const [donations, setDonations] = useState([]);
   const [tableEntries, setTableEntries] = useState([]);
   const tableFields = ['Date', 'Logged By', 'Quantity', 'Donor', 'Preview'];
+  const navigate = useNavigate();
 
   const getDonations = () => {
     base('Donors').select({ view: 'Grid view' })
@@ -53,6 +54,7 @@ function Donations() {
         }
       });
       tableEntry.Preview = sizes;
+      tableEntry.recordID = donation.id;
       return tableEntry;
     }));
   }, [donations]);
@@ -63,6 +65,19 @@ function Donations() {
       printable: tableEntries,
       properties: tableFields,
       type: 'json',
+    });
+  };
+
+  const redirectDonationDetails = (e, d, recordID) => {
+    e.preventDefault();
+    console.log(d);
+    console.log(recordID);
+    base('Donors').find(recordID, (err, record) => {
+      if (err) { console.error(err); return; }
+      console.log(record);
+      console.log('Retrieved', record.id);
+      // navigate('/');
+      navigate('/donationdetails', { state: { donor: record.fields } });
     });
   };
 
@@ -79,7 +94,7 @@ function Donations() {
       </div>
       <div>
         {tableEntries.length > 0
-          ? <Table headers={tableFields} data={tableEntries} checkbox dataKeyProp="ID" details />
+          ? <Table headers={tableFields} data={tableEntries} checkbox dataKeyProp="ID" details selectCard={redirectDonationDetails} />
           : <p>No donations found</p>}
       </div>
     </div>

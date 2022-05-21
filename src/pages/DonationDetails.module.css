@@ -1,0 +1,124 @@
+.confirmMessage {
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    color: #FF6622;
+    text-align: left;
+    padding: 0 0 10px 15px;
+}
+
+.allInfo {
+    display: flex;
+    justify-content: space-evenly;
+    padding-bottom: 20px;
+}
+.allInfo div {
+    padding: 10px;
+}
+
+.sectionHeader {
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    color: black;
+    text-align: left;
+}
+
+.donorInfo {
+    display: flex;
+    justify-content: space-evenly;
+
+    box-sizing: border-box;
+    background: white;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.donorInfoEntries div {
+    text-align: left;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    color: black;
+    padding: 0px 30px;
+}
+
+.topEntry {
+    padding-top: 30px;
+}
+.bottomEntry {
+    padding-bottom: 30px;
+}
+
+.donationInfo div{
+    text-align: left;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    color: black;
+}
+
+.backButton {
+    background: white;
+    border: 2px solid #FF6622;
+    border-radius: 5px;
+    box-sizing: border-box;
+
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    color: black;
+
+    width: 150px;
+    height: 50px;
+}
+.backLink {
+    margin-right: 20px;
+}
+.submitButton {
+    background: #AEECFF;
+    border: 2px solid #AEECFF;
+    border-radius: 5px;
+
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+
+    width: 220px;
+    height: 50px;
+}
+.header1 {
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 56px;
+    color: black;
+    text-align: left;
+    padding-left: 15px;
+}
+.error {
+    background: #FFEBE2;
+    border: 2px solid #FF6622;
+    border-radius: 5px;
+    box-sizing: border-box;
+    width: 150px;
+    height: auto;
+    margin: 10px auto;
+    color: #e4571a;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-size: 18px;
+}
