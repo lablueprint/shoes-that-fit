@@ -4,6 +4,7 @@
 import React, {
   useState, useEffect, useRef, useCallback,
 } from 'react';
+import { Link } from 'react-router-dom';
 import ReactSelect from 'react-select';
 import { Box, Smile, AlertTriangle } from 'lucide-react';
 import PropTypes from 'prop-types';
@@ -438,7 +439,10 @@ function MainInventory({ loggedIn, username, onLogout }) {
 
           <button type="button" onClick={() => setEditable(!editable)}>Edit</button>
           <div>
-            <button type="button">+ Add Inventory</button>
+            <Link to="/addinventory">
+              <button type="button">+ Add Inventory</button>
+            </Link>
+
             <button type="button" onClick={() => removeItems()}>- Remove Inventory</button>
           </div>
           <Table

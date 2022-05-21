@@ -1,0 +1,14 @@
+.header {
+    display: flex;
+    flex-direction: row;
+}
+
+.formRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.formPart {
+    width: 100px;
+    margin-right: 100px;
+}
