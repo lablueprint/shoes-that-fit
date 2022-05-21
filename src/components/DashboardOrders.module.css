@@ -43,14 +43,12 @@
     text-decoration: none;
 
     font-family: 'Hartwell';
-font-style: normal;
-font-weight: 600;
-font-size: 18px;
-line-height: 21px;
-/* identical to box height */
-
-
-color: #000000;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 21px;
+    /* identical to box height */
+    color: #000000;
 
     display: flex;
     justify-content: center;
@@ -60,10 +58,8 @@ color: #000000;
  
  /* table wrapper for continuous border */
  .orderDashboardTable {
-    overflow: scroll;
-     margin-left: 10px;
-     margin-right: 10px;
-     margin-bottom: 10px;
+    overflow-x: auto;
+     /* padding: 10px; */
      width: 100%;
      border-collapse: collapse; /* removes gap between cells */
      background-color: #F9F9F9;   

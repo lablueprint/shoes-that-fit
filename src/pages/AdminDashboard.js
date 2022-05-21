@@ -74,10 +74,15 @@ function AdminDashboard({
       : ((profile.role === 'Admin'
         && (
         <div className={styles.container}>
-          <h1 className={styles.welcome}>
-            Welcome Back,&nbsp;
-            <b>Admin</b>
-          </h1>
+          <div className={styles.top}>
+            <h1 className={styles.welcome}>
+              Welcome Back,&nbsp;
+              <b>Admin</b>
+            </h1>
+            <div className={styles.name}>
+              {profile.contactName}
+            </div>
+          </div>
           <div className={styles.topComponents}>
             <DashboardOrders base={base} />
             <InventorySummary base={base} />

@@ -50,19 +50,21 @@
     width: 165px;
     height: 165px;
     background: #DFF2FF;
-    margin-left: 15px;
-    margin-right: 50px;
+    margin-left: 5%;
+    margin-right: 10%;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .inventoryDashboardShipped {
     width: 165px;
     height: 165px;
     background: rgba(255, 228, 196, 0.72);
-    margin-right: 15px;
-    display: inline;
-    justify-content: flex-start;
+    margin-right: 5%;
+    display: flex;
     position: relative;
+    flex-direction: column;
 }
 
 .title
@@ -76,13 +78,14 @@
     font-family: 'Hartwell';
     font-style: normal;
     font-weight: 400;
-    font-size: 22px;
+    font-size: 20px;
     line-height: 23px;
     float: left;
     color: #000000;
-    position: absolute;
-    left: 15px;
-    top: 60px;
+    position: relative;
+    left: 10%;
+    text-align: left;
+    top: 15%;
 }
 
 .minorTitleData {
@@ -92,27 +95,30 @@
     font-size: 30px;
     line-height: 23px;
     float: left;
-    position: absolute;
-    left: 15px;
-    top: 90px;
+    position: relative;
+    text-align: left;
+    left: 10%;
+    top: 20%;
 }
 
 .inventorySmile {
     float: left;
     height: 45.000003814697266px;
     width: 45.000003814697266px;
-    position: absolute;
+    position: relative;
     left: 15px;
     top: 15px;
     border-radius: 0px;
+    color: #D66330;
 }
 
 .inventoryBox {
     float: left;
     height: 45.000003814697266px;
     width: 45.000003814697266px;
-    position: absolute;
+    position: relative;
     left: 15px;
     top: 15px;
     border-radius: 0px;
+    color: #6BB7E8;
 }

@@ -115,7 +115,7 @@ function Records({ base }) {
     <div className={styles['main-container']}>
       <div className={styles.header}>
         <div className={styles.title}>
-          <h1>Recent Activity</h1>
+          Recent Activity
         </div>
         <Link to="/records" className={styles.info}>
           view all &gt;
