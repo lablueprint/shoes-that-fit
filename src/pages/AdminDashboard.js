@@ -91,7 +91,16 @@ export default AdminDashboard;
 AdminDashboard.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,
-  profile: PropTypes.string.isRequired,
+  profile: PropTypes.shape({
+    role: PropTypes.string,
+    address: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+    phone: PropTypes.string,
+    contactName: PropTypes.string,
+    schoolName: PropTypes.string,
+    zipCode: PropTypes.string,
+  }).isRequired,
   onLogin: PropTypes.func.isRequired,
   password: PropTypes.string.isRequired,
   register: PropTypes.bool.isRequired,

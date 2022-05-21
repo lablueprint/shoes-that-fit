@@ -5,10 +5,9 @@ import PropTypes from 'prop-types';
 import styles from './SchoolsDetail.module.css';
 // import { AdminCard } from '../components';
 
-function SchoolsDetail({ base, input }) {
+function SchoolsDetail({ base, id, backButton }) {
   const [info, setInfo] = useState([]);
-  const { id, backButton } = input;
-  
+
   const getCards = () => {
     base('Schools')
       .select({ filterByFormula: `ID="${id}"` })
@@ -102,4 +101,11 @@ export default SchoolsDetail;
 
 SchoolsDetail.propTypes = {
   base: PropTypes.func.isRequired,
+  id: PropTypes.string,
+  backButton: PropTypes.func,
+};
+
+SchoolsDetail.defaultProps = {
+  id: '',
+  backButton: () => {},
 };

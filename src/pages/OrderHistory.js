@@ -84,7 +84,7 @@ function OrderHistory({ base }) {
           <div className={styles.back}>
             <ChevronLeft size={50} type="button" onClick={clearSpecificCard} />
           </div>
-          <OrderListAdmin id={specificCardID} />
+          <OrderListAdmin id={specificCardID} base={base} />
         </>
       )
   );

@@ -21,7 +21,7 @@ const calculateRange = (tableData, numRows) => {
 const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * numRows, page * numRows);
 
 function MainInventory({
-  isLoggedIn, username, onLogout, base,
+  isLoggedIn, username, base,
 }) {
   console.log(isLoggedIn);
   console.log(username);
@@ -322,6 +322,5 @@ export default MainInventory;
 MainInventory.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,
-  onLogout: PropTypes.func.isRequired,
   base: PropTypes.func.isRequired,
 };
