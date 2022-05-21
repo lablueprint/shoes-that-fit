@@ -160,12 +160,12 @@ export default function Table({
 
   return (
     ready && (
-      <div>
-        <div>
+      <div className={styles.top}>
+        <div className={styles.pageLength}>
           <PageLengthForm setNumRows={setNumRows} />
         </div>
-
         <div className={styles.container}>
+
           {checkbox && (
           <div className={styles.checkboxColumn}>
             <header className={styles.cellContainer}>
@@ -249,7 +249,7 @@ export default function Table({
             </div>
           ))}
         </div>
-        <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} />
+        <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} className={styles.Footer} />
       </div>
     )
   );

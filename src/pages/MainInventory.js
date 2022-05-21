@@ -6,7 +6,9 @@ import React, {
 } from 'react';
 import { Link } from 'react-router-dom';
 import ReactSelect from 'react-select';
-import { Box, Smile, AlertTriangle } from 'lucide-react';
+import {
+  Box, Smile, AlertTriangle, Pencil, Plus, Trash2,
+} from 'lucide-react';
 import PropTypes from 'prop-types';
 // import base from '../lib/airtable';
 import { Table, TableFooter, PageLengthForm } from '../components';
@@ -119,9 +121,11 @@ function MainInventory({ loggedIn, username, onLogout }) {
             <div className={styles.table}>
               <div>
                 {record.Quantity}
+&nbsp; LOW
               </div>
               <div>
-                <AlertTriangle color="#000000" className={styles.caution} />
+                {/* <AlertTriangle color="#000000" className={styles.caution} />
+                &nbsp; LOW */}
               </div>
             </div>
           );
@@ -422,8 +426,11 @@ function MainInventory({ loggedIn, username, onLogout }) {
       )
       : (
         <div>
-          <h1>Inventory</h1>
-          <div className={styles.headers}>
+          <div className={styles.heading}>
+            <h1 className={styles.header}>Inventory</h1>
+          </div>
+
+          {/* <div className={styles.headers}>
 
             <div className={styles.iconBox}>
               <Box color="#6BB7E8" className={styles.icon} />
@@ -435,15 +442,13 @@ function MainInventory({ loggedIn, username, onLogout }) {
               <h3>Kids Helped</h3>
               <p>{quantityFulfilled}</p>
             </div>
-          </div>
-
-          <button type="button" onClick={() => setEditable(!editable)}>Edit</button>
+          </div> */}
           <div>
             <Link to="/addinventory">
-              <button type="button">+ Add Inventory</button>
+              <Plus color="#6BB7E8" className={styles.tableIcon} />
             </Link>
-
-            <button type="button" onClick={() => removeItems()}>- Remove Inventory</button>
+            <Pencil color="#6BB7E8" className={styles.tableIcon} onClick={() => setEditable(!editable)} />
+            <Trash2 color="#6BB7E8" className={styles.tableIcon} onClick={() => removeItems()} />
           </div>
           <Table
             editable={editable}

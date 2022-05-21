@@ -31,12 +31,21 @@
     background: #E9E9E9;
 } */
 
+.heading {
+    display: block;
+    width: 200px;
+    margin-left: 50px;
+    margin-top: 35px;
+    /* font-family: 'Hartwell';
+    font-style: normal; */
+}
+
 .WStyling {
     width: 20px;
     height: 20px;
     background: #C4C4C4;
     border-radius: 7px;
-
+    padding-bottom: 3px;
     padding-left: .75px;
 }
 
@@ -68,6 +77,12 @@
     justify-self: left;
     width: 54px;
     height: 54px;
+}
+
+.tableIcon {
+    justify-self: left;
+    width: 24px;
+    height: 24px;
 }
 
 .iconTitle {

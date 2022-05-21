@@ -27,7 +27,7 @@ function AddOrders() {
 
     const PName = e.target.form[0].value;
     const Location = e.target.form[2].value;
-    const Wide = e.target.form[1].value === 'on' ? true : 1;
+    const Wide = e.target.form[1].value === 'on' ? true : '';
     const Quant = parseInt(e.target.form[3].value, 10);
     base('LargerTestInventory').create([
       {
@@ -60,7 +60,7 @@ function AddOrders() {
           </Link>
         </div>
         <div>
-          <h1>Add Inventory</h1>
+          <h1>  &nbsp; Add Inventory</h1>
         </div>
       </div>
 
@@ -71,7 +71,7 @@ function AddOrders() {
             <input type="text" id="PartName" />
           </div>
 
-          <div className={styles.formPart}>
+          <div className={styles.formBox}>
             <label htmlFor="Wide">Wide Width?</label>
             <input type="checkbox" id="Wide" />
           </div>
@@ -87,7 +87,7 @@ function AddOrders() {
           </div>
 
         </div>
-        <input type="submit" value="Submit" onClick={(e) => submitForm(e)} />
+        <input type="submit" value="Submit" onClick={(e) => submitForm(e)} className={styles.submit} />
       </form>
 
     </div>
