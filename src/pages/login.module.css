@@ -1,12 +1,36 @@
 .col {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    /* align-items: center; */
 }
 
+.bigcol {
+    margin: 0 50px;
+
+}
+
+.city {
+    display: flex;
+    flex-direction: column;
+    margin-right: 4px;
+}
+
+.state {
+    display: flex;
+    flex-direction: column;
+    margin-left: 4px;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
 .leftcol {
     display: flex;
     flex-direction: column;
     align-items: left;
+    margin: 0 50px;
 }
 
 .login button {
@@ -14,7 +38,6 @@
     border-color: #00B1FF;
     border-width: 2px;
     border-style: solid;
-    margin-right: 4%;
 }
 
 .login .registerButton {
@@ -26,13 +49,27 @@
   text-decoration: underline;
 }
 
-.top {
-    margin-top: 10vh;
+.fix {
+    display: flex;
+    flex-direction: column;
     width: 100%;
 }
 
+#grey {
+    background-color:  #F4F4F4;
+}
+
+.top {
+    margin-top: 10vh;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
 .space{
-    margin-top: 17%;
+    margin-top: 2%;
 }
 .blue {
     background-color:  white;
@@ -53,4 +90,5 @@
     align-items: center;
     display: flex;
     flex-direction: column;
+    margin-top: 40px;
 }

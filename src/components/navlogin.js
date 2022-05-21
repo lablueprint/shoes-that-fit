@@ -31,8 +31,11 @@ export default function NavLogin() {
     ) : (
       <div className={styles.sidebar}>
         <img className={styles.stfLogo} src={stfLogo} alt="Shoes That Fit" />
-        <GraduationCap size={20} />
-        <p>Educator Portal</p>
+        <div className={styles.align}>
+          <GraduationCap size={20} />
+          <p>Educator Portal</p>
+        </div>
+
       </div>
     )
   );
