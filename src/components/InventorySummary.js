@@ -39,7 +39,7 @@ function InventorySummary({ base }) {
     <div className={styles.dashboardComponent}>
       <div className={styles.inventoryDashboardHeader}>
         <h2 className={styles.inventory}>Inventory</h2>
-        <Link to="/inventory" className={styles.LinkStyles}>See Full Inventory &gt;</Link>
+        <Link to="/inventory" className={styles.LinkStyles}>go to inventory &gt;</Link>
       </div>
 
       <div className={styles.inventoryDashboardBody}>
