@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-// import { Info } from 'lucide-react';
+import { Printer } from 'lucide-react';
+import printJS from 'print-js';
 import { Table } from '../components';
 import styles from './Donations.module.css';
 
@@ -32,7 +33,7 @@ function Donations() {
     setTableEntries(donations.map((donation) => {
       const tableEntry = {};
       const createDate = donation.fields.Created;
-      tableEntry.Date = `${createDate.substring(5, 7)}/${createDate.substring(8, 10)}/${createDate.substring(0, 4)}`;
+      tableEntry.Date = `${String(Number(createDate.substring(5, 7)))}/${String(Number(createDate.substring(8, 10)))}/${createDate.substring(0, 4)}`;
       tableEntry['Logged By'] = donation.fields['Logged By'];
       tableEntry.Quantity = donation.fields['Total Quantity'];
       tableEntry.Donor = donation.fields.Name;
@@ -56,6 +57,15 @@ function Donations() {
     }));
   }, [donations]);
 
+  const printDonations = (e) => {
+    e.preventDefault();
+    printJS({
+      printable: tableEntries,
+      properties: tableFields,
+      type: 'json',
+    });
+  };
+
   return (
     <div>
       <div>
@@ -64,10 +74,13 @@ function Donations() {
           <Link className={styles.logLink} to="/logdonations">
             <input className={styles.logButton} type="submit" id="submit" name="submit" value="Log a new donation" />
           </Link>
+          <Printer onClick={printDonations} />
         </div>
       </div>
       <div>
-        {tableEntries.length > 0 && <Table headers={tableFields} data={tableEntries} checkbox dataKeyProp="ID" />}
+        {tableEntries.length > 0
+          ? <Table headers={tableFields} data={tableEntries} checkbox dataKeyProp="ID" />
+          : <p>No donations found</p>}
       </div>
     </div>
   );
