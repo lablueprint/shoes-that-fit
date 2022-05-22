@@ -7,7 +7,6 @@ import { Nav } from './components';
 import {
   MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, Records, AdminDashboard,
 } from './pages';
-import AddOrders from './pages/AddOrders';
 
 function App({
   isLoggedIn, username, login, logout,
@@ -25,12 +24,6 @@ function App({
               username={username}
               onLogout={logout}
             />
-        )}
-        />
-        <Route
-          path="/addinventory"
-          element={(
-            <AddOrders />
         )}
         />
         <Route

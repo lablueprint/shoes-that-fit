@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 /* eslint-disable no-loop-func */
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
@@ -121,12 +122,16 @@ function MainInventory({ loggedIn, username, onLogout }) {
             <div className={styles.table}>
               <div>
                 {record.Quantity}
-&nbsp; LOW
               </div>
+              {/* &nbsp;
+                &nbsp; */}
               <div>
-                {/* <AlertTriangle color="#000000" className={styles.caution} />
-                &nbsp; LOW */}
+                <AlertTriangle color="black" className={styles.caution} />
               </div>
+              {/* <div>
+                <AlertTriangle color="#000000" className={styles.caution} />
+                &nbsp; LOW
+              </div> */}
             </div>
           );
         } else {
@@ -444,11 +449,12 @@ function MainInventory({ loggedIn, username, onLogout }) {
             </div>
           </div> */}
           <div>
-            <Link to="/addinventory">
-              <Plus color="#6BB7E8" className={styles.tableIcon} />
+            <Link to="/newshoeform">
+              {/* <Plus color="#6BB7E8" className={styles.tableIcon} /> */}
+              <button className={styles.addButton}>+ Add Inventory</button>
             </Link>
-            <Pencil color="#6BB7E8" className={styles.tableIcon} onClick={() => setEditable(!editable)} />
-            <Trash2 color="#6BB7E8" className={styles.tableIcon} onClick={() => removeItems()} />
+            <Pencil color="gray" className={styles.pencilIcon} onClick={() => setEditable(!editable)} />
+            <Trash2 color="gray" className={styles.tableIcon} onClick={() => removeItems()} />
           </div>
           <Table
             editable={editable}

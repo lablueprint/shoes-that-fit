@@ -163,6 +163,7 @@ export default function Table({
       <div className={styles.top}>
         <div className={styles.pageLength}>
           <PageLengthForm setNumRows={setNumRows} />
+          <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} className={styles.Footer} />
         </div>
         <div className={styles.container}>
 
