@@ -150,6 +150,7 @@ input::-webkit-calendar-picker-indicator {
     font-family: 'Hartwell';
     font-style: normal;
     font-weight: 1000;
+    border-radius: 6px;
 }
 
 #print {
@@ -204,9 +205,10 @@ input {
 }
 
 .orderHistory {
-    background: rgba(229, 229, 229, 0.5);
-    padding-left: 15%;
-    padding-right: 15%;
+    width: 80%;
+    /* background: rgba(229, 229, 229, 0.5); */
+    padding-left: 10%;
+    padding-right: 10%;
 }
 
 .orderText {
@@ -216,12 +218,6 @@ input {
     font-weight: bold;
     padding: 1%;
 }
-
-.back {
-    margin-left: 5%;
-    margin-top:1%;
-    margin-bottom:2%;
-  } 
 
 .status {
     text-align: center;
@@ -255,3 +251,72 @@ input {
     flex-direction: column;
     border-radius: 20px;
   }
+
+  .top {
+    display: flex;
+    flex-direction: row;
+    margin-left: 1%;
+    margin-right: 6.5%;
+    margin-top: 7%;
+}
+
+.name {
+    margin-left: auto;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    /* identical to box height */
+
+    text-align: right;
+
+    color: #000000;
+}
+
+.title {
+    display: flex;
+    /* padding-left: 10%; */
+    margin-bottom: 1.5%;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 56px;
+    /* identical to box height */
+    color: #000000;
+}
+
+.placeOrder {
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #000000;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    font-weight: bold;
+
+    background: #AEECFF;
+    border-radius: 6px;
+    border: none;
+
+    height: 100%;
+}
+
+.secondTop {
+    display: flex;
+    flex-direction: row;
+    align-content: flex-start;
+    padding: 1%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    height: 3%;
+}

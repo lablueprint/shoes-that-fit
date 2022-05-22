@@ -142,16 +142,25 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
     //   });
 
     await base.login({ username, password }).then(async (res) => {
-      const profile = {
-        role,
-        contactName,
-        schoolName,
-        address,
-        city,
-        state,
-        zipCode,
-        phone,
-      };
+      let profile = {};
+      await base('Profile')
+        .select({
+          view: 'Grid view',
+          filterByFormula: `{Username} = "${username}"`,
+        }).all()
+        .then((records) => {
+          const tempProfile = records[0].fields;
+          profile = {
+            role: tempProfile.Role,
+            contactName: tempProfile.ContactName,
+            schoolName: tempProfile.SchoolName,
+            address: tempProfile.Address,
+            city: tempProfile.City,
+            state: tempProfile.State,
+            zipCode: tempProfile.ZipCode,
+            phone: tempProfile.Phone,
+          };
+        });
       await onLogin(username, res.body.user.fields.Password, profile, false, false);
     }).catch((err) => {
       console.log(err);
