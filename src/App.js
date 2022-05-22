@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { /* useEffect */ } from 'react';
 import './styles/App.css';
 import { connect } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
@@ -11,7 +11,7 @@ import {
   AdminList,
   OrderForm,
   LoginPage,
-  Records,
+  RecordPage,
   AdminDashboard,
   Donations,
   DonationConfirmation,
@@ -21,47 +21,45 @@ import {
   SchoolsDetail,
   ChangePass,
   Portal,
+  Schools,
 } from './pages';
 
 const BASE_ID = process.env.REACT_APP_AIRTABLE_BASE_KEY;
-const API_KEY = process.env.REACT_APP_AIRTABLE_USER_KEY;
 const ENDPOINT_URL = 'http://localhost:8000';
 
 Airtable.configure({
   endpointUrl: ENDPOINT_URL,
-  apiKey: API_KEY,
+  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
 });
 
 const base = Airtable.base(BASE_ID);
 
 function App({
-  // eslint-disable-next-line react/prop-types
   isLoggedIn, username, password, profile, register, reRegister, login, logout,
 }) {
-  useEffect(() => {
-    const loginUser = async (user, pass) => {
-      try {
-        const res = await base.login({ user, pass });
-        if (!res.body.success) {
-          return { match: false, found: false };
-        }
-        return { match: true, found: true };
-      } catch (err) {
-        if (err.error === 'AUTHENTICATION_REQUIRED') {
-          return { match: false, found: true };
-        }
-        return { match: false, found: false };
-      }
-    };
+  // useEffect(() => {
+  //   const loginUser = async (user, pass) => {
+  //     try {
+  //       const res = await base.login({ user, pass });
+  //       if (!res.body.success) {
+  //         return { match: false, found: false };
+  //       }
+  //       return { match: true, found: true };
+  //     } catch (err) {
+  //       if (err.error === 'AUTHENTICATION_REQUIRED') {
+  //         return { match: false, found: true };
+  //       }
+  //       return { match: false, found: false };
+  //     }
+  //   };
 
-    if (isLoggedIn) {
-      loginUser(username, password);
-    }
-  }, [isLoggedIn, username, password]);
+  //   if (isLoggedIn) {
+  //     loginUser(username, password);
+  //   }
+  // }, [isLoggedIn, username, password]);
 
   return (
     <div className="App">
-
       {!isLoggedIn ? (
         <>
           <NavLogin />
@@ -139,38 +137,15 @@ function App({
                   />
             )}
               />
-              <Route
-                path="/records"
-                element={(
-                  <Records
-                    isLoggedIn={isLoggedIn}
-                    base={base}
-                  />
-            )}
+          <Route
+            path="/records"
+            element={(
+              <RecordPage
+                isLoggedIn={isLoggedIn}
+                base={base}
               />
-              <Route
-                path="/changePass"
-                element={(
-                  <ChangePass
-                    isLoggedIn={isLoggedIn}
-                    reRegister={reRegister}
-                    prevUser={username}
-                    prevProfile={profile}
-                    prevPass={password}
-                    onLogin={login}
-                    base={base}
-                  />
             )}
-              />
-              <Route
-                path="/records"
-                element={(
-                  <Records
-                    isLoggedIn={isLoggedIn}
-                    base={base}
-                  />
-            )}
-              />
+          />
               <Route
                 path="/changePass"
                 element={(
@@ -185,16 +160,20 @@ function App({
                   />
             )}
               />
-              <Route path="/viewhistory" element={<OrderListAdmin />} />
-              <Route path="/orderhistory" element={<OrderHistory />} />
-              <Route path="/donations" element={<Donations />} />
-              <Route path="/confirmdonation" element={<DonationConfirmation />} />
-              <Route path="/schoolsform" element={<SchoolsForm />} />
-              <Route path="/schoolsdetail" element={<SchoolsDetail />} />
-            </Routes>
-          </div>
-        </>
-      )}
+          <Route
+            path="/viewhistory"
+            element={(
+              <OrderListAdmin base={base} />
+              )}
+          />
+          <Route path="/orderhistory" element={<OrderHistory base={base} profile={profile} />} />
+          <Route path="/donations" element={<Donations base={base} />} />
+          <Route path="/confirmdonation" element={<DonationConfirmation base={base} />} />
+          <Route path="/schoolsform" element={<SchoolsForm base={base} />} />
+          <Route path="/schoolsdetail" element={<SchoolsDetail base={base} />} />
+          <Route path="/schools" element={<Schools base={base} />} />
+        </Routes>
+      </div>
     </div>
   );
 }
@@ -227,7 +206,16 @@ App.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
-  profile: PropTypes.string.isRequired,
+  profile: PropTypes.shape({
+    role: PropTypes.string,
+    address: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+    phone: PropTypes.string,
+    contactName: PropTypes.string,
+    schoolName: PropTypes.string,
+    zipCode: PropTypes.string,
+  }).isRequired,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
   register: PropTypes.bool.isRequired,

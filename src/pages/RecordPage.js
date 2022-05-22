@@ -1,17 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './Records.css';
+import { Navigate } from 'react-router';
+import PropTypes from 'prop-types';
+import styles from './RecordPage.module.css';
 
-// Airtable stuff
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(airtableConfig.baseKey);
-
-function Records() {
+function RecordPage({ isLoggedIn, base }) {
   const [records, setRecords] = useState([]);
   const [index, setIndex] = useState(0);
   const [toggle, setToggle] = useState(false);
@@ -32,11 +24,15 @@ function Records() {
 
   function formatDate(date) {
     const today = new Date();
+    let minutes = date.getMinutes();
+    if (minutes < 10) {
+      minutes = `0${minutes}`;
+    }
     if ((today.getTime() - date.getTime()) / 86400000 < 1) { // less than 1 day has passed
       if (date.getHours() > 12) {
-        return `${date.getHours() - 12}:${date.getMinutes()} PM`;
+        return `${date.getHours() - 12}:${minutes} PM`;
       }
-      return `${date.getHours()}:${date.getMinutes()} AM`;
+      return `${date.getHours()}:${minutes} AM`;
     }
     if (!toggle) {
       setToggle(true);
@@ -51,7 +47,7 @@ function Records() {
     }
     const today = new Date();
     const yearDelta = today.getFullYear() - date.getFullYear();
-    const monthDelta = today.getMonth() - date.getMonth();
+    // const monthDelta = today.getMonth() - date.getMonth();
     const dayDelta = (today.getTime() - date.getTime()) / 86400000;
 
     let label = '';
@@ -68,11 +64,11 @@ function Records() {
         }
       case 2:
         if (dayDelta > 7) {
-          label = 'This Month';
+          label = 'Last Thirty Days';
           interval = 3;
         }
       case 3:
-        if (monthDelta > 0) {
+        if (dayDelta > 30) {
           label = 'This Year';
           interval = 4;
         }
@@ -103,9 +99,9 @@ function Records() {
 
   // const offset = new Date().getTimezoneOffset() / 60;
   const totalDisplay = records.map((record) => (
-    <div className="record" key={record.id}>
-      <p className="message">{record.fields.Message}</p>
-      <p className="date">{formatDate(new Date(record.fields.Created))}</p>
+    <div className={styles.record} key={record.id}>
+      <p className={styles.message}>{record.fields.Message}</p>
+      <p className={styles.date}>{formatDate(new Date(record.fields.Created))}</p>
     </div>
   ));
 
@@ -114,48 +110,59 @@ function Records() {
     const record = records[i];
     const label = getLabel(new Date(record.fields.Created));
     if (label !== '') {
-      intervalInfo.push({ position: i, text: label });
+      intervalInfo[i] = label;
+      // intervalInfo.push({ position: i, text: label });
     }
   }
 
   const display = [];
-  let intervalIndex = 0;
   for (let i = index; i <= maxIndex; i += 1) {
-    if (intervalIndex < intervalInfo.length && i === intervalInfo[intervalIndex].position) {
+    if (intervalInfo[i] !== undefined) {
       display.push(
-        <div key={i} className="interval-header">
-          <h3>{intervalInfo[intervalIndex].text}</h3>
+        <div key={i} className={styles['interval-header']}>
+          <h3>{intervalInfo[i]}</h3>
         </div>,
       );
-      intervalIndex += 1;
     }
     display.push(totalDisplay[i]);
   }
 
   return (
-    <div>
-      <h1>Recent Activity</h1>
-      <div className="info">
-        <form onSubmit={incrementIndex}>
-          <input
-            disabled={maxIndex === records.length - 1}
-            value=">"
-            type="submit"
-          />
-        </form>
-        <form onSubmit={decrementIndex}>
-          <input
-            disabled={index === 0}
-            value="<"
-            type="submit"
-          />
-        </form>
+    !isLoggedIn ? <Navigate to="/" /> : (
+      <div className={styles['main-container']}>
+        <div className={styles.header}>
+          <div className={styles.title}>
+            <h1>Recent Activity</h1>
+          </div>
+          <div className={styles.info}>
+            <form onSubmit={decrementIndex}>
+              <input
+                disabled={index === 0}
+                value="<"
+                type="submit"
+              />
+            </form>
+            <form onSubmit={incrementIndex}>
+              <input
+                disabled={maxIndex === records.length - 1}
+                value=">"
+                type="submit"
+              />
+            </form>
+          </div>
+        </div>
+
+        <div className={styles.main}>
+          {display}
+        </div>
       </div>
-      <div className="main">
-        {display}
-      </div>
-    </div>
+    )
   );
 }
 
-export default Records;
+export default RecordPage;
+
+RecordPage.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  base: PropTypes.func.isRequired,
+};

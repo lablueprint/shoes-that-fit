@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+// import axios from 'axios';
 import DashboardOrders from '../components/DashboardOrders';
 import InventorySummary from '../components/InventorySummary';
+import Records from '../components/Records';
 import styles from './AdminDashboard.module.css';
 
 function AdminDashboard({
@@ -37,26 +38,32 @@ function AdminDashboard({
     if (register) {
       setProfile();
     }
+    // const json = JSON.stringify({ username, password });
+    // axios.post('http://localhost:8000/v0/REACT_APP_AIRTABLE_BASE_KEY/__airlock_register__', json, {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    //   .then(async (response) => {
+    //     if (response.status === 200) {
+    //       console.log('CHANGED');
+    //       await onLogin(username, password, profile, false, false);
+    //     }
+    //   })
+    //   .catch((e2) => {
+    //     console.log(e2);
+    //   // incorrect username or password
+    //   });
+    const reRegisterUser = async () => {
+      base.register({ username, password }).then(async () => {
+        await onLogin(username, password, profile, false, false);
+      }).catch((err) => {
+        console.log(err);
+      });
+    };
 
     if (reRegister) {
-      const token = process.env.REACT_APP_AIRTABLE_USER_KEY;
-      const json = JSON.stringify({ username, password });
-      axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_register__', json, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then(async (response) => {
-          if (response.status === 200) {
-            console.log('CHANGED');
-            await onLogin(username, password, profile, false, false);
-          }
-        })
-        .catch((e2) => {
-          console.log(e2);
-        // incorrect username or password
-        });
+      reRegisterUser();
     }
   }, []);
 
@@ -64,14 +71,28 @@ function AdminDashboard({
     !isLoggedIn ? (
       <Navigate to="/" />
     )
-      : (
-        <>
-          <h1 className={styles.welcome}>Welcome Back, Admin</h1>
+      : ((profile.role === 'Admin'
+        && (
+        <div className={styles.container}>
+          <div className={styles.top}>
+            <h1 className={styles.welcome}>
+              Welcome Back,&nbsp;
+              <b>Admin</b>
+            </h1>
+            <div className={styles.name}>
+              {profile.contactName}
+            </div>
+          </div>
           <div className={styles.topComponents}>
             <DashboardOrders base={base} />
             <InventorySummary base={base} />
           </div>
-        </>
+          <div className={styles.recordContainer}>
+            <Records base={base} />
+          </div>
+        </div>
+        ))
+        || (profile.role === 'Educator' && <Navigate to="/orderhistory" />)
       )
   );
 }
@@ -81,7 +102,16 @@ export default AdminDashboard;
 AdminDashboard.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,
-  profile: PropTypes.string.isRequired,
+  profile: PropTypes.shape({
+    role: PropTypes.string,
+    address: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+    phone: PropTypes.string,
+    contactName: PropTypes.string,
+    schoolName: PropTypes.string,
+    zipCode: PropTypes.string,
+  }).isRequired,
   onLogin: PropTypes.func.isRequired,
   password: PropTypes.string.isRequired,
   register: PropTypes.bool.isRequired,

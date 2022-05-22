@@ -56,7 +56,7 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
 
     // const json = JSON.stringify({ username, password });
 
-    // await axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_register__', json, {
+    // await axios.post('http://localhost:8000/v0/REACT_APP_AIRTABLE_BASE_KEY/__airlock_register__', json, {
     //   headers: {
     //     'Content-Type': 'application/json',
     //   },
@@ -97,6 +97,7 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
         zipCode,
         phone,
       };
+
       await base('Profile').create([
         {
           fields: {
@@ -119,6 +120,7 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
         //   await onLogin(username, password, profile, false, false);
         // }
       });
+
       await onLogin(username, res.body.user.fields.Password, profile, true, false);
     }).catch((err) => {
       console.log(err);
@@ -143,7 +145,8 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
     }
 
     // const json = JSON.stringify({ username, password });
-    // await axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_login__', json, {
+
+    // await axios.post('http://localhost:8000/v0/REACT_APP_AIRTABLE_BASE_KEY/__airlock_login__', json, {
     //   headers: {
     //     'Content-Type': 'application/json',
     //   },
@@ -206,7 +209,6 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
         <Navigate to="/admindashboard" />
       )
       : (
-
         <div className={styles.col}>
           {console.log(regAdminStatus)}
 
@@ -499,7 +501,6 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
                     {error.length > 0 && <div><p>{error}</p></div>}
 
                     <div className={styles.space} />
-
                     <button
                       type="button"
                       onClick={() => {
@@ -512,7 +513,6 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
                       <p>Don&apos;t have an account? Register</p>
                     </button>
                   </div>
-
                 </div>
               )}
             </div>

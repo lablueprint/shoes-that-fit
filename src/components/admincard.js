@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
 function AdminCard({
   school,
   firstName,
@@ -16,6 +9,7 @@ function AdminCard({
   phone,
   shoeBrand,
   shoeSize,
+  base,
 }) {
   const cardStyle = {
     'border-style': 'solid',
@@ -41,10 +35,6 @@ function AdminCard({
   function cardClick() {
     setClicked(!clicked);
   }
-
-  const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(
-    airtableConfig.baseKey,
-  );
 
   function fulfillOrder() {
     base('Test')
@@ -212,6 +202,7 @@ AdminCard.propTypes = {
   phone: PropTypes.string.isRequired,
   shoeBrand: PropTypes.string.isRequired,
   shoeSize: PropTypes.number.isRequired,
+  base: PropTypes.func.isRequired,
 };
 
 export default AdminCard;
