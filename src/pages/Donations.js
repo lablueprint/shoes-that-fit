@@ -68,11 +68,9 @@ function Donations() {
     });
   };
 
-  const redirectDonationDetails = (e, d, recordID) => {
+  const redirectDonationDetails = (e, d) => {
     e.preventDefault();
-    console.log(d);
-    console.log(recordID);
-    base('Donors').find(recordID, (err, record) => {
+    base('Donors').find(d.recordID, (err, record) => {
       if (err) { console.error(err); return; }
       console.log(record);
       console.log('Retrieved', record.id);
