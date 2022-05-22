@@ -1,0 +1,33 @@
+.adminList .back {
+  margin-left: 5%;
+  margin-top:1%;
+  margin-bottom:2%;
+} 
+
+.adminList .statusChildInProgress {
+  height: 30px;
+  width: 124px;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  background: #FFEEC2;
+  color: #AC7D03;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.adminList .statusChildFulfilled {
+  height: 30px;
+  width: 124px;
+  background: #E1EFE7;
+  color: #4C8865;
+  font-weight: bold;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  border-radius: 20px;
+}
