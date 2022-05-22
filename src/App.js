@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Airtable from '@calblueprint/airlock';
-import { Nav } from './components';
+import { Nav, NavLogin } from './components';
 import {
   MainInventory,
   NewShoeForm,
@@ -20,6 +20,7 @@ import {
   SchoolsForm,
   SchoolsDetail,
   ChangePass,
+  Portal,
   Schools,
 } from './pages';
 
@@ -59,96 +60,83 @@ function App({
 
   return (
     <div className="App">
-      <Nav isLoggedIn={isLoggedIn} onLogout={logout} profile={profile} />
-      <div className="App-container">
-        <Routes>
-          <Route
-            path="/admindashboard"
-            element={(
-              <AdminDashboard
-                isLoggedIn={isLoggedIn}
-                username={username}
-                password={password}
-                onLogin={login}
-                profile={profile}
-                register={register}
-                reRegister={reRegister}
-                base={base}
+      {!isLoggedIn ? (
+        <>
+          <NavLogin />
+          <div className="App-container">
+            <Routes>
+              <Route exact path="/" element={<Portal />} />
+              <Route
+                path="/login"
+                element={(
+                  <LoginPage
+                    isLoggedIn={isLoggedIn}
+                    onLogin={login}
+                    base={base}
+                  />
+                )}
               />
+            </Routes>
+          </div>
+        </>
+      ) : (
+        <>
+          <Nav isLoggedIn={isLoggedIn} onLogout={logout} />
+          <div className="App-container">
+            <Routes>
+              <Route
+                path="/admindashboard"
+                element={(
+                  <AdminDashboard
+                    isLoggedIn={isLoggedIn}
+                    username={username}
+                    password={password}
+                    onLogin={login}
+                    profile={profile}
+                    register={register}
+                    reRegister={reRegister}
+                    base={base}
+                  />
             )}
-          />
-          <Route
-            path="/inventory"
-            element={(
-              <MainInventory
-                isLoggedIn={isLoggedIn}
-                username={username}
-                password={password}
-                base={base}
               />
+              <Route
+                path="/inventory"
+                element={(
+                  <MainInventory
+                    isLoggedIn={isLoggedIn}
+                    username={username}
+                    password={password}
+                    base={base}
+                  />
             )}
-          />
-          <Route
-            exact
-            path="/"
-            element={(
-              <LoginPage
-                isLoggedIn={isLoggedIn}
-                onLogin={login}
-                base={base}
               />
+              <Route
+                path="/newshoeform"
+                element={(
+                  <NewShoeForm
+                    isLoggedIn={isLoggedIn}
+                    base={base}
+                  />
             )}
-          />
-          <Route
-            path="/newshoeform"
-            element={(
-              <NewShoeForm
-                isLoggedIn={isLoggedIn}
-                base={base}
               />
+              <Route
+                path="/orderform"
+                element={(
+                  <OrderForm
+                    isLoggedIn={isLoggedIn}
+                    base={base}
+                  />
             )}
-          />
-          <Route
-            path="/orderform"
-            element={(
-              <OrderForm
-                isLoggedIn={isLoggedIn}
-                base={base}
               />
+              <Route
+                path="/adminlist"
+                element={(
+                  <AdminList
+                    isLoggedIn={isLoggedIn}
+                    base={base}
+                  />
             )}
-          />
-          <Route
-            path="/adminlist"
-            element={(
-              <AdminList
-                isLoggedIn={isLoggedIn}
-                base={base}
               />
-            )}
-          />
-          <Route
-            path="/records"
-            element={(
-              <RecordPage
-                isLoggedIn={isLoggedIn}
-                base={base}
-              />
-            )}
-          />
-          <Route
-            path="/changePass"
-            element={(
-              <ChangePass
-                isLoggedIn={isLoggedIn}
-                reRegister={reRegister}
-                prevUser={username}
-                prevProfile={profile}
-                prevPass={password}
-                onLogin={login}
-                base={base}
-              />
-            )}
-          />
           <Route
             path="/records"
             element={(
@@ -158,20 +146,20 @@ function App({
               />
             )}
           />
-          <Route
-            path="/changePass"
-            element={(
-              <ChangePass
-                isLoggedIn={isLoggedIn}
-                reRegister={reRegister}
-                prevUser={username}
-                prevProfile={profile}
-                prevPass={password}
-                onLogin={login}
-                base={base}
-              />
+              <Route
+                path="/changePass"
+                element={(
+                  <ChangePass
+                    isLoggedIn={isLoggedIn}
+                    reRegister={reRegister}
+                    prevUser={username}
+                    prevProfile={profile}
+                    prevPass={password}
+                    onLogin={login}
+                    base={base}
+                  />
             )}
-          />
+              />
           <Route
             path="/viewhistory"
             element={(
