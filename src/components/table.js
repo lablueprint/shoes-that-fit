@@ -89,9 +89,11 @@ export default function Table({
   }
 
   // eslint-disable-next-line no-unused-vars
-  const editTableEntryQuantity = ((val, index, header) => {
+  const editTableEntryQuantity = ((val, item, header) => {
     // console.log(data[index]);
-    console.log(header);
+    console.log(val.currentTarget.textContent);
+    const wide = 'Wide Width';
+    const index = (page - 1) * numRows + item;
     // if (!(/^\d+$/.test(val))) {
     //   console.error('Invalid Input: Quantity should be a number');
     //   return;
@@ -109,19 +111,39 @@ export default function Table({
           console.error(err);
         }
       });
-    } else {
-      base('LargerTestInventory').update([
-        {
-          id: data[index].id,
-          fields: {
-            [header]: val.currentTarget.textContent,
+    }
+    if (header === 'Part Name') {
+      if (val.currentTarget.textContent.charAt(val.currentTarget.textContent.length - 1) === 'W') {
+        const str = val.currentTarget.textContent.slice(0, -1);
+        base('LargerTestInventory').update([
+          {
+            id: data[index].id,
+            fields: {
+              [header]: str,
+              [wide]: true,
+            },
           },
-        },
-      ], (err) => {
-        if (err) {
-          console.error(err);
-        }
-      });
+        ], (err) => {
+          if (err) {
+            console.error(err);
+          }
+        });
+      } else {
+        const width = '';
+        base('LargerTestInventory').update([
+          {
+            id: data[index].id,
+            fields: {
+              [header]: val.currentTarget.textContent,
+              // [wide]: width,
+            },
+          },
+        ], (err) => {
+          if (err) {
+            console.error(err);
+          }
+        });
+      }
     }
   });
 
@@ -163,7 +185,7 @@ export default function Table({
       <div className={styles.top}>
         <div className={styles.pageLength}>
           <PageLengthForm setNumRows={setNumRows} />
-          <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} className={styles.Footer} />
+          <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} className={styles.Footer} onClick={() => setPage(page)} />
         </div>
         <div className={styles.container}>
 
@@ -250,7 +272,7 @@ export default function Table({
             </div>
           ))}
         </div>
-        <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} className={styles.Footer} />
+        <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} id={page} className={styles.Footer} />
       </div>
     )
   );

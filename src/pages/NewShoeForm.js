@@ -75,6 +75,7 @@ function NewShoeForm() {
         base('TestInventory').select({ filterByFormula: filter }).eachPage(
           (records) => {
             if (records.length === 0) { // create a new record if there are no matching ones
+              console.log(wideWidth);
               base('TestInventory').create([
                 {
                   fields: {

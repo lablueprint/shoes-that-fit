@@ -122,12 +122,13 @@ function MainInventory({ loggedIn, username, onLogout }) {
             <div className={styles.table}>
               <div>
                 {record.Quantity}
+                &nbsp; LOW
               </div>
               {/* &nbsp;
                 &nbsp; */}
-              <div>
+              {/* <div>
                 <AlertTriangle color="black" className={styles.caution} />
-              </div>
+              </div> */}
               {/* <div>
                 <AlertTriangle color="#000000" className={styles.caution} />
                 &nbsp; LOW
