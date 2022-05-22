@@ -28,13 +28,12 @@ const ENDPOINT_URL = 'http://localhost:8000';
 
 Airtable.configure({
   endpointUrl: ENDPOINT_URL,
-  apiKey: 'airlock',
+  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
 });
 
 const base = Airtable.base(BASE_ID);
 
 function App({
-  // eslint-disable-next-line react/prop-types
   isLoggedIn, username, password, profile, register, reRegister, login, logout,
 }) {
   // useEffect(() => {
