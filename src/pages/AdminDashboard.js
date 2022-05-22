@@ -39,7 +39,7 @@ function AdminDashboard({
       setProfile();
     }
     // const json = JSON.stringify({ username, password });
-    // axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_register__', json, {
+    // axios.post('http://localhost:8000/v0/REACT_APP_AIRTABLE_BASE_KEY/__airlock_register__', json, {
     //   headers: {
     //     'Content-Type': 'application/json',
     //   },

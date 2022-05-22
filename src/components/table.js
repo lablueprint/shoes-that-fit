@@ -118,8 +118,14 @@ export default function Table({
                 backgroundColor: '#F6F6F6',
               } : { backgroundColor: '#FFFFFF' }}
             >
-              {React.isValidElement(d)
-                ? <div className={styles.cell}>{d}</div>
+              {(dataProps.length === 0 && React.isValidElement(d[headers[hIndex]]))
+              || (dataProps.length !== 0 && React.isValidElement(d[dataProps[hIndex]]))
+                ? (
+                  <div className={styles.cell}>
+                    {dataProps.length === 0 && d[headers[hIndex]]}
+                    {dataProps.length !== 0 && d[dataProps[hIndex]]}
+                  </div>
+                )
                 : (
                   <div className={styles.cell}>
                     {dataProps.length === 0 && (d[headers[hIndex]]
