@@ -137,15 +137,15 @@ function App({
                   />
             )}
               />
-          <Route
-            path="/records"
-            element={(
-              <RecordPage
-                isLoggedIn={isLoggedIn}
-                base={base}
-              />
+              <Route
+                path="/records"
+                element={(
+                  <RecordPage
+                    isLoggedIn={isLoggedIn}
+                    base={base}
+                  />
             )}
-          />
+              />
               <Route
                 path="/changePass"
                 element={(
@@ -160,20 +160,22 @@ function App({
                   />
             )}
               />
-          <Route
-            path="/viewhistory"
-            element={(
-              <OrderListAdmin base={base} />
+              <Route
+                path="/viewhistory"
+                element={(
+                  <OrderListAdmin base={base} />
               )}
-          />
-          <Route path="/orderhistory" element={<OrderHistory base={base} profile={profile} />} />
-          <Route path="/donations" element={<Donations base={base} />} />
-          <Route path="/confirmdonation" element={<DonationConfirmation base={base} />} />
-          <Route path="/schoolsform" element={<SchoolsForm base={base} />} />
-          <Route path="/schoolsdetail" element={<SchoolsDetail base={base} />} />
-          <Route path="/schools" element={<Schools base={base} />} />
-        </Routes>
-      </div>
+              />
+              <Route path="/orderhistory" element={<OrderHistory base={base} profile={profile} />} />
+              <Route path="/donations" element={<Donations base={base} />} />
+              <Route path="/confirmdonation" element={<DonationConfirmation base={base} />} />
+              <Route path="/schoolsform" element={<SchoolsForm base={base} />} />
+              <Route path="/schoolsdetail" element={<SchoolsDetail base={base} />} />
+              <Route path="/schools" element={<Schools base={base} />} />
+            </Routes>
+          </div>
+        </>
+      )}
     </div>
   );
 }
