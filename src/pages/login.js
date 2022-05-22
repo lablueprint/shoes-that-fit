@@ -167,11 +167,11 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
       )
       : (
         <div className="loginWrapper">
-          <h1>
-            Please
-            {` ${string}`}
-          </h1>
           <form>
+            <h1>
+              Please
+              {` ${string}`}
+            </h1>
             {string === 'Log In' && (
               <>
                 <label>
@@ -265,6 +265,7 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
                   <p className="accountStatusParagraph">
                     {' '}
                     Don&apos;t have an account?
+                    {' '}
                     <button
                       type="button"
                       onClick={() => {
