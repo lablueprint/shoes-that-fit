@@ -36,7 +36,7 @@ function Donations() {
       const createDate = donation.fields.Created;
       tableEntry.Date = `${String(Number(createDate.substring(5, 7)))}/${String(Number(createDate.substring(8, 10)))}/${createDate.substring(0, 4)}`;
       tableEntry['Logged By'] = donation.fields['Logged By'];
-      tableEntry.Quantity = donation.fields['Total Quantity'];
+      tableEntry.Quantity = Number(donation.fields['Total Quantity']);
       tableEntry.Donor = donation.fields.Name;
       const shoeList = JSON.parse(donation.fields.Donations);
       let sizes = '';
@@ -75,7 +75,7 @@ function Donations() {
       console.log(record);
       console.log('Retrieved', record.id);
       // navigate('/');
-      navigate('/donationdetails', { state: { donor: record.fields } });
+      navigate('/donationdetails', { state: { donor: record.fields, recordID: record.id } });
     });
   };
 
@@ -87,13 +87,13 @@ function Donations() {
           <Link className={styles.logLink} to="/logdonations">
             <input className={styles.logButton} type="submit" id="submit" name="submit" value="Log a new donation" />
           </Link>
-          <Printer onClick={printDonations} />
+          <Printer className={styles.print} onClick={printDonations} />
         </div>
       </div>
       <div>
         {tableEntries.length > 0
-          ? <Table headers={tableFields} data={tableEntries} checkbox dataKeyProp="ID" details selectCard={redirectDonationDetails} />
-          : <p>No donations found</p>}
+          ? <Table headers={tableFields} data={tableEntries} checkbox={false} dataKeyProp="ID" details selectCard={redirectDonationDetails} />
+          : <div className={styles.error}>No donations found</div>}
       </div>
     </div>
   );

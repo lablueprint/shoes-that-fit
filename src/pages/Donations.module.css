@@ -31,3 +31,17 @@
     text-align: left;
     padding-left: 15px;
 }
+.error {
+    align-items: center;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 28px;
+    color: #FF6622;
+}
+
+.print {
+    padding-top: 15px;
+    padding-left: 10px;
+}

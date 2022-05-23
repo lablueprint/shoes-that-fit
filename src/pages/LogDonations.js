@@ -15,10 +15,16 @@ function LogDonations() {
   const donationFields = ['Quantity', 'Gender', 'Category', 'Wide', 'Size', 'Notes'];
   const location = useLocation();
   const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const PHONE_REGEX = /^\d{10}$/;
   const validateEmail = (email) => String(email)
     .toLowerCase()
     .match(
       EMAIL_REGEX,
+    );
+  const validatePhone = (phone) => String(phone)
+    .toLowerCase()
+    .match(
+      PHONE_REGEX,
     );
 
   useEffect(() => {
@@ -34,7 +40,12 @@ function LogDonations() {
     if (editingDonor) {
       const tempDonor = {};
       tempDonor.Name = document.getElementById('name').value;
-      tempDonor.Phone = document.getElementById('phone').value;
+      const phone = document.getElementById('phone').value;
+      if (!validatePhone(phone)) {
+        setDonorError('Please provide a valid 10-digit phone number.');
+        return;
+      }
+      tempDonor.Phone = phone;
       const email = document.getElementById('email').value;
       if (!validateEmail(email)) {
         setDonorError('Please provide a valid email address.');
@@ -68,12 +79,12 @@ function LogDonations() {
     donation.Quantity = document.getElementById('quantity').value;
     donation.Gender = document.getElementById('gender').value;
     if (donation.Gender === 'none') {
-      setDonationError(<p className={styles.error}>Select a gender.</p>);
+      setDonationError('Select a gender');
       return;
     }
     donation.Category = document.getElementById('category').value;
     if (donation.Category === 'none') {
-      setDonationError(<p className={styles.error}>Select a category.</p>);
+      setDonationError('Select a category.');
       return;
     }
     const size = document.getElementById('size').value;
@@ -89,6 +100,7 @@ function LogDonations() {
       donation.Wide = '';
     }
     donation.Notes = document.getElementById('notes').value;
+    setDonationError('');
     setDonations([...donations, donation]);
   };
   const deleteDonation = (e, index) => {

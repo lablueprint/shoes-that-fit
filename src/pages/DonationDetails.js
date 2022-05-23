@@ -1,24 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import { Table } from '../components';
 import styles from './DonationDetails.module.css';
 
-// const Airtable = require('airtable');
+const Airtable = require('airtable');
 
-// const airtableConfig = {
-//   apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-//   baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-// };
+const airtableConfig = {
+  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
+  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
+};
 
-// const base = new Airtable({ apiKey: airtableConfig.apiKey })
-//   .base(airtableConfig.baseKey);
+const base = new Airtable({ apiKey: airtableConfig.apiKey })
+  .base(airtableConfig.baseKey);
 
 function DonationDetails() {
   const location = useLocation();
-  console.log(location);
-  const { donor } = location.state;
+  const { donor, recordID } = location.state;
   const donations = JSON.parse(donor.Donations);
+  const [showDelete, setShowDelete] = useState(false);
   // const [error, setError] = useState('');
   const donorFields = ['Name', 'Phone', 'Email', 'Address Line 1', 'Address Line 2', 'City', 'State', 'Zip Code'];
   const donationFields = ['Quantity', 'Gender', 'Category', 'Wide', 'Size', 'Notes'];
@@ -28,6 +28,17 @@ function DonationDetails() {
       console.error('Need a donor');
     }
   }, []);
+
+  const deleteDonation = () => {
+    base('Donors').destroy([recordID], (err, deletedRecords) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log('Deleted record', recordID);
+      console.log(deletedRecords);
+    });
+  };
 
   return (
     <div>
@@ -85,6 +96,19 @@ function DonationDetails() {
             {' '}
             {donor['Logged By']}
           </div>
+          {showDelete
+            ? (
+              <div className={styles.confirmMessage}>
+                <p><b>Are you sure?</b></p>
+                <div className={styles.deleteConfirm}>
+                  <Link className={styles.backLink} to="/donations">
+                    <input className={styles.deleteConfirmButton} type="submit" id="submit" name="submit" value="Yes" onClick={() => deleteDonation()} />
+                  </Link>
+                  <input className={styles.deleteDenyButton} type="submit" id="submit" name="submit" value="No" onClick={() => setShowDelete(false)} />
+                </div>
+              </div>
+            )
+            : <input className={styles.deleteButton} type="submit" id="submit" name="submit" value="Delete Donation" onClick={() => setShowDelete(true)} />}
         </div>
       </div>
       <Link className={styles.backLink} to="/donations">

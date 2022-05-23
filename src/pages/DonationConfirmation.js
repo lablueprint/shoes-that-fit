@@ -122,7 +122,7 @@ function DonationConfirmation() {
       <Link className={styles.backLink} to="/logdonations" state={{ donor, donations }}>
         <input className={styles.backButton} type="submit" id="submit" name="submit" value="Back" />
       </Link>
-      <Link to="/admindashboard">
+      <Link to="/donations">
         <button className={styles.submitButton} type="button" id="submit" name="submit" onClick={submitDonations}>Submit Donations</button>
       </Link>
       {error ? (

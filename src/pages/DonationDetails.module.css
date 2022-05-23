@@ -13,6 +13,7 @@
     display: flex;
     justify-content: space-evenly;
     padding-bottom: 20px;
+    padding-left: 20px;
 }
 .allInfo div {
     padding: 10px;
@@ -62,7 +63,7 @@
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
-    line-height: 21px;
+    line-height: 15px;
     color: black;
 }
 
@@ -85,20 +86,68 @@
 .backLink {
     margin-right: 20px;
 }
-.submitButton {
-    background: #AEECFF;
-    border: 2px solid #AEECFF;
+
+.confirmMessage p {
+    text-align: center;
+    color: #FF6622;
+}
+
+.deleteButton {
+    background: white;
+    border: 2px solid #FF6622;
     border-radius: 5px;
+    box-sizing: border-box;
 
     font-family: 'Hartwell';
     font-style: normal;
     font-weight: 600;
-    font-size: 24px;
+    font-size: 18px;
     line-height: 28px;
 
-    width: 220px;
-    height: 50px;
+    color: black;
+    width: 150px;
+    height: 40px;
+    margin-top: 10px;
 }
+
+.deleteConfirm {
+    display: flex;
+}
+
+.deleteConfirmButton {
+    background: #FF6622;
+    border: 2px solid #FF6622;
+    border-radius: 5px;
+    box-sizing: border-box;
+
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 28px;
+
+    color: black;
+    width: 70px;
+    height: 40px;
+}
+
+.deleteDenyButton {
+    background: #AEECFF;
+    border: 2px solid #AEECFF;
+    border-radius: 5px;
+    box-sizing: border-box;
+
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 28px;
+
+    color: black;
+    width: 70px;
+    height: 40px;
+}
+
 .header1 {
     font-family: 'Hartwell';
     font-style: normal;
