@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
 // import Card from '../components/card';
 import { ChevronLeft } from 'lucide-react';
-import { Table } from '../components';
+import { Table, OrderListAdmin } from '../components';
 import styles from './AdminList.module.css';
-import OrderListAdmin from './OrderListAdmin';
 
 function AdminList({ isLoggedIn, base }) {
   const [cards, setCards] = useState([]);

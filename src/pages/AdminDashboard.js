@@ -71,9 +71,18 @@ function AdminDashboard({
     !isLoggedIn ? (
       <Navigate to="/" />
     )
-      : (
+      : ((profile.role === 'Admin'
+        && (
         <div className={styles.container}>
-          <h1 className={styles.welcome}>Welcome Back, Admin</h1>
+          <div className={styles.top}>
+            <h1 className={styles.welcome}>
+              Welcome Back,&nbsp;
+              <b>Admin</b>
+            </h1>
+            <div className={styles.name}>
+              {profile.contactName}
+            </div>
+          </div>
           <div className={styles.topComponents}>
             <DashboardOrders base={base} />
             <InventorySummary base={base} />
@@ -82,6 +91,8 @@ function AdminDashboard({
             <Records base={base} />
           </div>
         </div>
+        ))
+        || (profile.role === 'Educator' && <Navigate to="/orderhistory" />)
       )
   );
 }

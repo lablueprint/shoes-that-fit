@@ -8,11 +8,12 @@ function InventorySummary({ base }) {
   // eslint-disable-next-line no-unused-vars
   const [rows, setRows] = useState([]);
   const [quantityFulfilled, setQuantityFulfilled] = useState(0);
+  const [kidsHelped, setKidsHelped] = useState(0);
 
   const getQuantityFulfilled = () => {
     let quantity = 0;
     for (let i = 0; i < rows.length; i += 1) {
-      quantity += (rows[i].fields.Size || 0);
+      quantity += (rows[i].fields.Quantity || 0);
       // console.log(rows[i].fields.Size);
     }
     setQuantityFulfilled(quantity);
@@ -20,15 +21,26 @@ function InventorySummary({ base }) {
 
   useEffect(() => {
     const getOrders = async () => {
-      await base('Orders').select({
+      await base('TestInventory').select({
         view: 'Grid view',
-        filterByFormula: `SEARCH("${'y'}",{Active})`,
       }).all()
         .then((records) => {
           setRows(records);
         });
     };
     getOrders();
+  }, []);
+
+  useEffect(() => {
+    const getNumberKids = async () => {
+      await base('KidsHelped').select({
+        view: 'Grid view',
+      }).all()
+        .then((records) => {
+          setKidsHelped(records[0].fields['Kids Helped']);
+        });
+    };
+    getNumberKids();
   }, []);
 
   useEffect(getQuantityFulfilled, [rows]);
@@ -39,19 +51,19 @@ function InventorySummary({ base }) {
     <div className={styles.dashboardComponent}>
       <div className={styles.inventoryDashboardHeader}>
         <h2 className={styles.inventory}>Inventory</h2>
-        <Link to="/inventory" className={styles.LinkStyles}>See Full Inventory &gt;</Link>
+        <Link to="/inventory" className={styles.LinkStyles}>go to inventory &gt;</Link>
       </div>
 
       <div className={styles.inventoryDashboardBody}>
         <div className={styles.inventoryDashboardQuantity}>
-          <Box color="#6BB7E8" className={styles.inventoryBox} />
-          <h3 className={styles.minorTitle}>Total Quantity</h3>
-          <p className={styles.minorTitleData}>{rows.length}</p>
+          <Box className={styles.inventoryBox} />
+          <div className={styles.minorTitle}>Total Quantity</div>
+          <div className={styles.minorTitleData}>{quantityFulfilled}</div>
         </div>
         <div className={styles.inventoryDashboardShipped}>
-          <Smile color="#D66330" className={styles.inventorySmile} />
-          <h3 className={styles.minorTitle}>Kids Helped</h3>
-          <p className={styles.minorTitleData}>{quantityFulfilled}</p>
+          <Smile className={styles.inventorySmile} />
+          <div className={styles.minorTitle}>Kids Helped</div>
+          <div className={styles.minorTitleData}>{kidsHelped}</div>
         </div>
       </div>
     </div>

@@ -11,7 +11,8 @@ const sorts = {
 };
 
 export default function Table({
-  headers, sortIndices, data, dataProps, checkbox, dataKeyProp, selectCard, details,
+  headers, sortIndices, data, dataProps, checkbox,
+  dataKeyProp, selectCard, details, modify, modifyFuncs,
 }) {
   const [lastIndex, setLast] = useState(0);
   const [sortDir, setDir] = useState(sorts.descending);
@@ -132,7 +133,13 @@ export default function Table({
                     {details ? (
                       <div>
                         {(dataProps.length !== 0 && dataProps[hIndex] !== 'Details'
-                          ? (d[dataProps[hIndex]] && <p>{d[dataProps[hIndex]].toString()}</p>)
+                          ? (d[dataProps[hIndex]] && (modify.includes(dataProps[hIndex])
+                          && modifyFuncs.length > modify.indexOf(dataProps[hIndex])
+                          // eslint-disable-next-line max-len
+                          && (modifyFuncs[modify.indexOf(dataProps[hIndex])](d[dataProps[hIndex]])))
+                          )
+                          || ((!modify.includes(dataProps[hIndex])
+                           && <p>d[dataProps[hIndex]].toString()</p>))
                           : (
                             <button type="button" style={{ color: 'black' }} onClick={() => { selectCard(d); }}>
                               <img src={detailsIcon} alt="details" />
@@ -140,7 +147,14 @@ export default function Table({
                           ))}
                       </div>
                     ) : dataProps.length !== 0
-                    && d[dataProps[hIndex]] && <p>{d[dataProps[hIndex]].toString()}</p>}
+                    && d[dataProps[hIndex]]
+                    && (((modify.includes(dataProps[hIndex])
+                    && modifyFuncs.length > modify.indexOf(dataProps[hIndex])
+                    // eslint-disable-next-line max-len
+                    && (modifyFuncs[modify.indexOf(dataProps[hIndex])](d[dataProps[hIndex]])))
+                    )
+                    || (!modify.includes(dataProps[hIndex])
+                     && <p>{d[dataProps[hIndex]].toString()}</p>))}
                   </div>
                 )}
             </div>
@@ -161,6 +175,9 @@ Table.propTypes = {
   dataKeyProp: PropTypes.string.isRequired,
   selectCard: PropTypes.func,
   details: PropTypes.bool,
+  modify: PropTypes.arrayOf(PropTypes.string),
+  modifyFuncs: PropTypes.arrayOf(PropTypes.func),
+
 };
 
 Table.defaultProps = {
@@ -169,4 +186,6 @@ Table.defaultProps = {
   dataProps: [],
   selectCard: () => null,
   details: false,
+  modify: [],
+  modifyFuncs: [],
 };
