@@ -1,5 +1,4 @@
 import React from 'react';
-import './Popup.css';
 import {
   User, GraduationCap,
 } from 'lucide-react';
