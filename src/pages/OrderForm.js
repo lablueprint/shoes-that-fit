@@ -25,7 +25,6 @@ function OrderForm({ isLoggedIn, base }) {
   const [contact, setContact] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [date, setDate] = useState('');
   const [note, setNote] = useState('');
 
   const shoeUpdate = (evt) => {
@@ -74,8 +73,8 @@ function OrderForm({ isLoggedIn, base }) {
       'Contact Name': contact,
       'Email Address': email,
       Phone: phone,
-      Date: date,
       Orders: JSON.stringify(curcards),
+      Active: true,
     });
     base('Orders').create(
       [
@@ -89,7 +88,6 @@ function OrderForm({ isLoggedIn, base }) {
             'Contact Name': contact,
             'Email Address': email,
             Phone: phone,
-            Date: date,
             Notes: note,
             Orders: JSON.stringify(curcards),
           },
@@ -116,7 +114,6 @@ function OrderForm({ isLoggedIn, base }) {
     setContact('');
     setEmail('');
     setPhone('');
-    setDate('');
     setNote('');
   }
 
@@ -254,17 +251,6 @@ function OrderForm({ isLoggedIn, base }) {
                     />
                     <div className={styles.space} />
 
-                    <label htmlFor="school">Date </label>
-                    <input
-                      className={styles.half}
-                      required
-                      type="text"
-                      id="date"
-                      name="date"
-                      value={date}
-                      onChange={(e) => setDate(e.target.value)}
-                    />
-                    <div className={styles.space} />
                   </form>
                   <div style={errorStyle}>{error}</div>
                 </div>
@@ -403,7 +389,6 @@ function OrderForm({ isLoggedIn, base }) {
                     <label htmlFor="school">Teacher / School (if applicable) </label>
                     <input
                       className={styles.full}
-                      required
                       type="string"
                       id="school"
                       name="school"
