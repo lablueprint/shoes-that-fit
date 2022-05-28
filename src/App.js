@@ -81,7 +81,7 @@ function App({
         </>
       ) : (
         <>
-          <Nav isLoggedIn={isLoggedIn} onLogout={logout} />
+          <Nav profile={profile} isLoggedIn={isLoggedIn} onLogout={logout} />
           <div className="App-container">
             <Routes>
               <Route
