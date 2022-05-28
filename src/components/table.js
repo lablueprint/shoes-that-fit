@@ -68,6 +68,21 @@ export default function Table({
           return a ? -1 : 0;
         }
 
+        if (typeof a[dataProps[index]] === 'object') {
+          if (typeof a[dataProps[index]].sortBy === 'string') {
+            return a[dataProps[index]].sortBy.localeCompare(b[dataProps[index]].sortBy);
+          }
+
+          if (typeof a[dataProps[index]] === 'boolean') {
+            if (a[dataProps[index]].sortBy === b[dataProps[index]].sortBy) {
+              return 0;
+            }
+            return a[dataProps[index]].sortBy ? -1 : 0;
+          }
+        }
+
+        if (a[dataProps[index]].sortBy > b[dataProps[index]].sortBy) return 1;
+        if (a[dataProps[index]].sortBy < b[dataProps[index]].sortBy) return -1;
         return 0;
       });
     } else {
@@ -91,13 +106,9 @@ export default function Table({
   // eslint-disable-next-line no-unused-vars
   const editTableEntryQuantity = ((val, item, header) => {
     // console.log(data[index]);
-    console.log(val.currentTarget.textContent);
+    console.log(val);
     const wide = 'Wide Width';
     const index = (page - 1) * numRows + item;
-    // if (!(/^\d+$/.test(val))) {
-    //   console.error('Invalid Input: Quantity should be a number');
-    //   return;
-    // }
     if (header === 'Quantity') {
       base('LargerTestInventory').update([
         {
@@ -135,7 +146,7 @@ export default function Table({
             id: data[index].id,
             fields: {
               [header]: val.currentTarget.textContent,
-              // [wide]: width,
+              [wide]: false,
             },
           },
         ], (err) => {
@@ -254,18 +265,19 @@ export default function Table({
                   } : { backgroundColor: '#FFFFFF' }}
                 >
 
-                  {!editable && dataProps.length > 0 && (React.isValidElement(d[dataProps[hIndex]])
-                    ? <div className={styles.cell}>{d[dataProps[hIndex]]}</div>
+                  {!editable && dataProps.length > 0 && (typeof (d[dataProps[hIndex]]) === 'object'
+                    ? <div className={styles.cell}>{d[dataProps[hIndex]].fragment}</div>
                     : <p className={styles.cell}>{d[dataProps[hIndex]]}</p>)}
-                  {!editable && dataProps.length === 0 && (React.isValidElement(d[headers[hIndex]])
+                  {!editable && dataProps.length === 0 && (typeof (d[dataProps[hIndex]]) === 'object'
                     ? <div className={styles.cell}>{d[headers[hIndex]]}</div>
                     : <p lassName={styles.cell}>{d[headers[hIndex]]}</p>)}
+                  {/* {!editable && dataProps.length > 0 && typeof} */}
 
-                  {editable && dataProps.length > 0 && (React.isValidElement(d[dataProps[hIndex]])
-                    ? <div onInput={(e) => editTableEntryQuantity(e, dIndex, dataProps[hIndex])} contentEditable="true" className={styles.cell}>{d[dataProps[hIndex]]}</div>
+                  {editable && dataProps.length > 0 && (typeof (d[dataProps[hIndex]]) === 'object'
+                    ? <div onInput={(e) => editTableEntryQuantity(e, dIndex, dataProps[hIndex])} contentEditable="true" className={styles.cell}>{d[dataProps[hIndex]].fragment}</div>
                     : <p onInput={(e) => editTableEntryQuantity(e, dIndex, dataProps[hIndex])} contentEditable="true" className={styles.cell}>{d[dataProps[hIndex]]}</p>)}
-                  {editable && dataProps.length === 0 && (React.isValidElement(d[headers[hIndex]])
-                    ? <div onInput={(e) => editTableEntryQuantity(e, dIndex, dataProps[hIndex])} contentEditable="true" className={styles.cell}>{d[headers[hIndex]]}</div>
+                  {editable && dataProps.length === 0 && (typeof (d[dataProps[hIndex]]) === 'object'
+                    ? <div onInput={(e) => editTableEntryQuantity(e, dIndex, dataProps[hIndex])} contentEditable="true" className={styles.cell}>{d[headers[hIndex]].fragment}</div>
                     : <p onInput={(e) => editTableEntryQuantity(e, dIndex, dataProps[hIndex])} contentEditable="true" lassName={styles.cell}>{d[headers[hIndex]]}</p>)}
                 </div>
               ))}

@@ -96,10 +96,12 @@ function MainInventory({ loggedIn, username, onLogout }) {
       setCards(records.map((r) => {
         const record = r.fields;
 
-        let Part;
-        let Quantity;
+        let partExpr;
+        let quantityExpr;
+        let partsort;
         if (record['Wide Width'] === true) {
-          Part = (
+          partsort = `${record['Part Name']}W`;
+          partExpr = (
             <div className={styles.table}>
               <p>
                 {`${record['Part Name']} `}
@@ -111,14 +113,15 @@ function MainInventory({ loggedIn, username, onLogout }) {
             </div>
           );
         } else {
-          Part = (
+          partsort = record['Part Name'];
+          partExpr = (
             <div>
               {record['Part Name']}
             </div>
           );
         }
         if (record.Quantity < 5) {
-          Quantity = (
+          quantityExpr = (
             <div className={styles.table}>
               <div>
                 {record.Quantity}
@@ -136,14 +139,24 @@ function MainInventory({ loggedIn, username, onLogout }) {
             </div>
           );
         } else {
-          Quantity = (
+          quantityExpr = (
             <div>
               {record.Quantity}
             </div>
           );
         }
+        const Part = {
+          sortBy: partsort,
+          fragment: partExpr.props.children,
+        };
+        const Quantity = {
+          sortBy: record.Quantity,
+          fragment: quantityExpr.props.children,
+        };
+        console.log(React.isValidElement(Part.fragment));
+        // console.log(Part.fragment.props.children === partExpr.props.children);
         return {
-          'Bin Name': record['Bin Name'], 'Part Name': Part.props.children, Quantity: Quantity.props.children, id: r.id,
+          'Bin Name': record['Bin Name'], 'Part Name': Part, Quantity, id: r.id,
         };
       }));
     });
