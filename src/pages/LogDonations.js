@@ -93,7 +93,6 @@ function LogDonations() {
       return;
     }
     donation.Size = Number(size);
-    console.log(donation.Size);
     if (document.getElementById('wide').checked) {
       donation.Wide = 'W';
     } else {

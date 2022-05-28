@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
+import PropTypes from 'prop-types';
 import { Table } from '../components';
 import styles from './DonationConfirmation.module.css';
 
@@ -14,7 +15,8 @@ const airtableConfig = {
 const base = new Airtable({ apiKey: airtableConfig.apiKey })
   .base(airtableConfig.baseKey);
 
-function DonationConfirmation() {
+function DonationConfirmation({ username }) {
+  console.log(username);
   const location = useLocation();
   const { donor, donations } = location.state;
   const [error, setError] = useState('');
@@ -41,7 +43,7 @@ function DonationConfirmation() {
           State: donor.State,
           'Zip Code': donor['Zip Code'],
           Donations: JSON.stringify(donations),
-          'Logged By': 'Sidd',
+          'Logged By': username,
           'Total Quantity': sum,
         },
       },
@@ -109,6 +111,11 @@ function DonationConfirmation() {
             shoes
           </div>
           <div>
+            Logged By:
+            {' '}
+            {username}
+          </div>
+          <div>
             Date Logged:
             {' '}
             {date.getMonth() + 1}
@@ -135,3 +142,7 @@ function DonationConfirmation() {
 }
 
 export default DonationConfirmation;
+
+DonationConfirmation.propTypes = {
+  username: PropTypes.string.isRequired,
+};

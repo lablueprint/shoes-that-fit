@@ -13,6 +13,7 @@ function App({
   isLoggedIn, username, login, logout,
 }) {
   console.log(isLoggedIn);
+  console.log(username);
   return (
     <div className="App">
       <Nav loggedIn={isLoggedIn} />
@@ -73,7 +74,7 @@ function App({
         <Route path="/donations" element={<Donations />} />
         <Route path="/donationdetails" element={<DonationDetails />} />
         <Route path="/logdonations" element={<LogDonations />} />
-        <Route path="/confirmdonation" element={<DonationConfirmation />} />
+        <Route path="/confirmdonation" element={<DonationConfirmation username={username} />} />
       </Routes>
     </div>
   );
