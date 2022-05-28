@@ -399,6 +399,7 @@ function OrderForm({ isLoggedIn, base }) {
                     <input
                       type="submit"
                       id="submit"
+                      className={styles.submit}
                       name="submit"
                       value="Add Request"
                     />
@@ -460,6 +461,7 @@ function OrderForm({ isLoggedIn, base }) {
                             type="button"
                             id="print"
                             name="confirm"
+                            className={styles.bigSubmit}
                             onClick={pushToAirtable}
                           >
                             Confirm Submission
