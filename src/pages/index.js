@@ -5,7 +5,6 @@ import RecordPage from './RecordPage';
 import AdminList from './AdminList';
 import OrderForm from './OrderForm';
 import OrderHistory from './OrderHistory';
-import OrderListAdmin from '../components/OrderListAdmin';
 import AdminDashboard from './AdminDashboard';
 import ChangePass from './ChangePass';
 import Donations from './Donations';
@@ -17,6 +16,6 @@ import Portal from './Portal';
 
 export {
   MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, RecordPage, AdminDashboard,
-  Donations, DonationConfirmation, OrderListAdmin, OrderHistory, Schools, SchoolsForm,
+  Donations, DonationConfirmation, OrderHistory, Schools, SchoolsForm,
   SchoolsDetail, ChangePass, Portal,
 };

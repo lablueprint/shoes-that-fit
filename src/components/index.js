@@ -6,7 +6,7 @@ import PageLengthForm from './PageLengthForm';
 import Nav from './nav';
 import Table from './table';
 import NavLogin from './navlogin';
-import OrderListAdmin from './OrderListAdmin';
+import Details from './details';
 
 export {
   Header,
@@ -17,5 +17,5 @@ export {
   Nav,
   Table,
   NavLogin,
-  OrderListAdmin,
+  Details,
 };

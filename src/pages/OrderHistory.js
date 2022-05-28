@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Card from '../components/card';
 import styles from './OrderHistory.module.css';
-import OrderListAdmin from '../components/OrderListAdmin';
+import Details from '../components/details';
 
-function OrderHistory({ base, profile }) {
+function OrderHistory({ base, profile, username }) {
   const [cards, setCards] = useState([]);
   const [specificCardID, setSpecificCardID] = useState('');
 
@@ -87,7 +87,12 @@ function OrderHistory({ base, profile }) {
         </div>
       )
       : (
-        <OrderListAdmin id={specificCardID} base={base} clearSpecificCard={clearSpecificCard} />
+        <Details
+          id={specificCardID}
+          base={base}
+          clearSpecificCard={clearSpecificCard}
+          username={username}
+        />
       )
   );
 }
@@ -104,6 +109,7 @@ OrderHistory.propTypes = {
     schoolName: PropTypes.string,
     zipCode: PropTypes.string,
   }).isRequired,
+  username: PropTypes.string.isRequired,
 };
 
 export default OrderHistory;

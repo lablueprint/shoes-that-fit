@@ -13,12 +13,12 @@ function DashboardOrders({ base }) {
         .select({ view: 'Grid view' })
         .all()
         .then((records) => {
-          const activeOrders = records.filter((card) => card.fields.Active === true);
-          if (activeOrders.length < 3) {
-            setDisplayedCards(activeOrders.reverse().map((r) => (r.fields)));
+          // const activeOrders = records.filter((card) => card.fields.Active === true);
+          if (records.length < 3) {
+            setDisplayedCards(records.reverse().map((r) => (r.fields)));
           } else {
             // eslint-disable-next-line max-len
-            const latestActiveOrders = activeOrders.slice(activeOrders.length - 3, activeOrders.length);
+            const latestActiveOrders = records.slice(records.length - 3, records.length);
             setDisplayedCards(latestActiveOrders.reverse().map((r) => (r.fields)));
           }
         });
@@ -31,14 +31,18 @@ function DashboardOrders({ base }) {
   const dataProps = ['Date', 'Contact Name', 'School', 'Active'];
   const modify = ['Date', 'Active'];
   const formatDate = (date) => new Date(Date.parse(date)).toLocaleDateString('en', { month: 'numeric', day: 'numeric', year: '2-digit' });
-  const formatStatus = (status) => (
+  const formatStatus = (status) => (status ? (
     <span className={styles.incompleteBox}>
-      {' '}
-      {status}
-      {' '}
       INCOMPLETE
     </span>
+  )
+    : (
+      <span className={styles.fulfilledBox}>
+        FULFILLED
+      </span>
+    )
   );
+
   const modifyFuncs = [formatDate, formatStatus];
 
   return (

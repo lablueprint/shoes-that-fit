@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
 // import Card from '../components/card';
 // import { ChevronLeft } from 'lucide-react';
-import { Table, OrderListAdmin } from '../components';
+import { Table, Details } from '../components';
 import styles from './AdminList.module.css';
 
-function AdminList({ isLoggedIn, base, profile }) {
+function AdminList({
+  isLoggedIn, base, profile, username,
+}) {
   const [cards, setCards] = useState([]);
   const [curID, setCurID] = useState('');
   // let unique = [];
@@ -58,6 +60,7 @@ function AdminList({ isLoggedIn, base, profile }) {
 
   const clearSpecificCard = () => {
     setCurID('');
+    getCards();
   };
 
   const setCurCard = (d) => {
@@ -91,7 +94,7 @@ function AdminList({ isLoggedIn, base, profile }) {
             </div>
             )}
           {curID.length > 0 && (
-          <OrderListAdmin id={curID} base={base} clearSpecificCard={clearSpecificCard} />
+          <Details id={curID} base={base} clearSpecificCard={clearSpecificCard} username={username} />
           )}
         </>
       )
@@ -113,6 +116,7 @@ AdminList.propTypes = {
     schoolName: PropTypes.string,
     zipCode: PropTypes.string,
   }).isRequired,
+  username: PropTypes.string.isRequired,
 };
 
 // cards.filter((card) => card.fields.Time === `${value}`).map((card, index) => (
