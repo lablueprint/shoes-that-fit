@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
 // import Card from '../components/card';
-import { Table } from '../components';
+// import { ChevronLeft } from 'lucide-react';
+import { Table, OrderListAdmin } from '../components';
 import styles from './AdminList.module.css';
-import OrderListAdmin from '../components/OrderListAdmin';
 
 function AdminList({ isLoggedIn, base, profile }) {
   const [cards, setCards] = useState([]);
