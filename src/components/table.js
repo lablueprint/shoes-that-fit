@@ -138,8 +138,8 @@ export default function Table({
                           // eslint-disable-next-line max-len
                           && (modifyFuncs[modify.indexOf(dataProps[hIndex])](d[dataProps[hIndex]])))
                           )
-                          || ((!modify.includes(dataProps[hIndex])
-                           && <p>d[dataProps[hIndex]].toString()</p>))
+                          || ((d[dataProps[hIndex]] && !modify.includes(dataProps[hIndex])
+                           && <p>{d[dataProps[hIndex]].toString()}</p>))
                           : (
                             <button type="button" style={{ color: 'black' }} onClick={() => { selectCard(d); }}>
                               <img src={detailsIcon} alt="details" />

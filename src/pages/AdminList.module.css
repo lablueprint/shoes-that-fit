@@ -31,3 +31,57 @@
   flex-direction: column;
   border-radius: 20px;
 }
+
+.ordersTable {
+  overflow-x: auto;
+   border-collapse: collapse; /* removes gap between cells */
+   font-family: 'Hartwell';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 18px;
+   line-height: 21px;
+   color: #313131;
+   border-spacing: 5px;
+   display: flex;
+   align-items: center;
+}
+
+.top {
+  display: flex;
+  flex-direction: row;
+  margin-left: 1%;
+  margin-right: 6.5%;
+  margin-top: 7%;
+}
+
+.name {
+  margin-left: auto;
+  font-family: 'Hartwell';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  /* identical to box height */
+
+  text-align: right;
+
+  color: #000000;
+}
+
+.title {
+  display: flex;
+  /* padding-left: 10%; */
+  margin-bottom: 1.5%;
+  font-family: 'Hartwell';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 56px;
+  /* identical to box height */
+  color: #000000;
+}
+
+.adminList {
+  width: 80%;
+  align-items: center;
+}
