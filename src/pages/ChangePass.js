@@ -18,19 +18,19 @@ export default function ChangePass({
     e.preventDefault();
 
     if (oldPass.length === 0) {
-      curError = 'Error: previous password cannot be empty.';
+      curError = 'Error: Previous password cannot be empty.';
       setError(curError);
       return;
     }
 
     if (newPass.length === 0) {
-      curError = 'Error: password cannot be empty.';
+      curError = 'Error: Password cannot be empty.';
       setError(curError);
       return;
     }
 
     if (newPass !== confirmPassword) {
-      curError = 'Error: confirm password cannot be empty';
+      curError = 'Error: Confirm password cannot be empty';
       setError(curError);
       return;
     }
@@ -52,7 +52,7 @@ export default function ChangePass({
     });
 
     await base.login({ username, password: newPass }).then(() => {
-      curError = 'Error: Password must not match prev password';
+      curError = 'Error: Password must not match previous password';
       setError(curError);
     }).catch((err) => {
       console.log(err);

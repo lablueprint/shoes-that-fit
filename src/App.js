@@ -81,9 +81,39 @@ function App({
         </>
       ) : (
         <>
-          <Nav profile={profile} isLoggedIn={isLoggedIn} onLogout={logout} />
+          <Nav isLoggedIn={isLoggedIn} onLogout={logout} profile={profile} />
           <div className="App-container">
             <Routes>
+              <Route
+                path="/"
+                element={(
+                  <AdminDashboard
+                    isLoggedIn={isLoggedIn}
+                    username={username}
+                    password={password}
+                    onLogin={login}
+                    profile={profile}
+                    register={register}
+                    reRegister={reRegister}
+                    base={base}
+                  />
+                )}
+              />
+              <Route
+                path="/login"
+                element={(
+                  <AdminDashboard
+                    isLoggedIn={isLoggedIn}
+                    username={username}
+                    password={password}
+                    onLogin={login}
+                    profile={profile}
+                    register={register}
+                    reRegister={reRegister}
+                    base={base}
+                  />
+                )}
+              />
               <Route
                 path="/admindashboard"
                 element={(
@@ -97,7 +127,7 @@ function App({
                     reRegister={reRegister}
                     base={base}
                   />
-            )}
+                )}
               />
               <Route
                 path="/inventory"
@@ -108,7 +138,7 @@ function App({
                     password={password}
                     base={base}
                   />
-            )}
+                )}
               />
               <Route
                 path="/newshoeform"
@@ -117,7 +147,17 @@ function App({
                     isLoggedIn={isLoggedIn}
                     base={base}
                   />
-            )}
+                )}
+              />
+              <Route
+                path="/adminlist"
+                element={(
+                  <AdminList
+                    isLoggedIn={isLoggedIn}
+                    base={base}
+                    profile={profile}
+                  />
+                )}
               />
               <Route
                 path="/orderform"
@@ -126,7 +166,7 @@ function App({
                     isLoggedIn={isLoggedIn}
                     base={base}
                   />
-            )}
+                )}
               />
               <Route
                 path="/adminlist"
@@ -135,7 +175,7 @@ function App({
                     isLoggedIn={isLoggedIn}
                     base={base}
                   />
-            )}
+                )}
               />
               <Route
                 path="/records"
@@ -144,7 +184,7 @@ function App({
                     isLoggedIn={isLoggedIn}
                     base={base}
                   />
-            )}
+                )}
               />
               <Route
                 path="/changePass"
@@ -158,13 +198,13 @@ function App({
                     onLogin={login}
                     base={base}
                   />
-            )}
+                )}
               />
               <Route
                 path="/viewhistory"
                 element={(
                   <OrderListAdmin base={base} />
-              )}
+                )}
               />
               <Route path="/orderhistory" element={<OrderHistory base={base} profile={profile} />} />
               <Route path="/donations" element={<Donations base={base} />} />

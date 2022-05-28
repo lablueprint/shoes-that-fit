@@ -6,9 +6,6 @@ import { Navigate } from 'react-router-dom';
 // import { ChevronLeft } from 'lucide-react';
 import { Table, OrderListAdmin } from '../components';
 import styles from './AdminList.module.css';
-// import { Table } from '../components';
-// import styles from './AdminList.module.css';
-// import OrderListAdmin from '../components/OrderListAdmin';
 
 function AdminList({ isLoggedIn, base, profile }) {
   const [cards, setCards] = useState([]);
