@@ -3,12 +3,11 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
 // import Card from '../components/card';
-import { ChevronLeft } from 'lucide-react';
 import { Table } from '../components';
 import styles from './AdminList.module.css';
-import OrderListAdmin from './OrderListAdmin';
+import OrderListAdmin from '../components/OrderListAdmin';
 
-function AdminList({ isLoggedIn, base }) {
+function AdminList({ isLoggedIn, base, profile }) {
   const [cards, setCards] = useState([]);
   const [curID, setCurID] = useState('');
   // let unique = [];
@@ -73,24 +72,26 @@ function AdminList({ isLoggedIn, base }) {
           {curID.length === 0 && cards && cards.length > 0
             && (
             <div className={styles.adminList}>
-              <Table
-                headers={headers}
-                sortIndices={sortIndices}
-                data={cards}
-                dataProps={dataProps}
-                dataKeyProp={dataKeyProp}
-                details
-                selectCard={setCurCard}
-              />
+              <div className={styles.top}>
+                <div className={styles.title}>Orders</div>
+                <div className={styles.name}>{profile.contactName}</div>
+              </div>
+              <div className={styles.ordersTable}>
+                <Table
+                  className={styles.ordersTable}
+                  headers={headers}
+                  sortIndices={sortIndices}
+                  data={cards}
+                  dataProps={dataProps}
+                  dataKeyProp={dataKeyProp}
+                  details
+                  selectCard={setCurCard}
+                />
+              </div>
             </div>
             )}
           {curID.length > 0 && (
-            <>
-              <div className={styles.back}>
-                <ChevronLeft size={50} type="button" onClick={clearSpecificCard} />
-              </div>
-              <OrderListAdmin id={curID} base={base} />
-            </>
+          <OrderListAdmin id={curID} base={base} clearSpecificCard={clearSpecificCard} />
           )}
         </>
       )
@@ -102,6 +103,16 @@ export default AdminList;
 AdminList.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   base: PropTypes.func.isRequired,
+  profile: PropTypes.shape({
+    role: PropTypes.string,
+    address: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+    phone: PropTypes.string,
+    contactName: PropTypes.string,
+    schoolName: PropTypes.string,
+    zipCode: PropTypes.string,
+  }).isRequired,
 };
 
 // cards.filter((card) => card.fields.Time === `${value}`).map((card, index) => (

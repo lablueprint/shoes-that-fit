@@ -123,6 +123,7 @@ function App({
               <AdminList
                 isLoggedIn={isLoggedIn}
                 base={base}
+                profile={profile}
               />
             )}
           />

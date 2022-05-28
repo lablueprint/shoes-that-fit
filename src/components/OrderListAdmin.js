@@ -13,7 +13,7 @@ function OrderListAdmin({ base, id, clearSpecificCard }) {
     print({
       printable: 'orders',
       type: 'html',
-      // ignoreElements: ['print', 'bigSubmit'],
+      ignoreElements: ['printform'],
       css: './OrderListAdmin.module.css',
       targetStyles: ['*'],
     });
