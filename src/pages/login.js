@@ -34,22 +34,22 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
     setError('');
     e.preventDefault();
     if (username.length === 0) {
-      curError = 'Error: username cannot be empty.';
+      curError = 'Error: Username cannot be empty.';
       setError(curError);
       return;
     }
     if (password.length === 0) {
-      curError = 'Error: password cannot be empty.';
+      curError = 'Error: Password cannot be empty.';
       setError(curError);
       return;
     }
     if (confirmPassword.length === 0) {
-      curError = 'Error: must confirm password.';
+      curError = 'Error: Must confirm password.';
       setError(curError);
       return;
     }
     if (confirmPassword !== password) {
-      curError = 'Error: confirm password must match password.';
+      curError = 'Error: Confirm password must match password.';
       setError(curError);
       return;
     }
@@ -98,28 +98,28 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
         phone,
       };
 
-      await base('Profile').create([
-        {
-          fields: {
-            Username: username,
-            Role: profile.role,
-            Address: profile.address,
-            City: profile.city,
-            State: profile.state,
-            Phone: profile.phone,
-            ContactName: profile.contactName,
-            SchoolName: profile.schoolName,
-            ZipCode: profile.zipCode,
-          },
-        },
-      ], async (err) => {
-        if (err) {
-          console.error(err);
-        }
-        // else {
-        //   await onLogin(username, password, profile, false, false);
-        // }
-      });
+      // await base('Profile').create([
+      //   {
+      //     fields: {
+      //       Username: username,
+      //       Role: profile.role,
+      //       Address: profile.address,
+      //       City: profile.city,
+      //       State: profile.state,
+      //       Phone: profile.phone,
+      //       ContactName: profile.contactName,
+      //       SchoolName: profile.schoolName,
+      //       ZipCode: profile.zipCode,
+      //     },
+      //   },
+      // ], async (err) => {
+      //   if (err) {
+      //     console.error(err);
+      //   }
+      //   // else {
+      //   //   await onLogin(username, password, profile, false, false);
+      //   // }
+      // });
 
       await onLogin(username, res.body.user.fields.Password, profile, true, false);
     }).catch((err) => {
@@ -134,12 +134,12 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
     setError('');
     e.preventDefault();
     if (username.length === 0) {
-      curError = 'Error: username cannot be empty.';
+      curError = 'Error: Username cannot be empty.';
       setError(curError);
       return;
     }
     if (password.length === 0) {
-      curError = 'Error: password cannot be empty.';
+      curError = 'Error: Password cannot be empty.';
       setError(curError);
       return;
     }
@@ -198,7 +198,7 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
       await onLogin(username, res.body.user.fields.Password, profile, false, false);
     }).catch((err) => {
       console.log(err);
-      curError = 'Error: Incorrect username or password.';
+      curError = 'Error: Incorrect Username or Password.';
       setError(curError);
     });
   };

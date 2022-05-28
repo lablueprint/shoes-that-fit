@@ -81,9 +81,39 @@ function App({
         </>
       ) : (
         <>
-          <Nav isLoggedIn={isLoggedIn} onLogout={logout} />
+          <Nav isLoggedIn={isLoggedIn} onLogout={logout} profile={profile} />
           <div className="App-container">
             <Routes>
+              <Route
+                path="/"
+                element={(
+                  <AdminDashboard
+                    isLoggedIn={isLoggedIn}
+                    username={username}
+                    password={password}
+                    onLogin={login}
+                    profile={profile}
+                    register={register}
+                    reRegister={reRegister}
+                    base={base}
+                  />
+                )}
+              />
+              <Route
+                path="/login"
+                element={(
+                  <AdminDashboard
+                    isLoggedIn={isLoggedIn}
+                    username={username}
+                    password={password}
+                    onLogin={login}
+                    profile={profile}
+                    register={register}
+                    reRegister={reRegister}
+                    base={base}
+                  />
+                )}
+              />
               <Route
                 path="/admindashboard"
                 element={(
