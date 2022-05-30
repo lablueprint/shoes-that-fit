@@ -1,4 +1,4 @@
-.popup {
+/* .popup {
     position: fixed;
     top: 0;
     left: 0;
@@ -14,9 +14,9 @@
 .popup-inner {
     position: relative;
     justify-self: flex-end;
+    margin-left: 16.5%;
     height: 22%;
     width: 70%;
-    /* max-width: 640 px; */
     background-color: #FFF;
 }
 
@@ -24,4 +24,4 @@
     position: absolute;
     top: 16px;
     right: 16px;
-}
+} */

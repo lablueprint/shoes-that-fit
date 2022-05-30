@@ -1,12 +1,14 @@
 .school-information, .personal-information {
     outline: 1px solid black;
-    padding: 0.05% 2% 2%;
+    padding: 0.1% 0% 1%;
     margin: 2%;
 }
 
-.school-information > div, .personal-information > div {
+.row {
     display: flex;
     margin: 3% 0%;
+    height: 30px;
+    align-items: center;
 }
 
 .main {
@@ -17,11 +19,55 @@
 .label {
     font-weight: bold;
     width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.value {
+    display: flex;
+    width: 80%;
 }
 
 .top-bar {
     display: flex;
-    padding: 0% 5%;
+    justify-content: space-between;
+    padding-left: 5%; 
+    margin: 1% 0%;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 2.5%;
+}
+
+.edit-btn, .cancel-btn {
+    border-radius: 6px;
+    height: 40px;
+    width: 50px;
+    margin-top: 10px;
+    margin-right: 10px;
+    width: 100%;
+}
+
+.edit-btn {
+    background-color: #FF6622;
+    border: 1px solid #FF8866;
+    color: white;
+}
+
+
+.cancel-btn {
+    background-color: white;
+    border: 1px solid grey;
+    color: grey;
+}
+
+.input-field {
+    height: 10px;
+    font-size: medium;
+    font-weight: normal;
 }
 
 div {

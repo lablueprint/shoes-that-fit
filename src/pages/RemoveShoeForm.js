@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
-import Popup from './Popup';
+// import Popup from './Popup';
 import styles from './NewShoeForm.module.css';
-
-// Airtable stuff
 
 function RemoveShoeForm({ isLoggedIn, base }) {
   const [location, setLocation] = useState('');
@@ -24,11 +22,11 @@ function RemoveShoeForm({ isLoggedIn, base }) {
     setQuantity('');
   }
 
-  function addRecord(delta) {
+  function removeRecord(delta) {
     base('Records').create([
       {
         fields: {
-          Message: `Added ${delta} shoes to inventory.`,
+          Message: `Removed ${delta} ${(delta === 1) ? ('shoe') : ('shoes')} shoes from inventory.`,
         },
       },
     ], (err) => {
@@ -36,9 +34,9 @@ function RemoveShoeForm({ isLoggedIn, base }) {
     });
   }
 
-  const closePopup = () => setPopup(false);
-
+  // const closePopup = () => setPopup(false);
   // base('TestInventory').select().all().then((records) => { records.forEach(cleanRecord); })
+
   const inputForm = (
     <form
       onSubmit={async (evt) => {
@@ -56,12 +54,12 @@ function RemoveShoeForm({ isLoggedIn, base }) {
           setPopup(true);
           return;
         }
-        addRecord(quantityToInt);
+        removeRecord(quantityToInt);
         const wideBool = isWide ? 1 : '';
 
         const filter = `AND({Part Name} = '${part}', {Bin Name} = '${location}',
         {Wide Width} = '${wideBool}')`;
-        let totalQuantity = quantityToInt;
+        let totalQuantity = -quantityToInt;
 
         // find the total quantity of all existing matching records and delete the records
         clear();
@@ -69,27 +67,19 @@ function RemoveShoeForm({ isLoggedIn, base }) {
         await base('TestInventory').select({ filterByFormula: filter }).eachPage(
           async (records) => {
             if (records.length === 0) { // create a new record if there are no matching ones
-              await base('TestInventory').create([
-                {
-                  fields: {
-                    'Part Name': part,
-                    'Bin Name': location,
-                    'Wide Width': isWide,
-                    Quantity: totalQuantity,
-                  },
-                },
-              ], (err) => {
-                if (err) { console.log(err); }
-              });
-              setSuccess(true);
-              setPopupMessage(`New quantity: ${totalQuantity}`);
+              setSuccess(false);
+              setPopupMessage('No such shoe found!');
               setPopup(true);
               return;
             }
 
             let currentLength = records.length;
+            let exceeded = false;
             records.forEach(async (record) => {
-              totalQuantity += parseInt(record.fields.Quantity, 10);
+              if (totalQuantity + parseInt(record.fields.Quantity, 10) < 0) {
+                exceeded = true;
+              }
+              totalQuantity = Math.max(0, totalQuantity + parseInt(record.fields.Quantity, 10));
               if (currentLength === 1) {
                 await base('TestInventory').update([
                   {
@@ -113,7 +103,12 @@ function RemoveShoeForm({ isLoggedIn, base }) {
               }
             });
             setSuccess(true);
-            setPopupMessage(`New quantity: ${totalQuantity}`);
+            if (exceeded) {
+              setSuccess(false);
+              setPopupMessage(`New Quantity: ${totalQuantity}. Stock too low to remove ${quantityToInt} shoes.`);
+            } else {
+              setPopupMessage(`New Quantity: ${totalQuantity}`);
+            }
             setPopup(true);
           },
           (err) => { console.log(err); },
@@ -121,40 +116,38 @@ function RemoveShoeForm({ isLoggedIn, base }) {
       }}
     >
       <div className={styles.container}>
-        <div>
-          <h2>Remove Inventory</h2>
+        <div className={styles.title}>
+          <h1>Remove Inventory</h1>
         </div>
         <div className={styles.fields}>
-          <div>
-            <label>
-              <h4>Location</h4>
-              <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
-            </label>
+          <div className={styles.field}>
+            <h4>Location</h4>
+            <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
           </div>
-          <div>
-            <label>
-              <h4>Part Name</h4>
-              <input type="text" value={part} onChange={(e) => setPart(e.target.value)} />
-            </label>
+          <div className={styles.field}>
+            <h4>Part</h4>
+            <input type="text" value={part} onChange={(e) => setPart(e.target.value)} />
           </div>
-          <div>
-            <label>
-              <h4>Wide width?</h4>
-              <input className={styles.check} type="checkbox" onChange={(e) => setWide(e.target.checked)} />
-            </label>
+          <div className={styles.field}>
+            <h4>Wide Width</h4>
+            <input className={styles.check} type="checkbox" onChange={(e) => setWide(e.target.checked)} />
           </div>
-          <div>
-            <label>
-              <h4>Quantity</h4>
-              <input type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
-            </label>
+          <div className={styles.field}>
+            <h4>Quantity</h4>
+            <input type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
           </div>
         </div>
-        <div className={styles.submitBtn}>
+        <div className={styles.submitForm}>
           <input
-            value="Remove"
+            value="Remove from inventory"
             type="submit"
+            className={styles.submitBtn}
           />
+        </div>
+        <div className={styles.message}>
+          {popup
+            ? <p className={success ? styles.success : styles.error}>{popupMessage}</p> : ''}
+
         </div>
       </div>
     </form>
@@ -165,13 +158,15 @@ function RemoveShoeForm({ isLoggedIn, base }) {
       ? (<Navigate to="/" />)
       : (
         <div className={styles.main}>
-          {popup && (
-          <Popup
-            closePopup={closePopup}
-            success={success}
-            message={popupMessage}
-          />
-          )}
+          {/* {popup && (
+            <div>
+              <Popup
+                closePopup={closePopup}
+                success={success}
+                message={popupMessage}
+              />
+            </div>
+          )} */}
           {inputForm}
         </div>
       )
