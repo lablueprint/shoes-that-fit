@@ -84,6 +84,15 @@ function Details({
       getCards();
       increaseKidsHelped((JSON.parse(info.Orders)).length);
     });
+    base('Records').create([
+      {
+        fields: {
+          Message: `Fulfilled an order and removed ${(JSON.parse(info.Orders)).length} ${(JSON.parse(info.Orders)).length === 1 ? 'shoe' : 'shoes'} from inventory.`,
+        },
+      },
+    ], (err) => {
+      if (err) { console.log(err); }
+    });
   }
 
   useEffect(() => {
@@ -144,13 +153,16 @@ function Details({
               })}`)}
             </div>
             {/* <div className={styles.print}> */}
-            <button
-              type="button"
-              name="fulfill"
-              onClick={fulfillOrder}
-            >
-              Fulfill Order
-            </button>
+            {info && info.Active ? (
+              <button
+                type="button"
+                name="fulfill"
+                onClick={fulfillOrder}
+              >
+                Fulfill Order
+              </button>
+            )
+              : null}
             <button
               className={styles.printButton}
               type="button"

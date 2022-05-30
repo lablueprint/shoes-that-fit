@@ -77,7 +77,7 @@ function AdminDashboard({
           <div className={styles.top}>
             <h1 className={styles.welcome}>
               Welcome Back,&nbsp;
-              <b>Admin</b>
+              <b>{profile.contactName.split(' ')[0]}</b>
             </h1>
             <div className={styles.name}>
               {profile.contactName}
