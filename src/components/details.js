@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import print from 'print-js';
 import { ChevronLeft } from 'lucide-react';
 // import { AdminCard } from '../components';
-import styles from './OrderListAdmin.module.css';
+import styles from './details.module.css';
 
-function OrderListAdmin({ base, id, clearSpecificCard }) {
+function Details({
+  base, id, clearSpecificCard, username,
+}) {
   const [cards, setCards] = useState([]);
   const [info, setInfo] = useState([]);
 
@@ -14,25 +16,86 @@ function OrderListAdmin({ base, id, clearSpecificCard }) {
       printable: 'orders',
       type: 'html',
       ignoreElements: ['printform', 'chevron', 'info'],
-      css: './OrderListAdmin.module.css',
+      css: './details.module.css',
       targetStyles: ['*'],
       style: '@page { size: Letter landscape; }',
 
     });
   }
 
-  useEffect(() => {
-    console.log(id);
-    const getCards = () => {
-      base('Orders')
-        .select({ filterByFormula: `ID="${id}"` })
-        .all()
-        .then((records) => {
-          console.log(records);
-          setCards(JSON.parse(records[0].fields.Orders));
-          setInfo(records[0].fields);
+  const getCards = () => {
+    base('Orders')
+      .select({ filterByFormula: `ID="${id}"` })
+      .all()
+      .then((records) => {
+        setCards(JSON.parse(records[0].fields.Orders));
+        setInfo(records[0].fields);
+      });
+  };
+
+  // have to also add a KidsHelped row for each profile on creation, initialized to 0
+  const increaseKidsHelped = (num) => {
+    base('KidsHelped')
+      .select({
+        view: 'Grid view',
+        filterByFormula: `{Username} = "${username}"`,
+      }).all()
+      .then((records) => {
+        base('KidsHelped').update([
+          {
+            id: records[0].id,
+            fields: {
+              Username: username,
+              'Kids Helped': records[0].fields['Kids Helped'] + num,
+            },
+          },
+        ], (err) => {
+          if (err) {
+            console.error(err);
+          }
         });
-    };
+      });
+  };
+
+  function fulfillOrder() {
+    base('Orders').update([
+      {
+        id,
+        fields: {
+          School: info.School,
+          Address1: info.Address1,
+          City: info.City,
+          State: info.State,
+          'Zip Code': info['Zip Code'],
+          'Contact Name': info['Contact Name'],
+          'Email Address': info['Email Address'],
+          Phone: info.Phone,
+          Orders: info.Orders,
+          UserID: info.UserID,
+          Notes: info.Notes,
+          Active: false,
+        },
+      },
+    ], (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      getCards();
+      increaseKidsHelped((JSON.parse(info.Orders)).length);
+    });
+    base('Records').create([
+      {
+        fields: {
+          Message: `Fulfilled an order and removed ${(JSON.parse(info.Orders)).length} ${(JSON.parse(info.Orders)).length === 1 ? 'shoe' : 'shoes'} from inventory.`,
+        },
+      },
+    ], (err) => {
+      if (err) { console.log(err); }
+    });
+  }
+
+  useEffect(() => {
     getCards();
   }, []);
 
@@ -90,6 +153,16 @@ function OrderListAdmin({ base, id, clearSpecificCard }) {
               })}`)}
             </div>
             {/* <div className={styles.print}> */}
+            {info && info.Active ? (
+              <button
+                type="button"
+                name="fulfill"
+                onClick={fulfillOrder}
+              >
+                Fulfill Order
+              </button>
+            )
+              : null}
             <button
               className={styles.printButton}
               type="button"
@@ -136,15 +209,16 @@ function OrderListAdmin({ base, id, clearSpecificCard }) {
   );
 }
 
-export default OrderListAdmin;
+export default Details;
 
-OrderListAdmin.propTypes = {
+Details.propTypes = {
   base: PropTypes.func.isRequired,
   id: PropTypes.string,
   clearSpecificCard: PropTypes.func,
+  username: PropTypes.string.isRequired,
 };
 
-OrderListAdmin.defaultProps = {
+Details.defaultProps = {
   id: '',
   clearSpecificCard: () => {},
 };

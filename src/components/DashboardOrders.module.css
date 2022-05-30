@@ -39,6 +39,23 @@
     width: 130px
 }
 
+.fulfilledBox {
+    height: 25px;
+    width: 130px;
+    background: #E1EFE7;
+    color: #4C8865;
+    font-weight: 700;
+    font-size: 16px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    border-radius: 31px;
+    text-align: center;
+    display: flex;
+}
+
 .LinkStyles { 
     text-decoration: none;
 

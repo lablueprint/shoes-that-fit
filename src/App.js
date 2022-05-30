@@ -15,7 +15,6 @@ import {
   AdminDashboard,
   Donations,
   DonationConfirmation,
-  OrderListAdmin,
   OrderHistory,
   SchoolsForm,
   SchoolsDetail,
@@ -156,6 +155,7 @@ function App({
                     isLoggedIn={isLoggedIn}
                     base={base}
                     profile={profile}
+                    username={username}
                   />
                 )}
               />
@@ -175,6 +175,7 @@ function App({
                     isLoggedIn={isLoggedIn}
                     base={base}
                     profile={profile}
+                    username={username}
                   />
                 )}
               />
@@ -201,13 +202,7 @@ function App({
                   />
                 )}
               />
-              <Route
-                path="/viewhistory"
-                element={(
-                  <OrderListAdmin base={base} />
-                )}
-              />
-              <Route path="/orderhistory" element={<OrderHistory base={base} profile={profile} />} />
+              <Route path="/orderhistory" element={<OrderHistory base={base} profile={profile} username={username} />} />
               <Route path="/donations" element={<Donations base={base} />} />
               <Route path="/confirmdonation" element={<DonationConfirmation base={base} />} />
               <Route path="/schoolsform" element={<SchoolsForm base={base} />} />

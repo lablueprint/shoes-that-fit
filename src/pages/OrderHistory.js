@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Card from '../components/card';
 import styles from './OrderHistory.module.css';
-import OrderListAdmin from '../components/OrderListAdmin';
+import Details from '../components/details';
 
-function OrderHistory({ base, profile }) {
+function OrderHistory({ base, profile, username }) {
   const [cards, setCards] = useState([]);
   const [specificCardID, setSpecificCardID] = useState('');
 
@@ -51,43 +51,94 @@ function OrderHistory({ base, profile }) {
           <div className={styles.secondTop}>
             <Link to="/orderform"><button type="button" className={styles.placeOrder}> + Place Order</button></Link>
           </div>
-          <div className={styles.orderText}>Orders in Progress</div>
-
-          {cards.filter((card) => (card.fields.UserID === '1' && card.fields.Active === true)).length === 0
-            ? <div className={styles.no}>No orders in progress.</div>
-            : cards.filter((card) => (card.fields.UserID === '1' && card.fields.Active === true)).map((card) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <div key={card.id} className={styles.cardBox}>
-                <Card
-                  schoolDistrict={card.fields.School}
-                  time={card.fields.Date}
-                  fulfilled={(card.fields.Active === true)}
-                  cardId={card.id}
-                  deleteCard={deleteCard}
-                  selectCard={selectCard}
-                />
+          {profile.role === 'Admin'
+            ? (
+              <div>
+                <div className={styles.orderText}>Orders in Progress</div>
+                {cards.filter((card) => (card.fields.UserID === username
+            && card.fields.Active === true)).length === 0
+                  ? <div className={styles.no}>No orders in progress.</div>
+                  : cards.filter((card) => (card.fields.UserID === username
+                && card.fields.Active === true)).map((card) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                  <div key={card.id} className={styles.cardBox}>
+                    <Card
+                      schoolDistrict={card.fields.School}
+                      time={card.fields.Date}
+                      fulfilled={(card.fields.Active === true)}
+                      cardId={card.id}
+                      deleteCard={deleteCard}
+                      selectCard={selectCard}
+                    />
+                  </div>
+                  ))}
+                <div className={styles.orderText}>Previous Orders</div>
+                {cards.filter((card) => (!(card.fields.Active === true))).length === 0
+                  ? <div className={styles.no}>No previous orders.</div>
+                  : cards.filter((card) => (!(card.fields.Active === true))).map((card) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <div key={card.id} className={styles.cardBox}>
+                      <Card
+                        schoolDistrict={card.fields.School}
+                        time={card.fields.Date}
+                        fulfilled={(card.fields.Active === true)}
+                        cardId={card.id}
+                        deleteCard={deleteCard}
+                        selectCard={selectCard}
+                      />
+                    </div>
+                  ))}
               </div>
-            ))}
-          <div className={styles.orderText}>Previous Orders</div>
-          {cards.filter((card) => (card.fields.UserID === '1' && !(card.fields.Active === true))).length === 0
-            ? <div className={styles.no}>No previous orders.</div>
-            : cards.filter((card) => (card.fields.UserID === '1' && !(card.fields.Active === true))).map((card) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <div key={card.id} className={styles.cardBox}>
-                <Card
-                  schoolDistrict={card.fields.School}
-                  time={card.fields.Date}
-                  fulfilled={(card.fields.Active === true)}
-                  cardId={card.id}
-                  deleteCard={deleteCard}
-                  selectCard={selectCard}
-                />
+            )
+            : (
+              <div>
+                <div className={styles.orderText}>Orders in Progress</div>
+                {cards.filter((card) => (card.fields.UserID === username
+              && card.fields.Active === true)).length === 0
+                  ? <div className={styles.no}>No orders in progress.</div>
+                  : cards.filter((card) => (card.fields.UserID === username
+                  && card.fields.Active === true)).map((card) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <div key={card.id} className={styles.cardBox}>
+                      <Card
+                        schoolDistrict={card.fields.School}
+                        time={card.fields.Date}
+                        fulfilled={(card.fields.Active === true)}
+                        cardId={card.id}
+                        deleteCard={deleteCard}
+                        selectCard={selectCard}
+                      />
+                    </div>
+                  ))}
+                <div className={styles.orderText}>Previous Orders</div>
+                {cards.filter((card) => (card.fields.UserID === username
+                && !(card.fields.Active === true))).length === 0
+                  ? <div className={styles.no}>No previous orders.</div>
+                  : cards.filter((card) => (card.fields.UserID === username
+                    && !(card.fields.Active === true))).map((card) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                      <div key={card.id} className={styles.cardBox}>
+                        <Card
+                          schoolDistrict={card.fields.School}
+                          time={card.fields.Date}
+                          fulfilled={(card.fields.Active === true)}
+                          cardId={card.id}
+                          deleteCard={deleteCard}
+                          selectCard={selectCard}
+                        />
+                      </div>
+                  ))}
               </div>
-            ))}
+            )}
         </div>
       )
       : (
-        <OrderListAdmin id={specificCardID} base={base} clearSpecificCard={clearSpecificCard} />
+        <Details
+          id={specificCardID}
+          base={base}
+          clearSpecificCard={clearSpecificCard}
+          username={username}
+        />
       )
   );
 }
@@ -104,6 +155,7 @@ OrderHistory.propTypes = {
     schoolName: PropTypes.string,
     zipCode: PropTypes.string,
   }).isRequired,
+  username: PropTypes.string.isRequired,
 };
 
 export default OrderHistory;

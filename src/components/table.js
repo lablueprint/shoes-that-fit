@@ -133,12 +133,12 @@ export default function Table({
                     {details ? (
                       <div>
                         {(dataProps.length !== 0 && dataProps[hIndex] !== 'Details'
-                          ? (d[dataProps[hIndex]] && (modify.includes(dataProps[hIndex])
+                          ? (d[dataProps[hIndex]] !== '' && (modify.includes(dataProps[hIndex])
                           && modifyFuncs.length > modify.indexOf(dataProps[hIndex])
                           // eslint-disable-next-line max-len
                           && (modifyFuncs[modify.indexOf(dataProps[hIndex])](d[dataProps[hIndex]])))
                           )
-                          || ((d[dataProps[hIndex]] && !modify.includes(dataProps[hIndex])
+                          || ((d[dataProps[hIndex]] !== '' && !modify.includes(dataProps[hIndex])
                            && <p>{d[dataProps[hIndex]].toString()}</p>))
                           : (
                             <button type="button" style={{ color: 'black' }} onClick={() => { selectCard(d); }}>
@@ -147,14 +147,18 @@ export default function Table({
                           ))}
                       </div>
                     ) : dataProps.length !== 0
-                    && d[dataProps[hIndex]]
+                    && d[dataProps[hIndex]] !== ''
                     && (((modify.includes(dataProps[hIndex])
                     && modifyFuncs.length > modify.indexOf(dataProps[hIndex])
                     // eslint-disable-next-line max-len
                     && (modifyFuncs[modify.indexOf(dataProps[hIndex])](d[dataProps[hIndex]])))
                     )
                     || (!modify.includes(dataProps[hIndex])
-                     && <p>{d[dataProps[hIndex]].toString()}</p>))}
+                     && (
+                     <p>
+                       {d[dataProps[hIndex]].toString()}
+                     </p>
+                     )))}
                   </div>
                 )}
             </div>
