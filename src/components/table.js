@@ -39,7 +39,7 @@ const calculateRange = (tableData, numRows) => {
 const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * numRows, page * numRows);
 
 export default function Table({
-  editable, headers, sortIndices, data, dataProps, checkbox, dataKeyProp, selected, setSelected,
+  editable, headers, sortIndices, data, dataProps, checkbox, dataKeyProp, selected, setSelected, editFunction,
 }) {
   const [lastIndex, setLast] = useState(0);
   const [sortDir, setDir] = useState(sorts.descending);
@@ -103,61 +103,6 @@ export default function Table({
     console.log(data);
   }
 
-  // eslint-disable-next-line no-unused-vars
-  const editTableEntryQuantity = ((val, item, header) => {
-    // console.log(data[index]);
-    console.log(val);
-    const wide = 'Wide Width';
-    const index = (page - 1) * numRows + item;
-    if (header === 'Quantity') {
-      base('LargerTestInventory').update([
-        {
-          id: data[index].id,
-          fields: {
-            Quantity: parseInt(val.currentTarget.textContent, 10),
-          },
-        },
-      ], (err) => {
-        if (err) {
-          console.error(err);
-        }
-      });
-    }
-    if (header === 'Part Name') {
-      if (val.currentTarget.textContent.charAt(val.currentTarget.textContent.length - 1) === 'W') {
-        const str = val.currentTarget.textContent.slice(0, -1);
-        base('LargerTestInventory').update([
-          {
-            id: data[index].id,
-            fields: {
-              [header]: str,
-              [wide]: true,
-            },
-          },
-        ], (err) => {
-          if (err) {
-            console.error(err);
-          }
-        });
-      } else {
-        const width = '';
-        base('LargerTestInventory').update([
-          {
-            id: data[index].id,
-            fields: {
-              [header]: val.currentTarget.textContent,
-              [wide]: false,
-            },
-          },
-        ], (err) => {
-          if (err) {
-            console.error(err);
-          }
-        });
-      }
-    }
-  });
-
   const updateSelectedItems = ((e, id) => {
     setAllChecked(false);
     if (e.target.checked === true) {
@@ -196,7 +141,9 @@ export default function Table({
       <div className={styles.top}>
         <div className={styles.pageLength}>
           <PageLengthForm setNumRows={setNumRows} />
-          <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} className={styles.Footer} onClick={() => setPage(page)} />
+          {numRows < data.length && (
+            <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} className={styles.Footer} onClick={() => setPage(page)} />
+          )}
         </div>
         <div className={styles.container}>
 
@@ -274,17 +221,19 @@ export default function Table({
                   {/* {!editable && dataProps.length > 0 && typeof} */}
 
                   {editable && dataProps.length > 0 && (typeof (d[dataProps[hIndex]]) === 'object'
-                    ? <div onInput={(e) => editTableEntryQuantity(e, dIndex, dataProps[hIndex])} contentEditable="true" className={styles.cell}>{d[dataProps[hIndex]].fragment}</div>
-                    : <p onInput={(e) => editTableEntryQuantity(e, dIndex, dataProps[hIndex])} contentEditable="true" className={styles.cell}>{d[dataProps[hIndex]]}</p>)}
+                    ? <div onInput={(e) => editFunction(e, data[dIndex].id, dataProps[hIndex])} contentEditable="true" className={styles.cell}>{d[dataProps[hIndex]].fragment}</div>
+                    : <p onInput={(e) => editFunction(e, data[dIndex].id, dataProps[hIndex])} contentEditable="true" className={styles.cell}>{d[dataProps[hIndex]]}</p>)}
                   {editable && dataProps.length === 0 && (typeof (d[dataProps[hIndex]]) === 'object'
-                    ? <div onInput={(e) => editTableEntryQuantity(e, dIndex, dataProps[hIndex])} contentEditable="true" className={styles.cell}>{d[headers[hIndex]].fragment}</div>
-                    : <p onInput={(e) => editTableEntryQuantity(e, dIndex, dataProps[hIndex])} contentEditable="true" lassName={styles.cell}>{d[headers[hIndex]]}</p>)}
+                    ? <div onInput={(e) => editFunction(e, data[dIndex].id, dataProps[hIndex])} contentEditable="true" className={styles.cell}>{d[headers[hIndex]].fragment}</div>
+                    : <p onInput={(e) => editFunction(e, data[dIndex].id, dataProps[hIndex])} contentEditable="true" lassName={styles.cell}>{d[headers[hIndex]]}</p>)}
                 </div>
               ))}
             </div>
           ))}
         </div>
-        <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} id={page} className={styles.Footer} />
+        {numRows < data.length && (
+        <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} className={styles.Footer} onClick={() => setPage(page)} />
+        )}
       </div>
     )
   );
@@ -300,6 +249,7 @@ Table.propTypes = {
   dataKeyProp: PropTypes.string.isRequired,
   selected: PropTypes.arrayOf(PropTypes.string),
   setSelected: PropTypes.func,
+  editFunction: PropTypes.func,
 };
 
 Table.defaultProps = {
@@ -309,4 +259,5 @@ Table.defaultProps = {
   dataProps: [],
   selected: [],
   setSelected: [],
+  editFunction: [],
 };

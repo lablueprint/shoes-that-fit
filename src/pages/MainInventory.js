@@ -425,19 +425,56 @@ function MainInventory({ loggedIn, username, onLogout }) {
     };
   });
 
-  // const updateRowStatus = (e) => {
-  //   setSelectedRows([...selectedRows, parseInt(e.target.className, 10)]);
-  //   console.log(selectedRows);
-  // };
-
-  // const removeRowStatus = (e) => {
-  //   const newRows = selectedRows.filter((index) => index !== parseInt(e.target.className, 10));
-  //   setSelectedRows(newRows);
-  // };
-
-  const updateAllRows = () => {
-    if (allChecked) { setSelectedRows([]); setAllChecked(false); } else { setAllChecked(true); }
-  };
+  const editTableEntry = ((e, id, header) => {
+    let val = e.currentTarget.textContent;
+    val = val.trim();
+    const wide = 'Wide Width';
+    if (header === 'Quantity') {
+      base('LargerTestInventory').update([
+        {
+          id,
+          fields: {
+            Quantity: parseInt(val, 10),
+          },
+        },
+      ], (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
+    }
+    if (header === 'Part Name') {
+      if (val.charAt(val.length - 1) === 'W') {
+        const str = val.slice(0, -1);
+        base('LargerTestInventory').update([
+          {
+            id,
+            fields: {
+              [header]: str,
+              [wide]: true,
+            },
+          },
+        ], (err) => {
+          if (err) {
+            console.error(err);
+          }
+        });
+      } else {
+        base('LargerTestInventory').update([
+          {
+            id,
+            fields: {
+              'Bin Name': val,
+            },
+          },
+        ], (err) => {
+          if (err) {
+            console.error(err);
+          }
+        });
+      }
+    }
+  });
 
   return (
     !loggedIn
@@ -479,6 +516,7 @@ function MainInventory({ loggedIn, username, onLogout }) {
             dataKeyProp={dataKeyProp}
             selected={selected}
             setSelected={updateSelectedItems}
+            editFunction={editTableEntry}
           />
           {console.log(cards)}
         </div>
