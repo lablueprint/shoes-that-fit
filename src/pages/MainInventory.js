@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import PropTypes from 'prop-types';
 // import base from '../lib/airtable';
-import { Table, TableFooter, PageLengthForm } from '../components';
+import { Table, ActionPopup } from '../components';
 import styles from './MainInventory.module.css';
 
 const Airtable = require('airtable');
@@ -84,6 +84,11 @@ function MainInventory({ loggedIn, username, onLogout }) {
     'Part Name': [],
     Quantity: [],
   });
+
+  const [popup, setPopup] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+
   const categories = ['Bin Name', 'Part Name', 'Quantity'];
   const filterableCategories = ['Bin Name', 'Part Name'];
   // eslint-disable-next-line no-unused-vars
@@ -277,6 +282,8 @@ function MainInventory({ loggedIn, username, onLogout }) {
       });
     }
     setCards((prev) => (prev.filter((index) => !selected.includes(index.id))));
+    setSuccess(true);
+    setPopupMessage(`You have deleted ${selected.length} items!`);
     setSelected([]);
   });
 
@@ -476,12 +483,27 @@ function MainInventory({ loggedIn, username, onLogout }) {
     }
   });
 
+  const startPopup = (() => {
+    setSuccess(false);
+    setPopupMessage(`Are you sure you want to remove ${selected.length} items?`);
+    setPopup(true);
+  });
+
+  const closePopup = () => setPopup(false);
   return (
     !loggedIn
       ? (<thead> Please Login </thead>
       )
       : (
         <div>
+          {popup && (
+          <ActionPopup
+            closePopup={closePopup}
+            success={success}
+            message={popupMessage}
+            applyFunc={removeItems}
+          />
+          )}
           <div className={styles.heading}>
             <h1 className={styles.header}>Inventory</h1>
           </div>
@@ -505,7 +527,7 @@ function MainInventory({ loggedIn, username, onLogout }) {
               <button className={styles.addButton}>+ Add Inventory</button>
             </Link>
             <Pencil color="gray" className={styles.pencilIcon} onClick={() => setEditable(!editable)} />
-            <Trash2 color="gray" className={styles.tableIcon} onClick={() => removeItems()} />
+            <Trash2 color="gray" className={styles.tableIcon} onClick={() => startPopup()} />
           </div>
           <Table
             editable={editable}

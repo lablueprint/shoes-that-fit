@@ -4,7 +4,9 @@ import AdminCard from './admincard';
 import TableFooter from './TableFooter';
 import PageLengthForm from './PageLengthForm';
 import Nav from './nav';
+// eslint-disable-next-line import/no-cycle
 import Table from './table';
+import ActionPopup from './ActionPopup';
 
 export {
   Header,
@@ -14,4 +16,5 @@ export {
   PageLengthForm,
   Nav,
   Table,
+  ActionPopup,
 };
