@@ -154,7 +154,11 @@ export default function Table({
                     && (modifyFuncs[modify.indexOf(dataProps[hIndex])](d[dataProps[hIndex]])))
                     )
                     || (!modify.includes(dataProps[hIndex])
-                     && <p>{d[dataProps[hIndex]].toString()}</p>))}
+                     && (
+                     <p>
+                       {d[dataProps[hIndex]].toString()}
+                     </p>
+                     )))}
                   </div>
                 )}
             </div>
