@@ -159,18 +159,14 @@ input {
     border-style: solid;
 }
 
-#submit {
-    background-color:  rgba(255, 167, 62, 0.5);
-    border: none;
-    color: black;
-    padding: 5px 30px;
-    text-align: center;
-    display: inline-block;
-    font-size: 20px;
-    font-family: 'Hartwell';
-    font-style: normal;
-    font-weight: 1000;
+.submit {
+    border-width: 3px;
+    border-style: solid;
+    margin-right: 1%;
+    height: 100%;
     margin-left: 20%;
+    background-color:  white;
+    border-color:  rgba(255, 167, 62, 0.5);
 } 
 
 .michael {

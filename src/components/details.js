@@ -15,9 +15,11 @@ function Details({
     print({
       printable: 'orders',
       type: 'html',
-      ignoreElements: ['printform'],
+      ignoreElements: ['printform', 'chevron', 'info'],
       css: './details.module.css',
       targetStyles: ['*'],
+      style: '@page { size: Letter landscape; }',
+
     });
   }
 
@@ -94,12 +96,12 @@ function Details({
         <div className={styles.orders} id="orders">
           <div className={styles.title}>
             <div className={styles.back}>
-              <ChevronLeft size={50} type="button" onClick={clearSpecificCard} />
+              <ChevronLeft id="chevron" size={50} type="button" onClick={clearSpecificCard} />
             </div>
             <div className={styles.head}>Order Details: </div>
 
           </div>
-          <div className={styles.wrapper}>
+          <div id="info" className={styles.wrapper}>
             <div>
               <div className={styles.title}>
                 School Information

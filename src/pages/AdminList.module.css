@@ -52,6 +52,9 @@
   margin-left: 1%;
   margin-right: 6.5%;
   margin-top: 7%;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
 }
 
 .name {
@@ -84,4 +87,6 @@
 .adminList {
   width: 80%;
   align-items: center;
+  display: flex;
+  flex-direction: column;
 }
