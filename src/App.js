@@ -165,6 +165,8 @@ function App({
                   <OrderForm
                     isLoggedIn={isLoggedIn}
                     base={base}
+                    profile={profile}
+                    username={username}
                   />
                 )}
               />
@@ -258,6 +260,7 @@ App.propTypes = {
     contactName: PropTypes.string,
     schoolName: PropTypes.string,
     zipCode: PropTypes.string,
+    orders: PropTypes.string,
   }).isRequired,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,

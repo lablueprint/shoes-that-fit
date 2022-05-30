@@ -96,6 +96,7 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
         state,
         zipCode,
         phone,
+        orders: '',
       };
 
       // await base('Profile').create([
@@ -193,6 +194,7 @@ export default function LoginPage({ isLoggedIn, onLogin, base }) {
             state: tempProfile.State,
             zipCode: tempProfile.ZipCode,
             phone: tempProfile.Phone,
+            orders: tempProfile.Orders,
           };
         });
       await onLogin(username, res.body.user.fields.Password, profile, false, false);
