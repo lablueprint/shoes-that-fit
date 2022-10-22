@@ -108,7 +108,7 @@ function LogDonations() {
     setDonations(donations.splice(0, index).concat(donations.splice(1)));
   };
   const checkState = (e) => {
-    if (Object.keys(donor).length === 0) {
+    if (editingDonor) {
       e.preventDefault();
       setDonorError('Please save your donor information.');
     }
