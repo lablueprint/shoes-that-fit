@@ -27,10 +27,7 @@ function DonationDetails() {
 
   const deleteDonation = () => {
     base('Donors').destroy([recordID], (err, deletedRecords) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
+      if (err) { console.error(err); return; }
       console.log('Deleted record', recordID);
       console.log(deletedRecords);
     });
@@ -44,7 +41,6 @@ function DonationDetails() {
         {' '}
         {`${String(Number(donor.Created.substring(5, 7)))}/${String(Number(donor.Created.substring(8, 10)))}/${donor.Created.substring(0, 4)}`}
       </h1>
-      {/* eslint-disable-next-line max-len */}
       <Table headers={donationFields} data={donations} checkbox={false} dataKeyProp="ID" />
       <div className={styles.allInfo}>
         <div>
