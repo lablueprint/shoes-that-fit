@@ -102,11 +102,13 @@ function LogDonations() {
     setDonationError('');
     setDonations([...donations, donation]);
   };
+
   const deleteDonation = (e, index) => {
     e.preventDefault();
     console.log(index);
     setDonations(donations.splice(0, index).concat(donations.splice(1)));
   };
+
   const checkState = (e) => {
     if (editingDonor) {
       e.preventDefault();
