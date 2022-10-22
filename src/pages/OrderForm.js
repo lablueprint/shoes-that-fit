@@ -64,18 +64,6 @@ function OrderForm({ isLoggedIn, base }) {
   }
 
   function pushToAirtable() {
-    console.log({
-      School: schoolName,
-      Address1: address,
-      City: city,
-      State: state,
-      'Zip Code': zip,
-      'Contact Name': contact,
-      'Email Address': email,
-      Phone: phone,
-      Orders: JSON.stringify(curcards),
-      Active: true,
-    });
     base('Orders').create(
       [
         {
@@ -423,7 +411,6 @@ function OrderForm({ isLoggedIn, base }) {
                       </tr>
                     </thead>
                     <tbody>
-                      {console.log(curcards)}
                       {curcards.length > 0
                   && curcards.map((card, index) => (
                     // eslint-disable-next-line react/no-array-index-key
@@ -458,7 +445,7 @@ function OrderForm({ isLoggedIn, base }) {
                       <div className={styles.michael}>
                         <Link to="/orderhistory">
                           <button
-                            type="button"
+                            type="submit"
                             id="print"
                             name="confirm"
                             className={styles.bigSubmit}
