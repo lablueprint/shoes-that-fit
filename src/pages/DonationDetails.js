@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import { Table } from '../components';
@@ -15,19 +15,15 @@ const base = new Airtable({ apiKey: airtableConfig.apiKey })
   .base(airtableConfig.baseKey);
 
 function DonationDetails() {
+  const [showDelete, setShowDelete] = useState(false);
   const location = useLocation();
+  if (!location || !location.state) {
+    return (<div className={styles.error}>No donation state provided</div>);
+  }
   const { donor, recordID } = location.state;
   const donations = JSON.parse(donor.Donations);
-  const [showDelete, setShowDelete] = useState(false);
-  // const [error, setError] = useState('');
   const donorFields = ['Name', 'Phone', 'Email', 'Address Line 1', 'Address Line 2', 'City', 'State', 'Zip Code'];
   const donationFields = ['Quantity', 'Gender', 'Category', 'Wide', 'Size', 'Notes'];
-
-  useEffect(() => {
-    if (!donor) {
-      console.error('Need a donor');
-    }
-  }, []);
 
   const deleteDonation = () => {
     base('Donors').destroy([recordID], (err, deletedRecords) => {
@@ -114,11 +110,6 @@ function DonationDetails() {
       <Link className={styles.backLink} to="/donations">
         <input className={styles.backButton} type="submit" id="submit" name="submit" value="Back" />
       </Link>
-      {/* {error ? (
-        <div className={styles.error}>
-          {error}
-        </div>
-      ) : null} */}
     </div>
   );
 }
