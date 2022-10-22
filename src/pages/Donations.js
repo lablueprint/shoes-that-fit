@@ -75,7 +75,7 @@ function Donations() {
       console.log(record);
       console.log('Retrieved', record.id);
       // navigate('/');
-      navigate('/donationdetails', { state: { donor: record.fields.Name, recordID: record.id } });
+      navigate('/donationdetails', { state: { donor: record.fields, recordID: record.id } });
     });
   };
 
