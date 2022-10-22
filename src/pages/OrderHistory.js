@@ -55,8 +55,7 @@ function OrderHistory({ base, profile, username }) {
             ? (
               <div>
                 <div className={styles.orderText}>Orders in Progress</div>
-                {cards.filter((card) => (card.fields.UserID === username
-            && card.fields.Active === true)).length === 0
+                {cards.filter((card) => (card.fields.Active === true)).length === 0
                   ? <div className={styles.no}>No orders in progress.</div>
                   : cards.filter((card) => (card.fields.UserID === username
                 && card.fields.Active === true)).map((card) => (
