@@ -29,11 +29,6 @@ function DonationConfirmation({ username }) {
   const sum = donations.reduce((accumulator, object) => accumulator + parseInt(object.Quantity, 10), 0);
   const date = new Date();
   const submitDonations = (e) => {
-    if (!donor) {
-      e.preventDefault();
-      console.error('Need a donor');
-      return;
-    }
     base('Donors').create([
       {
         fields: {
@@ -50,23 +45,19 @@ function DonationConfirmation({ username }) {
           'Total Quantity': sum,
         },
       },
-    ], (err, records) => {
+    ], (err) => {
       if (err) {
         e.preventDefault();
         console.error(err);
         setError(err.message);
-        return;
       }
-      records.forEach((record) => {
-        console.log(record.getId());
-      });
     });
   };
 
   return (
     <div>
       <h1 className={styles.header1}>
-        <Link className={styles.cancelLink} to="/donations"><ChevronLeft color="black" size="30" /></Link>
+        <Link className={styles.cancelLink} to="/logdonations" state={{ donor, donations }}><ChevronLeft color="black" size="30" /></Link>
         Log a Donation
       </h1>
       {/* eslint-disable-next-line max-len */}

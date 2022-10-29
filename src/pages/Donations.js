@@ -34,7 +34,7 @@ function Donations() {
     setTableEntries(donations.map((donation) => {
       const tableEntry = {};
       const createDate = donation.fields.Created;
-      tableEntry.Date = `${String(Number(createDate.substring(5, 7)))}/${String(Number(createDate.substring(8, 10)))}/${createDate.substring(0, 4)}`;
+      tableEntry.Date = `${createDate.substring(0, 4)}/${createDate.substring(5, 7)}/${createDate.substring(8, 10)}`;
       tableEntry['Logged By'] = donation.fields['Logged By'];
       tableEntry.Quantity = Number(donation.fields['Total Quantity']);
       tableEntry.Donor = donation.fields.Name;
