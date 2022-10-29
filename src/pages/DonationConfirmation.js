@@ -16,10 +16,13 @@ const base = new Airtable({ apiKey: airtableConfig.apiKey })
   .base(airtableConfig.baseKey);
 
 function DonationConfirmation({ username }) {
-  console.log(username);
   const location = useLocation();
-  const { donor, donations } = location.state;
   const [error, setError] = useState('');
+  // If no location state is provided, then display an error message
+  if (!location || !location.state) {
+    return (<div className={styles.error}>No donation information provided</div>);
+  }
+  const { donor, donations } = location.state;
   const donorFields = ['Name', 'Phone', 'Email', 'Address Line 1', 'Address Line 2', 'City', 'State', 'Zip Code'];
   const donationFields = ['Quantity', 'Gender', 'Category', 'Wide', 'Size', 'Notes'];
   // eslint-disable-next-line max-len

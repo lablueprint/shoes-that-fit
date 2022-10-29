@@ -17,8 +17,9 @@ const base = new Airtable({ apiKey: airtableConfig.apiKey })
 function DonationDetails() {
   const [showDelete, setShowDelete] = useState(false);
   const location = useLocation();
+  // If no location state is provided, then display an error message
   if (!location || !location.state) {
-    return (<div className={styles.error}>No donation state provided</div>);
+    return (<div className={styles.error}>No donation information provided</div>);
   }
   const { donor, recordID } = location.state;
   const donations = JSON.parse(donor.Donations);

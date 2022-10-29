@@ -105,7 +105,6 @@ function LogDonations() {
 
   const deleteDonation = (e, index) => {
     e.preventDefault();
-    console.log(index);
     setDonations(donations.splice(0, index).concat(donations.splice(1)));
   };
 
