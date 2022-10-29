@@ -21,6 +21,7 @@ import {
   ChangePass,
   Portal,
   Schools,
+  RemoveShoeForm,
 } from './pages';
 
 const BASE_ID = process.env.REACT_APP_AIRTABLE_BASE_KEY;
@@ -143,6 +144,15 @@ function App({
                 path="/newshoeform"
                 element={(
                   <NewShoeForm
+                    isLoggedIn={isLoggedIn}
+                    base={base}
+                  />
+                )}
+              />
+              <Route
+                path="/removeshoeform"
+                element={(
+                  <RemoveShoeForm
                     isLoggedIn={isLoggedIn}
                     base={base}
                   />
