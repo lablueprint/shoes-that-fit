@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import {
+  ChevronLeft, ChevronRight,
+} from 'lucide-react';
 
 function TableFooter({
   range, setPage, page, slice,
@@ -9,9 +12,19 @@ function TableFooter({
       setPage(page - 1);
     }
   }, [slice, page, setPage]);
+  // eslint-disable-next-line no-unused-vars
+  const changePage = ((direction) => {
+    if (direction === -1 && page > 1) {
+      setPage(page - 1);
+    }
+    if (direction === 1 && page < range.length) {
+      setPage(page + 1);
+    }
+  });
   return (
     <div>
-      {range.map((pagenum) => (
+      {/* {range.map((pagenum) => (
+
         <button
           type="button"
           key={pagenum.index}
@@ -19,7 +32,11 @@ function TableFooter({
         >
           {pagenum}
         </button>
-      ))}
+
+      ))} */}
+      <ChevronLeft color={page === 1 ? 'gray' : '#6BB7E8'} onClick={() => changePage(-1)} />
+      <ChevronRight color={page === range.length ? 'gray' : '#6BB7E8'} onClick={() => changePage(1)} />
+
     </div>
   );
 }

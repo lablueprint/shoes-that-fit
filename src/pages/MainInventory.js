@@ -1,11 +1,18 @@
+/* eslint-disable react/button-has-type */
+/* eslint-disable no-loop-func */
 /* eslint-disable no-unused-vars */
+/* eslint-disable max-len */
 import React, {
   useState, useEffect, useRef, useCallback,
 } from 'react';
+import { Link, Navigate } from 'react-router-dom';
 import ReactSelect from 'react-select';
-import { Navigate } from 'react-router-dom';
+import {
+  Box, Smile, AlertTriangle, Pencil, Plus, Trash2,
+} from 'lucide-react';
 import PropTypes from 'prop-types';
-import { TableFooter, PageLengthForm } from '../components';
+import base from '../lib/airtable';
+import { Table, ActionPopup, TableFooter, PageLengthForm } from '../components';
 import styles from './MainInventory.module.css';
 
 const calculateRange = (tableData, numRows) => {
@@ -23,10 +30,13 @@ const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * num
 function MainInventory({
   isLoggedIn, username, base,
 }) {
-  console.log(isLoggedIn);
-  console.log(username);
-
+  // console.log(isLoggedIn);
+  // console.log(username);
+  const [selected, setSelected] = useState([]);
+  const [editable, setEditable] = useState(false);
   const [rows, setRows] = useState([]);
+  const [cards, setCards] = useState([]);
+  const [tableInfo, setTableInfo] = useState([]);
   const [allChecked, setAllChecked] = useState(false);
   const [items, setItems] = useState([]);
   const [inventoryTotal, setInventoryTotal] = useState(0);
@@ -40,26 +50,135 @@ function MainInventory({
   const [selectedRows, setSelectedRows] = useState([]);
   const [tableRange, setTableRange] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState({
-    'Location Name': [],
+    'Bin Name': [],
     'Part Name': [],
     Quantity: [],
   });
   const [optionsSelected, setOptionsSelected] = useState({
-    'Location Name': [],
+    'Bin Name': [],
     'Part Name': [],
     Quantity: [],
   });
-  const categories = ['Location Name', 'Part Name', 'Quantity'];
-  const filterableCategories = ['Location Name', 'Part Name'];
+
+  const [popup, setPopup] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+
+  const categories = ['Bin Name', 'Part Name', 'Quantity'];
+  const filterableCategories = ['Bin Name', 'Part Name'];
   // eslint-disable-next-line no-unused-vars
   const tableContents = useRef(); // For setting/ unsetting navigation
   const inputBoxes = useRef();
   const getInventory = () => {
     // base('Current Item Inventory (All Locations 1.3.2022)').select({ view: 'Grid view' }).all()
-    base('InventoryTestRevamp').select({ view: 'Grid view' }).all().then((records) => {
+    base('LargerTestInventory').select({ view: 'Grid view' }).all().then((records) => {
       setRows(records);
+      setCards(records.map((r) => {
+        const record = r.fields;
+
+        let partExpr;
+        let quantityExpr;
+        let partsort;
+        if (record['Wide Width'] === true) {
+          partsort = `${record['Part Name']}W`;
+          partExpr = (
+            <div className={styles.table}>
+              <p>
+                {`${record['Part Name']} `}
+              </p>
+              &nbsp;
+              <p className={styles.WStyling}>
+                W
+              </p>
+            </div>
+          );
+        } else {
+          partsort = record['Part Name'];
+          partExpr = (
+            <div>
+              {record['Part Name']}
+            </div>
+          );
+        }
+        if (record.Quantity < 5) {
+          quantityExpr = (
+            <div className={styles.table}>
+              <div>
+                {record.Quantity}
+                &nbsp; LOW
+              </div>
+              {/* &nbsp;
+                &nbsp; */}
+              {/* <div>
+                <AlertTriangle color="black" className={styles.caution} />
+              </div> */}
+              {/* <div>
+                <AlertTriangle color="#000000" className={styles.caution} />
+                &nbsp; LOW
+              </div> */}
+            </div>
+          );
+        } else {
+          quantityExpr = (
+            <div>
+              {record.Quantity}
+            </div>
+          );
+        }
+        const Part = {
+          sortBy: partsort,
+          fragment: partExpr.props.children,
+        };
+        const Quantity = {
+          sortBy: record.Quantity,
+          fragment: quantityExpr.props.children,
+        };
+        console.log(React.isValidElement(Part.fragment));
+        // console.log(Part.fragment.props.children === partExpr.props.children);
+        return {
+          'Bin Name': record['Bin Name'], 'Part Name': Part, Quantity, id: r.id,
+        };
+      }));
     });
   };
+  const sortIndices = [0, 1, 2];
+  const headers = ['Bin Name', 'Part Name', 'Quantity'];
+  const dataProps = ['Bin Name', 'Part Name', 'Quantity', 'id'];
+  const dataKeyProp = 'id';
+
+  const [headerInfo, setheaderInfo] = useState([]);
+  const [quantityFulfilled, setQuantityFulfilled] = useState(0);
+
+  const getQuantityFulfilled = () => {
+    let quantity = 0;
+    for (let i = 0; i < headerInfo.length; i += 1) {
+      if (headerInfo[i].fields.Active === true) {
+        const arr = headerInfo[i].fields.Orders.split('},{');
+        quantity += (arr.length || 0);
+      }
+    }
+    setQuantityFulfilled(quantity);
+  };
+
+  const updateSelectedItems = (id, command) => {
+    if (command === 0) { // add item
+      setSelected((prev) => [...prev, id]);
+    } else if (command === 1) { // remove item
+      setSelected((prev) => (prev.filter((index) => index !== id)));
+    }
+  };
+
+  const getOrders = () => {
+    base('Orders').select({
+      view: 'Grid view',
+    }).all()
+      .then((records) => {
+        setheaderInfo(records);
+      });
+  };
+
+  useEffect(getOrders, []);
+  useEffect(getQuantityFulfilled, [headerInfo]);
 
   const createOptions = (category, optionList) => {
     categoryOptions[category] = optionList;
@@ -121,9 +240,26 @@ function MainInventory({
         return;
       }
       records.forEach((record) => {
-        console.log(`Edited entry at row ${(page - 1) * numRows + index}: ${record.get('Client Name')}, ${record.get('Location Name')}, ${record.get('Bin Name')}, ${record.get('Part Name')}, ${record.get('Part Description')}`);
+        console.log(`Edited entry at row ${(page - 1) * numRows + index}: ${record.get('Client Name')}, ${record.get('Bin Name')}, ${record.get('Bin Name')}, ${record.get('Part Name')}, ${record.get('Part Description')}`);
       });
     });
+  });
+
+  const removeItems = (() => {
+    let i = 0;
+    for (i; i < selected.length; i += 1) {
+      // eslint-disable-next-line no-loop-func
+      console.log(selected[i]);
+      base('LargerTestInventory').destroy([selected[i]], (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
+    }
+    setCards((prev) => (prev.filter((index) => !selected.includes(index.id))));
+    setSuccess(true);
+    setPopupMessage(`You have deleted ${selected.length} items!`);
+    setSelected([]);
   });
 
   const handleMouseDown = useCallback(
@@ -141,8 +277,53 @@ function MainInventory({
   );
 
   useEffect(() => {
-    getInventory();
+    if (loggedIn) {
+    // eslint-disable-next-line max-len
+    //  console.log(loginUser(process.env.REACT_APP_AIRTABLE_EMAIL, process.env.REACT_APP_AIRTABLE_PASSWORD));
+    }
   }, []);
+
+  useEffect(getInventory, []);
+  const processInventory = () => {
+    if (cards.length === 0) { return; }
+    const arr = [];
+    for (let i = 0; i < cards.length; i += 1) {
+      const Bin = cards[i]['Bin Name'];
+      let Part;
+      let Quantity;
+      if (cards[i]['Wide Width'] === true) {
+        Part = (
+          <div>
+            {`${cards[i]['Part Name']} W`}
+          </div>
+        );
+      } else {
+        Part = (
+          <div>
+            {cards[i]['Part Name']}
+          </div>
+        );
+      }
+      if (cards[i].Quantity < 5) {
+        Quantity = (
+          <div>
+            {`${cards[i].Quantity} LOW`}
+          </div>
+        );
+      } else {
+        Quantity = (
+          <div>
+            {cards[i].Quantity}
+          </div>
+        );
+      }
+      const elem = { 'Bin Name': Bin, 'Part Name': Part.props.children, Quantity };
+      arr.push(elem);
+    }
+    setTableInfo(arr);
+  };
+
+  useEffect(processInventory, [cards]);
 
   // Retrieves number of entries for each bin and
   useEffect(() => {
@@ -226,93 +407,115 @@ function MainInventory({
     };
   });
 
-  const updateRowStatus = (e) => {
-    setSelectedRows([...selectedRows, parseInt(e.target.className, 10)]);
-    console.log(selectedRows);
-  };
+  const editTableEntry = ((e, id, header) => {
+    let val = e.currentTarget.textContent;
+    val = val.trim();
+    const wide = 'Wide Width';
+    if (header === 'Quantity') {
+      base('LargerTestInventory').update([
+        {
+          id,
+          fields: {
+            Quantity: parseInt(val, 10),
+          },
+        },
+      ], (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
+    }
+    if (header === 'Part Name') {
+      if (val.charAt(val.length - 1) === 'W') {
+        const str = val.slice(0, -1);
+        base('LargerTestInventory').update([
+          {
+            id,
+            fields: {
+              [header]: str,
+              [wide]: true,
+            },
+          },
+        ], (err) => {
+          if (err) {
+            console.error(err);
+          }
+        });
+      } else {
+        base('LargerTestInventory').update([
+          {
+            id,
+            fields: {
+              'Bin Name': val,
+            },
+          },
+        ], (err) => {
+          if (err) {
+            console.error(err);
+          }
+        });
+      }
+    }
+  });
 
-  const removeRowStatus = (e) => {
-    const newRows = selectedRows.filter((index) => index !== parseInt(e.target.className, 10));
-    setSelectedRows(newRows);
-  };
+  const startPopup = (() => {
+    setSuccess(false);
+    setPopupMessage(`Are you sure you want to remove ${selected.length} items?`);
+    setPopup(true);
+  });
 
-  const updateAllRows = () => {
-    if (allChecked) { setSelectedRows([]); setAllChecked(false); } else { setAllChecked(true); }
-  };
-
+  const closePopup = () => setPopup(false);
   return (
     !isLoggedIn
       ? (<Navigate to="/" />)
       : (
-        <>
-          <PageLengthForm setNumRows={setNumRows} />
-          <table>
-            <thead>
-              <tr>
-                <th>
-                  <input type="checkbox" onChange={() => updateAllRows()} />
-                </th>
-                {filterableCategories.map((category) => (
-                  <th key={category}>
-                    {category}
-                    <ReactSelect
-                      isMulti
-                      onChange={(e) => handleOptionSelection(e, category)}
-                      options={categoryOptions[category]}
-                      placeholder={category}
-                    />
-                  </th>
-                ))}
-                <th>
-                  Quantity
-                  <form className="filter" onSubmit={(e) => e.preventDefault()}>
-                    Min
-                    <input type="number" onChange={(e) => handleQuantityFilterChange(e, true)} min="0" />
-                    <br />
-                    Max
-                    <input type="number" onChange={(e) => handleQuantityFilterChange(e, false)} min="0" />
-                  </form>
-                </th>
-              </tr>
-            </thead>
-            <tbody ref={tableContents}>
-              {slice.map((row, index) => {
-                if (selectedRows.includes(index) || allChecked) {
-                  return (
-                    <tr className={index} style={{ color: 'red' }}>
-                      <input type="checkbox" className={index} onClick={(e) => removeRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
-                      {categories.map((category) => {
-                        if (category === 'Quantity') {
-                          return (
-                            <td className={index} contentEditable="true" id="editableQuantity" suppressContentEditableWarning>{row.fields[category]}</td>
-                          );
-                        }
-                        return (
-                          <td className={index}>{row.fields[category]}</td>
-                        );
-                      })}
-                    </tr>
-                  );
-                }
-                return (
-                  <tr className={index}>
-                    <input type="checkbox" ref={inputBoxes} className={index} onClick={(e) => updateRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
-                    {categories.map((category) => (
-                      <td className={index} classID="tableData">{row.fields[category]}</td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} />
-          <span>
-            {' '}
-            Total Item Inventory:
-            {' '}
-            {inventoryTotal}
-          </span>
-        </>
+        <div>
+          {popup && (
+          <ActionPopup
+            closePopup={closePopup}
+            success={success}
+            message={popupMessage}
+            applyFunc={removeItems}
+          />
+          )}
+          <div className={styles.heading}>
+            <h1 className={styles.header}>Inventory</h1>
+          </div>
+
+          {/* <div className={styles.headers}>
+
+            <div className={styles.iconBox}>
+              <Box color="#6BB7E8" className={styles.icon} />
+              <h3 className={styles.iconTitle}>Total Quantity</h3>
+              <p>{inventoryTotal}</p>
+            </div>
+            <div>
+              <Smile color="#D66330" className={styles.icon} />
+              <h3>Kids Helped</h3>
+              <p>{quantityFulfilled}</p>
+            </div>
+          </div> */}
+          <div>
+            <Link to="/newshoeform">
+              {/* <Plus color="#6BB7E8" className={styles.tableIcon} /> */}
+              <button className={styles.addButton}>+ Add Inventory</button>
+            </Link>
+            <Pencil color="gray" className={styles.pencilIcon} onClick={() => setEditable(!editable)} />
+            <Trash2 color="gray" className={styles.tableIcon} onClick={() => startPopup()} />
+          </div>
+          <Table
+            editable={editable}
+            headers={headers}
+            sortIndices={sortIndices}
+            data={cards}
+            dataProps={dataProps}
+            dataKeyProp={dataKeyProp}
+            selected={selected}
+            setSelected={updateSelectedItems}
+            editFunction={editTableEntry}
+          />
+          {console.log(cards)}
+        </div>
       )
   );
 }
