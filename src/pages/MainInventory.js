@@ -6,13 +6,14 @@ import React, {
   useState, useEffect, useRef, useCallback,
 } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import ReactSelect from 'react-select';
+// import ReactSelect from 'react-select';
 import {
-  Box, Smile, AlertTriangle, Pencil, Plus, Trash2,
+  Pencil, Trash2,
 } from 'lucide-react';
 import PropTypes from 'prop-types';
-import base from '../lib/airtable';
-import { Table, ActionPopup, TableFooter, PageLengthForm } from '../components';
+import {
+  Table, ActionPopup,
+} from '../components';
 import styles from './MainInventory.module.css';
 
 const calculateRange = (tableData, numRows) => {
@@ -28,7 +29,7 @@ const calculateRange = (tableData, numRows) => {
 const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * numRows, page * numRows);
 
 function MainInventory({
-  isLoggedIn, username, base,
+  isLoggedIn, base,
 }) {
   // console.log(isLoggedIn);
   // console.log(username);
@@ -277,7 +278,7 @@ function MainInventory({
   );
 
   useEffect(() => {
-    if (loggedIn) {
+    if (isLoggedIn) {
     // eslint-disable-next-line max-len
     //  console.log(loginUser(process.env.REACT_APP_AIRTABLE_EMAIL, process.env.REACT_APP_AIRTABLE_PASSWORD));
     }
@@ -514,7 +515,6 @@ function MainInventory({
             setSelected={updateSelectedItems}
             editFunction={editTableEntry}
           />
-          {console.log(cards)}
         </div>
       )
   );
@@ -524,6 +524,5 @@ export default MainInventory;
 
 MainInventory.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-  username: PropTypes.string.isRequired,
   base: PropTypes.func.isRequired,
 };

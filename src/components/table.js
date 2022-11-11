@@ -216,77 +216,91 @@ export default function Table({
                     : <p onInput={(e) => editFunction(e, data[dIndex].id, dataProps[hIndex])} contentEditable="true" lassName={styles.cell}>{d[headers[hIndex]]}</p>)}
                 </div>
               ))}
-                  <p>{h}</p>
-                  {/* Ascending = sortDir = arrow shows pointing up */}
-                  <div>
-                    {lastIndex === hIndex && (
-                      sortDir === sorts.ascending
-                        ? <FontAwesomeIcon icon={faAngleUp} />
-                        : <FontAwesomeIcon icon={faAngleDown} />)}
-                    {lastIndex !== hIndex && <FontAwesomeIcon icon={faCircle} transform="shrink-8" />}
-                  </div>
-                </button>
-              )
-                : <p>{h}</p>}
             </div>
-          </header>
-          {data.map((d, dIndex) => (
-            <div
-              key={d[dataKeyProp]}
-              className={styles.cellContainer}
-              style={dIndex % 2 === 0 ? {
-                backgroundColor: '#F6F6F6',
-              } : { backgroundColor: '#FFFFFF' }}
-            >
-              {(dataProps.length === 0 && React.isValidElement(d[headers[hIndex]]))
-              || (dataProps.length !== 0 && React.isValidElement(d[dataProps[hIndex]]))
-                ? (
-                  <div className={styles.cell}>
-                    {dataProps.length === 0 && d[headers[hIndex]]}
-                    {dataProps.length !== 0 && d[dataProps[hIndex]]}
-                  </div>
-                )
-                : (
-                  <div className={styles.cell}>
-                    {dataProps.length === 0 && (d[headers[hIndex]]
-                      && <p>{d[headers[hIndex]].toString()}</p>)}
-                  </div>
-                )}
-            </div>
+          // {data.map((d, dIndex) => (
+          //   <div
+          //     key={d[dataKeyProp]}
+          //     className={styles.cellContainer}
+          //     style={dIndex % 2 === 0 ? {
+          //       backgroundColor: '#F6F6F6',
+          //     } : { backgroundColor: '#FFFFFF' }}
+          //   >
+          //     {(dataProps.length === 0 && React.isValidElement(d[headers[hIndex]]))
+          //     || (dataProps.length !== 0 && React.isValidElement(d[dataProps[hIndex]]))
+          //       ? (
+          //         <div className={styles.cell}>
+          //           {dataProps.length === 0 && d[headers[hIndex]]}
+          //           {dataProps.length !== 0 && d[dataProps[hIndex]]}
+          //         </div>
+          //       )
+          //       : (
+          //         <div className={styles.cell}>
+          //           {dataProps.length === 0 && (d[headers[hIndex]]
+          //             && <p>{d[headers[hIndex]].toString()}</p>)}
+          //           {details ? (
+          //             <div>
+          //               {(dataProps.length !== 0 && dataProps[hIndex] !== 'Details'
+          //                 ? (d[dataProps[hIndex]] !== '' && (modify.includes(dataProps[hIndex])
+          //                 && modifyFuncs.length > modify.indexOf(dataProps[hIndex])
+          //                 // eslint-disable-next-line max-len
+          //                 && (modifyFuncs[modify.indexOf(dataProps[hIndex])](d[dataProps[hIndex]])))
+          //                 )
+          //                 || ((d[dataProps[hIndex]] && d[dataProps[hIndex]] !== '' && !modify.includes(dataProps[hIndex])
+          //                  && <p>{d[dataProps[hIndex]].toString()}</p>))
+          //                 : (
+          //                   <button type="button" style={{ color: 'black' }} onClick={() => { selectCard(d); }}>
+          //                     <img src={detailsIcon} alt="details" />
+          //                   </button>
+          //                 ))}
+          //             </div>
+          //           ) : dataProps.length !== 0
+          //           && d[dataProps[hIndex]] && d[dataProps[hIndex]] !== ''
+          //           && (((modify.includes(dataProps[hIndex])
+          //           && modifyFuncs.length > modify.indexOf(dataProps[hIndex])
+          //           // eslint-disable-next-line max-len
+          //           && (modifyFuncs[modify.indexOf(dataProps[hIndex])](d[dataProps[hIndex]])))
+          //           )
+          //           || (!modify.includes(dataProps[hIndex])
+          //            && (
+          //            <p>
+          //              {d[dataProps[hIndex]].toString()}
+          //            </p>
+          //            )))}
+          //         </div>
+          //       )}
+          //   </div>
           ))}
         </div>
-      ))}
-      {details
-        ? (
-          <div key="Details">
-            <header className={styles.cellContainer}>
-              <div className={styles.cell}>
-                <p>Details</p>
-              </div>
-            </header>
-            {data.map((d, dIndex) => (
-              <div
-                key={d[dataKeyProp]}
-                className={styles.cellContainer}
-                style={dIndex % 2 === 0 ? {
-                  backgroundColor: '#F6F6F6',
-                } : { backgroundColor: '#FFFFFF' }}
-              >
-                {React.isValidElement(d)
-                  ? <div className={styles.cell}>{d}</div>
-                  : (
-                    <div className={styles.cell}>
-                      <div>
-                        <Info onClick={(e) => { selectCard(e, d); }} />
+        {details
+          ? (
+            <div key="Details">
+              <header className={styles.cellContainer}>
+                <div className={styles.cell}>
+                  <p>Details</p>
+                </div>
+              </header>
+              {data.map((d, dIndex) => (
+                <div
+                  key={d[dataKeyProp]}
+                  className={styles.cellContainer}
+                  style={dIndex % 2 === 0 ? {
+                    backgroundColor: '#F6F6F6',
+                  } : { backgroundColor: '#FFFFFF' }}
+                >
+                  {React.isValidElement(d)
+                    ? <div className={styles.cell}>{d}</div>
+                    : (
+                      <div className={styles.cell}>
+                        <div>
+                          <Info onClick={(e) => { selectCard(e, d); }} />
+                        </div>
                       </div>
-                    </div>
-                  )}
-              </div>
-            ))}
-          </div>
-        )
-        : null}
-    </div>
+                    )}
+                </div>
+              ))}
+            </div>
+          )
+          : null}
         {numRows < data.length && (
         <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} className={styles.Footer} onClick={() => setPage(page)} />
         )}
