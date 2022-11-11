@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './Popup.module.css';
+import styles from './ActionPopup.module.css';
 
-function Message({ success, message }) {
+function ActionMessage({ success, message }) {
   return (success) ? (
     <div>
       <h2>Success!</h2>
@@ -10,34 +10,41 @@ function Message({ success, message }) {
     </div>
   ) : (
     <div>
-      <h2>Invalid Input</h2>
+      <h2>Please Confirm:</h2>
       <p>{message}</p>
     </div>
   );
 }
 
-function Popup({
-  closePopup, success, message,
+function ActionPopup({
+  // eslint-disable-next-line no-unused-vars
+  closePopup, success, message, applyFunc,
 }) {
+//   const deleteItems = (() => {
+
+  //   });
   return (
     <div className={styles.popup}>
       <div className={styles['popup-inner']}>
-        <Message success={success} message={message} />
+        <ActionMessage success={success} message={message} />
+        { !success && (<button onClick={applyFunc} type="submit" className={styles['delete-btn']}>Delete</button>)}
+
         <button onClick={closePopup} type="submit" className={styles['close-btn']}>Close</button>
       </div>
     </div>
   );
 }
 
-Message.propTypes = {
+ActionMessage.propTypes = {
   success: PropTypes.bool.isRequired,
   message: PropTypes.string.isRequired,
 };
 
-Popup.propTypes = {
+ActionPopup.propTypes = {
   closePopup: PropTypes.func.isRequired,
   success: PropTypes.bool.isRequired,
   message: PropTypes.string.isRequired,
+  applyFunc: PropTypes.func.isRequired,
 };
 
-export default Popup;
+export default ActionPopup;

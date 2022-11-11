@@ -1,16 +1,32 @@
-.container {
+.top {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: right;
   align-self: center;
   margin: 0 40px;
   max-width: 60vw;
 }
 
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  align-self: center;
+  
+}
+
 header {
   background-color: #404759;
   color: white;
+}
+
+.pageLength {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  margin-right: 40px;
+  margin-bottom: 7px;
 }
 
 .cellContainer {
@@ -19,6 +35,7 @@ header {
   justify-content: center;
   align-self: center;
   height: 40px;
+  width: 150px;
   padding: 0 8px;
 }
 
@@ -27,7 +44,7 @@ header {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  max-width: 15ch;
+  max-width: 16ch;
   min-width: 0;
   
   font-family: 'Hartwell';

@@ -1,0 +1,219 @@
+table {
+  border: 1px solid black;
+  border-collapse: collapse;
+  font-size: 12px;
+  overflow: hidden;
+  table-layout: fixed;
+}
+  
+th {
+  border: 1px solid black;
+  background: #404759;
+  color: white;
+  overflow: hidden;
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-top:5px;
+  padding-bottom:5px;
+
+  font-family: 'Hartwell';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+  align-items: center;
+  text-align: center;
+
+  color: #FFFFFF;
+}
+  
+td {
+  text-align: center;
+  border: 1px solid black;
+  padding-top:5px;
+  padding-bottom:5px;
+
+  font-family: 'Hartwell';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 16px;
+/* display: flex; */
+align-items: center;
+text-align: center;
+
+color: #000000;
+}
+
+@font-face {
+  font-family: Hartwell;
+  src: url(../assets/HartwellRegular.otf);
+}
+
+.head {
+  font-family: 'Hartwell';
+  font-style: normal;
+  font-weight: 1000;
+  font-size: 40px;
+  color: #000000;
+  margin-top: 1%;
+}
+
+@font-face {
+font-family: Hartwell;
+src: url(../assets/HartwellBold.otf);
+font-weight: bold;
+}
+
+.wrapper {
+margin-top: 3%;
+display: grid;
+grid-template-columns: 30% 30%;
+
+font-family: 'Hartwell';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 21px;
+/* identical to box height */
+
+text-align: left;
+
+color: #000000;
+}
+
+.title {
+font-weight: bold;
+}
+
+.status {
+float: left;
+padding-right:2%;
+font-family: 'Hartwell';
+font-style: normal;
+font-weight: 500;
+font-size: 22px;
+line-height: 26px;
+/* identical to box height */
+
+
+color: #000000;
+}
+
+.statusChildInProgress {
+height: 36px;
+width: 124px;
+flex-grow: 1;
+display: flex;
+justify-content: center;
+align-content: center;
+flex-direction: column;
+background: #FFEEC2;
+color: #AC7D03;
+border-radius: 20px;
+font-weight: bold;
+text-align: center;
+display: flex;
+
+font-family: 'Hartwell';
+font-style: normal;
+font-weight: 600;
+font-size: 18px;
+line-height: 21px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #AC7D03;
+}
+
+.statusChildFulfilled {
+height: 36px;
+width: 124px;
+background: #E1EFE7;
+color: #4C8865;
+font-weight: bold;
+flex-grow: 1;
+display: flex;
+justify-content: center;
+align-content: center;
+flex-direction: column;
+border-radius: 20px;
+text-align: center;
+display: flex;
+}
+
+.row {
+margin-top: 2%;
+margin-bottom: 2%;
+align-items:center;
+display:flex;
+}
+
+.notes{
+border-color:#C4C4C4;
+border-width:2px;
+border-style: solid;
+padding:1%;
+margin-top:1%;
+
+font-family: 'Hartwell';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 21px;
+
+color: #000000;
+
+text-align: left;
+}
+
+.back {
+margin-top:1%;
+margin-bottom:1%;
+cursor: pointer;
+} 
+
+.title {
+display: flex;
+flex-direction: row;
+}
+
+.orders {
+margin-left: 10%;
+margin-top: 5%;
+margin-right: 10%;
+}
+
+.printButton {
+font-family: 'Hartwell';
+font-style: normal;
+font-weight: 600;
+font-size: 20px;
+line-height: 28px;
+display: flex;
+align-items: center;
+color: #000000;
+padding-left: 15px;
+padding-right: 15px;
+/* background-color:  #C4C4C4; */
+border:transparent;
+margin-left: auto;
+
+background: rgba(196, 196, 196, 0.7);
+border-radius: 5px;
+}
+
+.notesTitle {
+padding-top: 5%;
+
+font-family: 'Hartwell';
+font-style: normal;
+font-weight: 500;
+font-size: 22px;
+line-height: 26px;
+/* identical to box height */
+color: #000000;
+
+text-align: left;
+}

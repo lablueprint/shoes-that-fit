@@ -5,17 +5,7 @@ import PropTypes from 'prop-types';
 import { Table } from '../components';
 import styles from './DonationConfirmation.module.css';
 
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({ apiKey: airtableConfig.apiKey })
-  .base(airtableConfig.baseKey);
-
-function DonationConfirmation({ username }) {
+export default function DonationConfirmation({ username, base }) {
   const location = useLocation();
   const [error, setError] = useState('');
   // If no location state is provided, then display an error message
@@ -139,4 +129,5 @@ export default DonationConfirmation;
 
 DonationConfirmation.propTypes = {
   username: PropTypes.string.isRequired,
+  base: PropTypes.func.isRequired,
 };

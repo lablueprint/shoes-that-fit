@@ -14,6 +14,11 @@
   flex-direction: column;
   width: fit-content;
   background: #24275E;
+  z-index: 1;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
 }
 
 .sidebar ul {
@@ -60,4 +65,8 @@
   max-width: 210px;
   height: auto;
   padding: 20px;
+}
+
+.sidebar a {
+  font-family: 'Hartwell';
 }

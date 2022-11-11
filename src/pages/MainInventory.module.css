@@ -1,4 +1,4 @@
-.inventoryTable {
+/* .inventoryTable {
     border-collapse: collapse;
     margin-left: 10px;
     margin-right: 10px;
@@ -29,4 +29,94 @@
 
 .inventoryHeader {
     background: #E9E9E9;
+} */
+
+.heading {
+    display: block;
+    width: 200px;
+    height: 80px;
+    margin-left: 50px;
+    margin-top: 45px;
+    /* font-family: 'Hartwell';
+    font-style: normal; */
+}
+
+.WStyling {
+    width: 20px;
+    height: 20px;
+    background: #C4C4C4;
+    border-radius: 7px;
+    padding-bottom: 3px;
+    padding-left: .75px;
+}
+
+.table {
+    display: flex;
+    flex-direction: column;
+}
+
+.caution {
+    display: flex;
+    flex-direction: row;
+    width: 16px;
+    height: 16px;
+}
+
+.headers {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+}
+
+.iconBox {
+    width: 229px;
+    height: 92px;
+    background: #F2F2F2;
+}
+
+.icon {
+    justify-self: left;
+    width: 54px;
+    height: 54px;
+}
+
+
+
+.iconTitle {
+    height: 25px;
+    left: 501px;
+    top: 203px;
+
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 23px;
+
+    color: #000000;
+}
+
+.addButton {
+    background-color: #6BB7E8;
+    position: absolute;
+    width: 140px;
+    height: 30px;
+    left: 330px;
+    top: 122px;
+}
+
+.pencilIcon {
+    position: absolute;
+    left: 480px;
+    top: 124px;
+    width: 24px;
+    height: 24px;
+}
+
+.tableIcon {
+    position: absolute;
+    left: 510px;
+    top: 124px;
+    width: 24px;
+    height: 24px;
 }

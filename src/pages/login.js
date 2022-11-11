@@ -1,151 +1,206 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
-import axios from 'axios';
+import { Navigate, useLocation } from 'react-router-dom';
+// import axios from 'axios';
 import PropTypes from 'prop-types';
+import { ChevronLeft } from 'lucide-react';
+import styles from './login.module.css';
 
-// import React from 'react';
-// import { makeStyles } from '@material-ui/core/styles';
+export default function LoginPage({ isLoggedIn, onLogin, base }) {
+  console.log(isLoggedIn);
+  const location = useLocation();
+  const { role } = location.state;
+  console.log(role);
+  // console.log(check.role);
 
-// const Airtable = require('airtable');
-
-// const airtableConfig = {
-//   apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-//   baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-// };
-
-// const base = new Airtable({ apiKey: airtableConfig.apiKey }).base(airtableConfig.baseKey);
-
-export default function LoginPage({ loggedIn, onLogin }) {
   const [error, setError] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('Educator');
+  // const [role, setRole] = useState('Educator');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [hasAccount, setHasAccount] = useState(false);
-  const [isLoggedIn, setLoggedIn] = useState(loggedIn);
+  const [string, setString] = useState('Log In');
+  const [hasAccount, setHasAccount] = useState(true);
+  const [contactName, setContactName] = useState('');
+  const [schoolName, setSchoolName] = useState('');
+  const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [zipCode, setZipCode] = useState('');
+  const [regAdminStatus, setregAdminStatus] = useState('Password');
+  const [regEdStatus, setregEdStatus] = useState('Password');
 
-  // const clearState = (errorMsg) => {
-  //   setError(errorMsg);
-  //   setPassword('');
-  //   setUsername('');
-  //   setConfirmPassword('');
-  //   setRole('Educator');
-  // };
-
-  const handleSignup = async (e) => {
+  const handleSignUp = async (e) => {
     let curError = '';
     setError('');
-    console.log(role);
     e.preventDefault();
     if (username.length === 0) {
-      curError = 'Error: username cannot be empty.';
+      curError = 'Error: Username cannot be empty.';
       setError(curError);
       return;
     }
     if (password.length === 0) {
-      curError = 'Error: password cannot be empty.';
+      curError = 'Error: Password cannot be empty.';
       setError(curError);
       return;
     }
     if (confirmPassword.length === 0) {
-      curError = 'Error: must confirm password.';
+      curError = 'Error: Must confirm password.';
       setError(curError);
       return;
     }
-    if (role.length === 0) {
-      console.log(role);
-      curError = 'Error: must choose a role.';
+    if (confirmPassword !== password) {
+      curError = 'Error: Confirm password must match password.';
       setError(curError);
-      // return;
+      return;
     }
 
-    const json = JSON.stringify({ username, password });
-    const token = 'keyYheV6VxT2I65Z3';
+    // const json = JSON.stringify({ username, password });
 
-    axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_register__', json, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          console.log('YAY');
-          // go to home page and/or confirm email
-          // set redux that user is logged in
-        }
-      })
-      .catch((e2) => {
-        console.log(e2);
-        curError = 'Error: Incorrect password.';
-        setError(curError);
-        // incorrect username or password
-      });
-
-    // base('Users').select({ filterByFormula: `Username = "${username}"` }).all().then((res) => {
-    //   if (res.length !== 0) {
-    //     curError = 'Error: Username already exists';
-    //     clearState(curError);
-    //   } else if (curError.length === 0) {
-    //     if (password === confirmPassword) {
-    //       base('Users').create(
-    //         [
-    //           {
-    //             fields: {
-    //               Username: username,
-    //               Password: password,
-    //               Role: role,
-    //               // Role: role,
-    //             },
-    //           }],
-    //         (err, records) => {
-    //           if (err) {
-    //             console.error(err);
-    //             return;
-    //           }
-    //           records.forEach((record) => {
-    //             console.log(record.getId());
-    //           });
-    //         },
-    //       );
-    //       clearState('');
-    //     } else {
-    //       console.log("passwords don't match");
+    // await axios.post('http://localhost:8000/v0/REACT_APP_AIRTABLE_BASE_KEY/__airlock_register__', json, {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    //   .then(async (response) => {
+    //     if (response.status === 200) {
+    //       console.log('YAY');
+    //       const profile = {
+    //         role,
+    //         contactName,
+    //         schoolName,
+    //         address,
+    //         city,
+    //         state,
+    //         zipCode,
+    //         phone,
+    //       };
+    //       await onLogin(username, password, profile, true, false);
+    //       // go to home page and/or confirm email
+    //       // set redux that user is logged in
     //     }
-    //   }
-    // });
+    //   })
+    //   .catch((e2) => {
+    //     console.log(e2);
+    //     curError = 'Error: Incorrect password.';
+    //     setError(curError);
+    //     // incorrect username or password
+    //   });
+
+    await base.register({ username, password }).then(async (res) => {
+      const profile = {
+        role,
+        contactName,
+        schoolName,
+        address,
+        city,
+        state,
+        zipCode,
+        phone,
+      };
+
+      // await base('Profile').create([
+      //   {
+      //     fields: {
+      //       Username: username,
+      //       Role: profile.role,
+      //       Address: profile.address,
+      //       City: profile.city,
+      //       State: profile.state,
+      //       Phone: profile.phone,
+      //       ContactName: profile.contactName,
+      //       SchoolName: profile.schoolName,
+      //       ZipCode: profile.zipCode,
+      //     },
+      //   },
+      // ], async (err) => {
+      //   if (err) {
+      //     console.error(err);
+      //   }
+      //   // else {
+      //   //   await onLogin(username, password, profile, false, false);
+      //   // }
+      // });
+
+      await onLogin(username, res.body.user.fields.Password, profile, true, false);
+    }).catch((err) => {
+      console.log(err);
+      curError = 'Error: Incorrect password.';
+      setError(curError);
+    });
   };
 
   const handleSignIn = async (e) => {
-    e.preventDefault();
     let curError = '';
     setError('');
-    // base('Users').select({ filterByFormula: `Username = "${username}"` }).all().then((res) => {
-    //   console.log(res);
-    // });
-    const json = JSON.stringify({ username, password });
-    const token = 'keyYheV6VxT2I65Z3';
+    e.preventDefault();
+    if (username.length === 0) {
+      curError = 'Error: Username cannot be empty.';
+      setError(curError);
+      return;
+    }
+    if (password.length === 0) {
+      curError = 'Error: Password cannot be empty.';
+      setError(curError);
+      return;
+    }
 
-    axios.post('http://localhost:8000/v0/appHz4HNC5OYabrnl/__airlock_login__', json, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          onLogin(username);
-          setLoggedIn(true);
-          // go to home page and set login user in redux
-        }
-      })
-      .catch((e2) => {
-        console.log(e2);
-        curError = 'Error: Incorrect password.';
-        setError(curError);
-        // incorrect username or password
-      });
+    // const json = JSON.stringify({ username, password });
+
+    // await axios.post('http://localhost:8000/v0/REACT_APP_AIRTABLE_BASE_KEY/__airlock_login__', json, {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    //   .then(async (response) => {
+    //     if (response.status === 200) {
+    //       const profile = {
+    //         role,
+    //         contactName,
+    //         schoolName,
+    //         address,
+    //         city,
+    //         state,
+    //         zipCode,
+    //         phone,
+    //       };
+
+    //       await onLogin(username, password, profile, false, false);
+    //       // go to home page and set login user in redux
+    //     }
+    //   })
+    //   .catch((e2) => {
+    //     console.log(e2);
+    //     curError = 'Error: Incorrect username or password.';
+    //     setError(curError);
+    //     // incorrect username or password
+    //   });
+
+    await base.login({ username, password }).then(async (res) => {
+      let profile = {};
+      await base('Profile')
+        .select({
+          view: 'Grid view',
+          filterByFormula: `{Username} = "${username}"`,
+        }).all()
+        .then((records) => {
+          const tempProfile = records[0].fields;
+          profile = {
+            role: tempProfile.Role,
+            contactName: tempProfile.ContactName,
+            schoolName: tempProfile.SchoolName,
+            address: tempProfile.Address,
+            city: tempProfile.City,
+            state: tempProfile.State,
+            zipCode: tempProfile.ZipCode,
+            phone: tempProfile.Phone,
+          };
+        });
+      await onLogin(username, res.body.user.fields.Password, profile, false, false);
+    }).catch((err) => {
+      console.log(err);
+      curError = 'Error: Incorrect Username or Password.';
+      setError(curError);
+    });
   };
 
   return (
@@ -154,59 +209,314 @@ export default function LoginPage({ loggedIn, onLogin }) {
         <Navigate to="/admindashboard" />
       )
       : (
-        <div className="loginWrapper">
-          <h1>Please Log In</h1>
-          {/* <form onSubmit={onSubmit}> */}
+        <div className={styles.col}>
+          {console.log(regAdminStatus)}
+
+          {/* <h1 className={styles.top}>
+            Please
+            {` ${string}`}
+          </h1> */}
           <form>
-            <label>
-              <p>Username</p>
-              <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-            </label>
-            <label>
-              <p>Password</p>
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </label>
-            <label>
-              <p>Confirm Password</p>
-              <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-            </label>
-            {error.length > 0 && <div><p>{error}</p></div>}
+            {string === 'Log In' && (
+              <div className={styles.bigcol}>
+                <h1 className={styles.top}>
+                  Please
+                  {` ${string}`}
+                </h1>
+                <label className={styles.col}>
+                  <p>Email Address</p>
+                  <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                </label>
+                <label className={styles.col}>
+                  <p>Password </p>
+                  <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                </label>
+              </div>
+            )}
             <div>
-              {hasAccount ? (
+              {!hasAccount ? (
                 <>
-                  <button type="button" onClick={handleSignIn}> Sign In</button>
-                  <p className="accountStatusParagraph">
-                    No account?
+                  {string === 'Register' && (
+                  <>
+                    {regAdminStatus === 'Password' && role === 'Admin' && (
+                    <div>
+                      <div className={styles.top}>
+                        <ChevronLeft
+                          size={30}
+                          type="button"
+                          onClick={() => {
+                            setHasAccount(!hasAccount);
+                            setString('Log In');
+                          }}
+                        />
+                        <h1>
+                          Please
+                          {` ${string}`}
+                        </h1>
+                      </div>
+
+                      <div className={styles.bigcol}>
+
+                        <div className={styles.col}>
+                          <h3>
+                            Contact Information
+                          </h3>
+                          <div className={styles.col}>
+                            <p>Email </p>
+                            <input
+                              type="text"
+                              value={username}
+                              onChange={(e) => setUsername(e.target.value)}
+                            />
+                          </div>
+
+                          <div className={styles.col}>
+                            <p>Password </p>
+                            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                          </div>
+
+                          <div className={styles.col}>
+                            <p>Confirm Password </p>
+                            <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                          </div>
+
+                          <div className={styles.space} />
+                          <div className={styles.center}>
+                            <button className={styles.blue} type="button" onClick={() => { setregAdminStatus('Login'); }}> Next</button>
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                    )}
+                    {regAdminStatus === 'Login' && role === 'Admin' && (
+                      <div>
+                        <div className={styles.top}>
+                          <ChevronLeft
+                            size={30}
+                            type="button"
+                            onClick={() => {
+                              setregAdminStatus('Password');
+                            }}
+                          />
+                          <h1>
+                            Please
+                            {` ${string}`}
+                          </h1>
+                        </div>
+                        <div className={styles.bigcol}>
+                          <div className={styles.col}>
+                            <p>Contact Name </p>
+                            <input
+                              type="text"
+                              value={contactName}
+                              onChange={(e) => setContactName(e.target.value)}
+                            />
+                          </div>
+
+                          <div className={styles.col}>
+                            <p>Phone </p>
+                            <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                          </div>
+                        </div>
+                        <div className={styles.space} />
+                        <div className={styles.space} />
+
+                        <button className={styles.blue} type="button" onClick={handleSignUp}> Register</button>
+                      </div>
+                    )}
+
+                    {regEdStatus === 'Password' && role === 'Educator' && (
+                      <div>
+                        <div className={styles.top}>
+                          <ChevronLeft
+                            size={30}
+                            type="button"
+                            onClick={() => {
+                              setHasAccount(!hasAccount);
+                              setString('Log In');
+                            }}
+                          />
+                          <h1>
+                            Please
+                            {` ${string}`}
+                          </h1>
+                        </div>
+
+                        <div className={styles.bigcol}>
+                          <div className={styles.col}>
+                            <h3>
+                              Contact Information
+                            </h3>
+                            <div className={styles.col}>
+                              <p>Email </p>
+                              <input
+                                type="text"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                              />
+                            </div>
+
+                            <div className={styles.col}>
+                              <p>Password </p>
+                              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            </div>
+
+                            <div className={styles.col}>
+                              <p>Confirm Password </p>
+                              <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                            </div>
+
+                            <div className={styles.center}>
+                              <button className={styles.blue} type="button" onClick={() => { setregEdStatus('Login'); }}> Next</button>
+                            </div>
+
+                          </div>
+
+                        </div>
+                      </div>
+
+                    )}
+                    {role === 'Educator'
+                    && regEdStatus === 'Login' && (
+                    <div>
+                      <div className={styles.top}>
+                        <ChevronLeft
+                          size={30}
+                          type="button"
+                          onClick={() => {
+                            setregEdStatus('Password');
+                          }}
+                        />
+                        <h1>
+                          Please
+                          {` ${string}`}
+                        </h1>
+                      </div>
+                      <div className={styles.row}>
+                        <div className={styles.bigcol}>
+                          <h3>
+                            School Information
+                          </h3>
+                          <div className={styles.col}>
+                            <p>School Name </p>
+                            <input type="text" value={schoolName} onChange={(e) => setSchoolName(e.target.value)} />
+                          </div>
+                          <div className={styles.col}>
+                            <p>Address </p>
+                            <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
+                          </div>
+                          <div className={styles.row}>
+                            <div className={styles.city}>
+                              <p>City </p>
+                              <input type="text" value={city} onChange={(e) => setCity(e.target.value)} />
+                            </div>
+                            <div className={styles.state}>
+                              <p>State </p>
+                              <input type="text" value={state} onChange={(e) => setState(e.target.value)} />
+                            </div>
+                          </div>
+
+                          <div className={styles.col}>
+                            <p>Zip Code </p>
+                            <input type="text" value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
+                          </div>
+                        </div>
+
+                        <div className={styles.col}>
+                          <h3>
+                            Personal Information
+                          </h3>
+                          <div className={styles.col}>
+                            <p>Contact Name </p>
+                            <input
+                              type="text"
+                              value={contactName}
+                              onChange={(e) => setContactName(e.target.value)}
+                            />
+                          </div>
+
+                          <div className={styles.col}>
+                            <p>Phone </p>
+                            <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                          </div>
+
+                          <div className={styles.col}>
+                            <p>Email Address </p>
+                            <input id={styles.grey} value={username} readOnly />
+                          </div>
+
+                          <div className={styles.col}>
+                            <p>Password </p>
+                            <input id={styles.grey} type="password" value={password} readOnly />
+                          </div>
+                          <div className={styles.space} />
+                        </div>
+                      </div>
+                      <div className={styles.center}>
+                        <button className={styles.blue} type="button" onClick={handleSignUp}> Register</button>
+                      </div>
+
+                    </div>
+                    )}
+                  </>
+                  )}
+                  <br />
+                  <br />
+
+                  {/* <button type="button" onClick={handleSignUp}> Register</button>
+                  <br /> */}
+
+                  <p>
                     {/* toggle the state when you click the button */}
                     <button
+                      className={styles.red}
                       type="button"
-                      onClick={() => setHasAccount(!hasAccount)}
+                      onClick={() => {
+                        setHasAccount(!hasAccount);
+                        setString('Log In');
+                      }}
                     >
-                      Sign up
+                      Have an account? Sign In
                     </button>
                   </p>
                 </>
               ) : (
-                <>
-                  <select value={role} onChange={(e) => setRole(e.target.value)}>
+                <div className={styles.login}>
+                  {/* <select value={role} onChange={(e) => setRole(e.target.value)}>
                     <option> Educator</option>
                     <option> Administrator</option>
-                  </select>
-                  <br />
-                  <button type="button" onClick={handleSignup}> Sign up</button>
-                  <p className="accountStatusParagraph">
-                    {' '}
-                    Have an account?
+                  </select> */}
+                  <div className={styles.center}>
                     <button
                       type="button"
-                      onClick={() => setHasAccount(!hasAccount)}
+                      onClick={handleSignIn}
                     >
                       Sign In
                     </button>
-                  </p>
-                </>
+
+                    {error.length > 0 && <div><p>{error}</p></div>}
+
+                    <div className={styles.space} />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setHasAccount(!hasAccount);
+                        setString('Register');
+                        setregAdminStatus('Password');
+                      }}
+                      className={styles.registerButton}
+                    >
+                      <p>Don&apos;t have an account? Register</p>
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
+            {/* {error.length > 0 && <div><p>{error}</p></div>} */}
           </form>
         </div>
       )
@@ -214,6 +524,7 @@ export default function LoginPage({ loggedIn, onLogin }) {
 }
 
 LoginPage.propTypes = {
-  loggedIn: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
   onLogin: PropTypes.func.isRequired,
+  base: PropTypes.func.isRequired,
 };

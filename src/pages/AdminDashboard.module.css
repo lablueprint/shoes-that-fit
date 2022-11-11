@@ -1,16 +1,62 @@
 .welcome {
+    display: flex;
+    /* padding-left: 10%; */
+    margin-bottom: 1.5%;
     font-family: 'Hartwell';
     font-style: normal;
     font-weight: 400;
     font-size: 36px;
     line-height: 42px;
     /* identical to box height */
-
+    height: 5%;
 
     color: #000000;
 }
 
 div.topComponents {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
+    padding: 3%;
+    padding-bottom: 0%;
+    padding-top: 0%;
+}
+
+.topComponents > * {
+    width: 38%;
+    padding: 2%;
+}
+
+.topComponents > DashboardOrders {
+    width: 100%
+}
+
+.container {
+    width: 90%;
+    padding: 0.5%;
+}
+
+.recordContainer {
+    padding: 3% 6.5% 0%;
+}
+
+.top {
+    display: flex;
+    flex-direction: row;
+    margin-left: 6.5%;
+    margin-right: 6.5%;
+    margin-top: 3%;
+}
+
+.name {
+    margin-left: auto;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    /* identical to box height */
+
+    text-align: right;
+
+    color: #000000;
 }
