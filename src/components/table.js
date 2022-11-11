@@ -4,24 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp, faCircle } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
-
+import { Info } from 'lucide-react';
 // eslint-disable-next-line import/no-cycle
 import { TableFooter, PageLengthForm } from './index';
 // import { PageLengthForm } from './PageLengthForm';
 import styles from './table.module.css';
 import detailsIcon from '../assets/DetailsIcon.svg';
-
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({
-  apiKey: airtableConfig.apiKey,
-  endpointURL: 'http://localhost:3000',
-}).base(airtableConfig.baseKey);
 
 const sorts = {
   descending: 0,
@@ -262,40 +250,43 @@ export default function Table({
                   <div className={styles.cell}>
                     {dataProps.length === 0 && (d[headers[hIndex]]
                       && <p>{d[headers[hIndex]].toString()}</p>)}
-                    {details ? (
-                      <div>
-                        {(dataProps.length !== 0 && dataProps[hIndex] !== 'Details'
-                          ? (d[dataProps[hIndex]] !== '' && (modify.includes(dataProps[hIndex])
-                          && modifyFuncs.length > modify.indexOf(dataProps[hIndex])
-                          // eslint-disable-next-line max-len
-                          && (modifyFuncs[modify.indexOf(dataProps[hIndex])](d[dataProps[hIndex]])))
-                          )
-                          || ((d[dataProps[hIndex]] && d[dataProps[hIndex]] !== '' && !modify.includes(dataProps[hIndex])
-                           && <p>{d[dataProps[hIndex]].toString()}</p>))
-                          : (
-                            <button type="button" style={{ color: 'black' }} onClick={() => { selectCard(d); }}>
-                              <img src={detailsIcon} alt="details" />
-                            </button>
-                          ))}
-                      </div>
-                    ) : dataProps.length !== 0
-                    && d[dataProps[hIndex]] && d[dataProps[hIndex]] !== ''
-                    && (((modify.includes(dataProps[hIndex])
-                    && modifyFuncs.length > modify.indexOf(dataProps[hIndex])
-                    // eslint-disable-next-line max-len
-                    && (modifyFuncs[modify.indexOf(dataProps[hIndex])](d[dataProps[hIndex]])))
-                    )
-                    || (!modify.includes(dataProps[hIndex])
-                     && (
-                     <p>
-                       {d[dataProps[hIndex]].toString()}
-                     </p>
-                     )))}
                   </div>
                 )}
             </div>
           ))}
         </div>
+      ))}
+      {details
+        ? (
+          <div key="Details">
+            <header className={styles.cellContainer}>
+              <div className={styles.cell}>
+                <p>Details</p>
+              </div>
+            </header>
+            {data.map((d, dIndex) => (
+              <div
+                key={d[dataKeyProp]}
+                className={styles.cellContainer}
+                style={dIndex % 2 === 0 ? {
+                  backgroundColor: '#F6F6F6',
+                } : { backgroundColor: '#FFFFFF' }}
+              >
+                {React.isValidElement(d)
+                  ? <div className={styles.cell}>{d}</div>
+                  : (
+                    <div className={styles.cell}>
+                      <div>
+                        <Info onClick={(e) => { selectCard(e, d); }} />
+                      </div>
+                    </div>
+                  )}
+              </div>
+            ))}
+          </div>
+        )
+        : null}
+    </div>
         {numRows < data.length && (
         <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} className={styles.Footer} onClick={() => setPage(page)} />
         )}

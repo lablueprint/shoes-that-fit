@@ -6,6 +6,10 @@ import AdminList from './AdminList';
 import OrderForm from './OrderForm';
 import OrderHistory from './OrderHistory';
 import AdminDashboard from './AdminDashboard';
+import LogDonations from './LogDonations';
+import DonationConfirmation from './DonationConfirmation';
+import Donations from './Donations';
+import DonationDetails from './DonationDetails';
 import ChangePass from './ChangePass';
 import Donations from './Donations';
 import DonationConfirmation from './DonationConfirmation';
@@ -17,6 +21,6 @@ import RemoveShoeForm from './RemoveShoeForm';
 
 export {
   MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, RecordPage, AdminDashboard,
-  Donations, DonationConfirmation, OrderHistory, Schools, SchoolsForm,
+   LogDonations, DonationConfirmation, Donations, DonationDetails, OrderHistory, Schools, SchoolsForm,
   SchoolsDetail, ChangePass, Portal, RemoveShoeForm,
 };

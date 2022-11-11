@@ -13,8 +13,10 @@ import {
   LoginPage,
   RecordPage,
   AdminDashboard,
+  LogDonations,
   Donations,
   DonationConfirmation,
+  DonationDetails,
   OrderHistory,
   SchoolsForm,
   SchoolsDetail,
@@ -214,7 +216,9 @@ function App({
               />
               <Route path="/orderhistory" element={<OrderHistory base={base} profile={profile} username={username} />} />
               <Route path="/donations" element={<Donations base={base} />} />
-              <Route path="/confirmdonation" element={<DonationConfirmation base={base} />} />
+              <Route path="/donationdetails" element={<DonationDetails />} />
+              <Route path="/logdonations" element={<LogDonations />} />
+              <Route path="/confirmdonation" element={<DonationConfirmation username={username} base={base} />} />
               <Route path="/schoolsform" element={<SchoolsForm base={base} />} />
               <Route path="/schoolsdetail" element={<SchoolsDetail base={base} />} />
               <Route path="/schools" element={<Schools base={base} />} />

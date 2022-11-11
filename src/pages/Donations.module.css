@@ -1,0 +1,47 @@
+.logButton {
+    background: #AEECFF;
+    border: 2px solid #AEECFF;
+    border-radius: 5px;
+
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+
+    width: 220px;
+    height: 50px;
+}
+.logLink {
+    padding-left: 15px;
+    text-decoration: none;
+}
+.headers {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 20px;
+}
+.header1 {
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 56px;
+    color: black;
+    text-align: left;
+    padding-left: 15px;
+}
+.error {
+    align-items: center;
+    font-family: 'Hartwell';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 28px;
+    color: #FF6622;
+}
+
+.print {
+    padding-top: 15px;
+    padding-left: 10px;
+}

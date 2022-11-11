@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 import {
   Home, ClipboardList, ListOrdered, Gift, GraduationCap,
 } from 'lucide-react';
