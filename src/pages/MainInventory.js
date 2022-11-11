@@ -5,42 +5,15 @@
 import React, {
   useState, useEffect, useRef, useCallback,
 } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import ReactSelect from 'react-select';
 import {
   Box, Smile, AlertTriangle, Pencil, Plus, Trash2,
 } from 'lucide-react';
 import PropTypes from 'prop-types';
-// import base from '../lib/airtable';
-import { Table, ActionPopup } from '../components';
+import base from '../lib/airtable';
+import { Table, ActionPopup, TableFooter, PageLengthForm } from '../components';
 import styles from './MainInventory.module.css';
-
-const Airtable = require('airtable');
-
-const airtableConfig = {
-  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
-  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
-};
-
-const base = new Airtable({
-  apiKey: airtableConfig.apiKey,
-  endpointURL: 'http://localhost:3000',
-}).base(airtableConfig.baseKey);
-
-const loginUser = async (email, password) => {
-  try {
-    const res = await base.login({ username: email, password });
-    if (!res.body.success) {
-      return { match: false, found: false };
-    }
-    return { match: true, found: true };
-  } catch (err) {
-    if (err.error === 'AUTHENTICATION_REQUIRED') {
-      return { match: false, found: true };
-    }
-    return { match: false, found: false };
-  }
-};
 
 const calculateRange = (tableData, numRows) => {
   const range = [];
@@ -54,8 +27,10 @@ const calculateRange = (tableData, numRows) => {
 // eslint-disable-next-line max-len
 const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * numRows, page * numRows);
 
-function MainInventory({ loggedIn, username, onLogout }) {
-  // console.log(loggedIn);
+function MainInventory({
+  isLoggedIn, username, base,
+}) {
+  // console.log(isLoggedIn);
   // console.log(username);
   const [selected, setSelected] = useState([]);
   const [editable, setEditable] = useState(false);
@@ -491,9 +466,8 @@ function MainInventory({ loggedIn, username, onLogout }) {
 
   const closePopup = () => setPopup(false);
   return (
-    !loggedIn
-      ? (<thead> Please Login </thead>
-      )
+    !isLoggedIn
+      ? (<Navigate to="/" />)
       : (
         <div>
           {popup && (
@@ -549,75 +523,7 @@ function MainInventory({ loggedIn, username, onLogout }) {
 export default MainInventory;
 
 MainInventory.propTypes = {
-  loggedIn: PropTypes.bool.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,
-  onLogout: PropTypes.func.isRequired,
+  base: PropTypes.func.isRequired,
 };
-
-/* <PageLengthForm setNumRows={setNumRows} />
-          <table>
-            <thead>
-              <tr>
-                <th>
-                  <input type="checkbox" onChange={() => updateAllRows()} />
-                </th>
-                {filterableCategories.map((category) => (
-                  <th key={category}>
-                    {category}
-                    <ReactSelect
-                      isMulti
-                      onChange={(e) => handleOptionSelection(e, category)}
-                      options={categoryOptions[category]}
-                      placeholder={category}
-                    />
-                  </th>
-                ))}
-                <th>
-                  Quantity
-                  <form className="filter" onSubmit={(e) => e.preventDefault()}>
-                    Min
-                    <input type="number" onChange={(e) => handleQuantityFilterChange(e, true)} min="0" />
-                    <br />
-                    Max
-                    <input type="number" onChange={(e) => handleQuantityFilterChange(e, false)} min="0" />
-                  </form>
-                </th>
-              </tr>
-            </thead>
-            <tbody ref={tableContents}>
-              {slice.map((row, index) => {
-                if (selectedRows.includes(index) || allChecked) {
-                  return (
-                    <tr className={index} style={{ color: 'red' }}>
-                      <input type="checkbox" className={index} onClick={(e) => removeRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
-                      {categories.map((category) => {
-                        if (category === 'Quantity') {
-                          return (
-                            <td className={index} contentEditable="true" id="editableQuantity" suppressContentEditableWarning>{row.fields[category]}</td>
-                          );
-                        }
-                        return (
-                          <td className={index}>{row.fields[category]}</td>
-                        );
-                      })}
-                    </tr>
-                  );
-                }
-                return (
-                  <tr className={index}>
-                    <input type="checkbox" ref={inputBoxes} className={index} onClick={(e) => updateRowStatus(e)} checked={selectedRows.includes(index) || allChecked} />
-                    {categories.map((category) => (
-                      <td className={index} classID="tableData">{row.fields[category]}</td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} />
-          <span>
-            {' '}
-            Total Item Inventory:
-            {' '}
-            {inventoryTotal}
-          </span> */

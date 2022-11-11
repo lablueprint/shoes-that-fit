@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { TableFooter, PageLengthForm } from './index';
 // import { PageLengthForm } from './PageLengthForm';
 import styles from './table.module.css';
+import detailsIcon from '../assets/DetailsIcon.svg';
 
 const Airtable = require('airtable');
 
@@ -39,7 +40,7 @@ const calculateRange = (tableData, numRows) => {
 const sliceRows = (tableData, page, numRows) => tableData.slice((page - 1) * numRows, page * numRows);
 
 export default function Table({
-  editable, headers, sortIndices, data, dataProps, checkbox, dataKeyProp, selected, setSelected, editFunction,
+  editable, headers, sortIndices, data, dataProps, checkbox, dataKeyProp, selected, setSelected, editFunction, selectCard, details, modify, modifyFuncs,
 }) {
   const [lastIndex, setLast] = useState(0);
   const [sortDir, setDir] = useState(sorts.descending);
@@ -211,7 +212,6 @@ export default function Table({
                     backgroundColor: '#F6F6F6',
                   } : { backgroundColor: '#FFFFFF' }}
                 >
-
                   {!editable && dataProps.length > 0 && (typeof (d[dataProps[hIndex]]) === 'object'
                     ? <div className={styles.cell}>{d[dataProps[hIndex]].fragment}</div>
                     : <p className={styles.cell}>{d[dataProps[hIndex]]}</p>)}
@@ -228,6 +228,71 @@ export default function Table({
                     : <p onInput={(e) => editFunction(e, data[dIndex].id, dataProps[hIndex])} contentEditable="true" lassName={styles.cell}>{d[headers[hIndex]]}</p>)}
                 </div>
               ))}
+                  <p>{h}</p>
+                  {/* Ascending = sortDir = arrow shows pointing up */}
+                  <div>
+                    {lastIndex === hIndex && (
+                      sortDir === sorts.ascending
+                        ? <FontAwesomeIcon icon={faAngleUp} />
+                        : <FontAwesomeIcon icon={faAngleDown} />)}
+                    {lastIndex !== hIndex && <FontAwesomeIcon icon={faCircle} transform="shrink-8" />}
+                  </div>
+                </button>
+              )
+                : <p>{h}</p>}
+            </div>
+          </header>
+          {data.map((d, dIndex) => (
+            <div
+              key={d[dataKeyProp]}
+              className={styles.cellContainer}
+              style={dIndex % 2 === 0 ? {
+                backgroundColor: '#F6F6F6',
+              } : { backgroundColor: '#FFFFFF' }}
+            >
+              {(dataProps.length === 0 && React.isValidElement(d[headers[hIndex]]))
+              || (dataProps.length !== 0 && React.isValidElement(d[dataProps[hIndex]]))
+                ? (
+                  <div className={styles.cell}>
+                    {dataProps.length === 0 && d[headers[hIndex]]}
+                    {dataProps.length !== 0 && d[dataProps[hIndex]]}
+                  </div>
+                )
+                : (
+                  <div className={styles.cell}>
+                    {dataProps.length === 0 && (d[headers[hIndex]]
+                      && <p>{d[headers[hIndex]].toString()}</p>)}
+                    {details ? (
+                      <div>
+                        {(dataProps.length !== 0 && dataProps[hIndex] !== 'Details'
+                          ? (d[dataProps[hIndex]] !== '' && (modify.includes(dataProps[hIndex])
+                          && modifyFuncs.length > modify.indexOf(dataProps[hIndex])
+                          // eslint-disable-next-line max-len
+                          && (modifyFuncs[modify.indexOf(dataProps[hIndex])](d[dataProps[hIndex]])))
+                          )
+                          || ((d[dataProps[hIndex]] && d[dataProps[hIndex]] !== '' && !modify.includes(dataProps[hIndex])
+                           && <p>{d[dataProps[hIndex]].toString()}</p>))
+                          : (
+                            <button type="button" style={{ color: 'black' }} onClick={() => { selectCard(d); }}>
+                              <img src={detailsIcon} alt="details" />
+                            </button>
+                          ))}
+                      </div>
+                    ) : dataProps.length !== 0
+                    && d[dataProps[hIndex]] && d[dataProps[hIndex]] !== ''
+                    && (((modify.includes(dataProps[hIndex])
+                    && modifyFuncs.length > modify.indexOf(dataProps[hIndex])
+                    // eslint-disable-next-line max-len
+                    && (modifyFuncs[modify.indexOf(dataProps[hIndex])](d[dataProps[hIndex]])))
+                    )
+                    || (!modify.includes(dataProps[hIndex])
+                     && (
+                     <p>
+                       {d[dataProps[hIndex]].toString()}
+                     </p>
+                     )))}
+                  </div>
+                )}
             </div>
           ))}
         </div>
@@ -250,6 +315,10 @@ Table.propTypes = {
   selected: PropTypes.arrayOf(PropTypes.string),
   setSelected: PropTypes.func,
   editFunction: PropTypes.func,
+  selectCard: PropTypes.func,
+  details: PropTypes.bool,
+  modify: PropTypes.arrayOf(PropTypes.string),
+  modifyFuncs: PropTypes.arrayOf(PropTypes.func),
 };
 
 Table.defaultProps = {
@@ -260,4 +329,8 @@ Table.defaultProps = {
   selected: [],
   setSelected: [],
   editFunction: [],
+  selectCard: () => null,
+  details: false,
+  modify: [],
+  modifyFuncs: [],
 };
