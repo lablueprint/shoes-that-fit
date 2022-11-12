@@ -125,8 +125,6 @@ export default function DonationConfirmation({ username, base }) {
   );
 }
 
-export default DonationConfirmation;
-
 DonationConfirmation.propTypes = {
   username: PropTypes.string.isRequired,
   base: PropTypes.func.isRequired,

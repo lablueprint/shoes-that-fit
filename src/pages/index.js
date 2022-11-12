@@ -11,8 +11,6 @@ import DonationConfirmation from './DonationConfirmation';
 import Donations from './Donations';
 import DonationDetails from './DonationDetails';
 import ChangePass from './ChangePass';
-import Donations from './Donations';
-import DonationConfirmation from './DonationConfirmation';
 import Schools from './Schools';
 import SchoolsForm from './SchoolsForm';
 import SchoolsDetail from './SchoolsDetail';
@@ -21,6 +19,6 @@ import RemoveShoeForm from './RemoveShoeForm';
 
 export {
   MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, RecordPage, AdminDashboard,
-   LogDonations, DonationConfirmation, Donations, DonationDetails, OrderHistory, Schools, SchoolsForm,
-  SchoolsDetail, ChangePass, Portal, RemoveShoeForm,
+  LogDonations, DonationConfirmation, Donations, DonationDetails, OrderHistory, Schools,
+  SchoolsForm, SchoolsDetail, ChangePass, Portal, RemoveShoeForm,
 };
