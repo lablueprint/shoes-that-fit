@@ -12,25 +12,9 @@ function AdminList({
 }) {
   const [cards, setCards] = useState([]);
   const [curID, setCurID] = useState('');
-  // let unique = [];
-  // Card ex:
-  /* Active: true
-  Address1: "330 De Neve"
-  City: "Los Angeles"
-  Contact Name: "laura"
-  Date: "January 1 2022\n"
-  Email Address: "lauralu201@g.ucla.edu"
-  ID: "reck2fPposfrHuiRY"
-  Notes: "Please give Jiamin friends"
-  Orders: "[{\"name\":\"hello\",\"gender\":\"f\",\"wideWidth\":true,\"size\":\"1\",\"age\":\"1\",\"school\":\"i hate jiamin\"},{\"name\":\"bye\",\"gender\":\"f\",\"wideWidth\":true,\"size\":\"1\",\"age\":\"1\",\"school\":\"i hate jiamin EVEN MORE\"}]"
-  Phone: "313-545-4949"
-  School: "UCLA"
-  State: "California"
-  UserID: "1"
-  Zip Code: "90024" */
-  const headers = ['Point of Contact', 'Date', 'School', 'Status', 'Details'];
+  const headers = ['Point of Contact', 'Date', 'School', 'Status'];
   // card.Orders will go into details page, unsure how to implement this right now
-  const dataProps = ['Contact Name', 'Date', 'School', 'Active', 'Details', 'ID'];
+  const dataProps = ['Contact Name', 'Date', 'School', 'Active', 'ID'];
   const dataKeyProp = 'ID';
   const sortIndices = [0, 2, 3];
 
