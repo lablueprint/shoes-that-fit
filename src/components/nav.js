@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React from 'react';
+import { NavLink, Link /* useLocation */ } from 'react-router-dom';
 import {
   Home, ClipboardList, ListOrdered, Gift, GraduationCap,
 } from 'lucide-react';
@@ -9,8 +9,8 @@ import styles from './nav.module.css';
 import stfLogo from '../assets/STF_logo.png';
 
 export default function Nav({ isLoggedIn, onLogout, profile }) {
-  const location = useLocation();
-  const [selected, setSelected] = useState(location.pathname);
+  // const location = useLocation();
+  // const [selected, setSelected] = useState(location.pathname);
   const adminLinkArray = ['/admindashboard', '/inventory', '/newshoeform', '/orderform', '/adminlist', '/donations'];
   const adminTextArray = ['Admin Dashboard', 'Inventory', 'New Shoe Form', 'Order Form', 'Admin List', 'Donations'];
   const adminIconArray = [Home, ClipboardList, Gift, ListOrdered, GraduationCap, Gift];
@@ -25,27 +25,23 @@ export default function Nav({ isLoggedIn, onLogout, profile }) {
         && (
           <div className={styles.sidebar}>
             <img className={styles.stfLogo} src={stfLogo} alt="Shoes That Fit" />
-            {educatorIconArray.map((Icon, index) => {
-              let ulNavClass = styles.navEntry;
-              let navColor = '#FFFFFF';
-              let educatorLinkClass = styles.linkStyles;
-              if (selected === educatorLinkArray[index]) {
-                ulNavClass = styles.selectedNavEntry;
-                navColor = '#24275E';
-                educatorLinkClass = styles.selectedLinkStyles;
-              }
-              return (
-                <ul className={ulNavClass}>
-                  {/* eslint-disable-next-line max-len */}
-                  <Link to={educatorLinkArray[index]} className={educatorLinkClass} onClick={() => setSelected(educatorLinkArray[index])}>
-                    <div className={styles.navButtonText}>
-                      <Icon color={navColor} className={styles.iconPadding} />
-                      {educatorTextArray[index]}
-                    </div>
-                  </Link>
-                </ul>
-              );
-            })}
+            {educatorIconArray.map((Icon, index) => (
+              <ul key={educatorTextArray[index]} className={styles.navEntry}>
+                <NavLink
+                  to={educatorLinkArray[index]}
+                  className={
+                      ({ isActive }) => (isActive
+                        ? styles.selectedLinkStyles
+                        : styles.linkStyles)
+                    }
+                >
+                  <div className={styles.navButtonText}>
+                    <Icon className={styles.iconPadding} />
+                    {educatorTextArray[index]}
+                  </div>
+                </NavLink>
+              </ul>
+            ))}
             <Link to="/changePass" style={{ color: 'white' }}>
               Reset Password
             </Link>
@@ -58,27 +54,23 @@ export default function Nav({ isLoggedIn, onLogout, profile }) {
       && (
         <div className={styles.sidebar}>
           <img className={styles.stfLogo} src={stfLogo} alt="Shoes That Fit" />
-          {adminIconArray.map((Icon, index) => {
-            let ulNavClass = styles.navEntry;
-            let navColor = '#FFFFFF';
-            let adminLinkClass = styles.linkStyles;
-            if (selected === adminLinkArray[index]) {
-              ulNavClass = styles.selectedNavEntry;
-              navColor = '#24275E';
-              adminLinkClass = styles.selectedLinkStyles;
-            }
-            return (
-              <ul key={adminLinkArray[index]} className={ulNavClass}>
-                {/* eslint-disable-next-line max-len */}
-                <Link to={adminLinkArray[index]} className={adminLinkClass} onClick={() => setSelected(adminLinkArray[index])}>
-                  <div className={styles.navButtonText}>
-                    <Icon color={navColor} className={styles.iconPadding} />
-                    {adminTextArray[index]}
-                  </div>
-                </Link>
-              </ul>
-            );
-          })}
+          {adminIconArray.map((Icon, index) => (
+            <ul key={adminTextArray[index]} className={styles.navEntry}>
+              <NavLink
+                to={adminLinkArray[index]}
+                className={
+                    ({ isActive }) => (isActive
+                      ? styles.selectedLinkStyles
+                      : styles.linkStyles)
+                  }
+              >
+                <div className={styles.navButtonText}>
+                  <Icon className={styles.iconPadding} />
+                  {adminTextArray[index]}
+                </div>
+              </NavLink>
+            </ul>
+          ))}
           <Link to="/changePass" style={{ color: 'white' }}>
             Reset Password
           </Link>
