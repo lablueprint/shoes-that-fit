@@ -131,23 +131,24 @@ function App({
                   />
                 )}
               />
+              <Route
+                path="/removeshoeform"
+                element={(
+                  <RemoveShoeForm
+                    isLoggedIn={isLoggedIn}
+                    base={base}
+                  />
             )}
-          />
-          <Route
-            path="/removeshoeform"
-            element={(
-              <RemoveShoeForm
-                isLoggedIn={isLoggedIn}
-                base={base}
               />
-            )}
-          />
-          <Route
-            path="/orderform"
-            element={(
-              <OrderForm
-                isLoggedIn={isLoggedIn}
-                base={base}
+              <Route
+                path="/orderform"
+                element={(
+                  <OrderForm
+                    isLoggedIn={isLoggedIn}
+                    base={base}
+                  />
+                )}
+              />
               <Route
                 path="/inventory"
                 element={(
@@ -208,7 +209,7 @@ function App({
                   />
                 )}
               />
-          <Route path="/profile" element={<Profile username={username} base={base} />} />
+              <Route path="/profile" element={<Profile username={username} base={base} />} />
               <Route
                 path="/records"
                 element={(

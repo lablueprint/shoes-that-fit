@@ -1,19 +1,19 @@
-h4, h1 {
+.newShoeForm h4, h1 {
     white-space: nowrap;
 }
 
-h4 {
+.newShoeForm h4 {
     font-size: larger;
     font-weight: normal;
     margin: 0 0 8% 0;
 }
 
-.main {
+.newShoeForm  {
     width: 100%;
     height: 100%;
 }
 
-.container {
+.newShoeForm .container {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -21,17 +21,17 @@ h4 {
     padding: 0 10%;
 }
 
-.title {
+.newShoeForm .title {
     width: 100%;
     text-align: start;
 }
 
-.fields {
+.newShoeForm .fields {
     display: flex;
     justify-content: space-between;
 }
 
-.field {
+.newShoeForm .field {
     width: 20%;
     display: flex;
     flex-direction: column;
@@ -39,12 +39,12 @@ h4 {
     justify-content: center;
 }
 
-.field > input {
+.newShoeForm .field > input {
     height: 100%;
     width: 60%;
 }
 
-.submitForm {
+.newShoeForm .submitForm {
     display: flex;
     flex-direction: column;
     margin-top: 5%;
@@ -52,7 +52,7 @@ h4 {
     min-height: 13%;
 }
 
-.submitBtn {
+.newShoeForm .submitBtn {
     border: none;
     font-weight: lighter;
     background-color: #BBB;
@@ -64,14 +64,14 @@ h4 {
     font-size: 1em;
 }
 
-.message {
+.newShoeForm .message {
     width: 20%;
 }
 
-.error {
+.newShoeForm .error {
     color: red;
 }
 
-div {
+.newShoeForm div {
     outline: 1px solid black;
 }

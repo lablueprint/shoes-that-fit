@@ -160,7 +160,7 @@ function NewShoeForm({ isLoggedIn, base }) {
     !isLoggedIn
       ? (<Navigate to="/" />)
       : (
-        <div className={styles.main}>
+        <div className={styles.newShoeForm}>
           {/* {popup && (
             <div>
               <Popup
