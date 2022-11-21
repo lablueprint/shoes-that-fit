@@ -1,0 +1,92 @@
+.adminList .back {
+  margin-left: 5%;
+  margin-top:1%;
+  margin-bottom:2%;
+} 
+
+.adminList .statusChildInProgress {
+  height: 30px;
+  width: 124px;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  background: #FFEEC2;
+  color: #AC7D03;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.adminList .statusChildFulfilled {
+  height: 30px;
+  width: 124px;
+  background: #E1EFE7;
+  color: #4C8865;
+  font-weight: bold;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  border-radius: 20px;
+}
+
+.ordersTable {
+  overflow-x: auto;
+   border-collapse: collapse; /* removes gap between cells */
+   font-family: 'Hartwell';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 18px;
+   line-height: 21px;
+   color: #313131;
+   border-spacing: 5px;
+   display: flex;
+   align-items: center;
+}
+
+.top {
+  display: flex;
+  flex-direction: row;
+  margin-left: 1%;
+  margin-right: 6.5%;
+  margin-top: 7%;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.name {
+  margin-left: auto;
+  font-family: 'Hartwell';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  /* identical to box height */
+
+  text-align: right;
+
+  color: #000000;
+}
+
+.title {
+  display: flex;
+  /* padding-left: 10%; */
+  margin-bottom: 1.5%;
+  font-family: 'Hartwell';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 56px;
+  /* identical to box height */
+  color: #000000;
+}
+
+.adminList {
+  width: 80%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}

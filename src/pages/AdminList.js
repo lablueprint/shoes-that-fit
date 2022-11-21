@@ -3,10 +3,15 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
 // import Card from '../components/card';
-import { Table } from '../components';
+// import { ChevronLeft } from 'lucide-react';
+import { Table, Details } from '../components';
+import styles from './AdminList.module.css';
 
-function AdminList({ isLoggedIn, base }) {
+function AdminList({
+  isLoggedIn, base, profile, username,
+}) {
   const [cards, setCards] = useState([]);
+  const [curID, setCurID] = useState('');
   // let unique = [];
   // Card ex:
   /* Active: true
@@ -23,18 +28,25 @@ function AdminList({ isLoggedIn, base }) {
   State: "California"
   UserID: "1"
   Zip Code: "90024" */
-  const headers = ['Active', 'Address', 'City', 'Contact Name', 'Email Address', 'Notes', 'Phone', 'School', 'State', 'Zip Code'];
+  const headers = ['Point of Contact', 'Date', 'School', 'Status', 'Details'];
   // card.Orders will go into details page, unsure how to implement this right now
-  const dataProps = ['Active', 'Address1', 'City', 'Contact Name', 'Email Address', 'Notes', 'Phone', 'School', 'State', 'Zip Code'];
+  const dataProps = ['Contact Name', 'Date', 'School', 'Active', 'Details', 'ID'];
   const dataKeyProp = 'ID';
-  const sortIndices = [0, 3, 4];
+  const sortIndices = [0, 2, 3];
 
   const getCards = () => {
     base('Orders')
       .select({ view: 'Grid view' })
       .all()
       .then((records) => {
-        setCards(records.map((r) => (r.fields)));
+        setCards(records.map((r) => ({
+          ...r.fields,
+          Date: new Date(r.fields.Date).toLocaleString('en-US', {
+            dateStyle: 'short',
+          }),
+          Active: r.fields.Active ? <div className={styles.statusChildInProgress}>In Progress</div>
+            : <div className={styles.statusChildFulfilled}>Fulfilled</div>,
+        })));
       });
   };
 
@@ -46,11 +58,45 @@ function AdminList({ isLoggedIn, base }) {
   //   unique = [...new Set(cards.map((card) => card.fields.Time))];
   // };
 
+  const clearSpecificCard = () => {
+    setCurID('');
+    getCards();
+  };
+
+  const setCurCard = (d) => {
+    setCurID(d.ID);
+  };
+
   return (
     !isLoggedIn
       ? (<Navigate to="/" />)
       : (
-        cards && cards.length > 0 && <Table headers={headers} sortIndices={sortIndices} data={cards} dataProps={dataProps} dataKeyProp={dataKeyProp} />
+        <>
+          {curID.length === 0 && cards && cards.length > 0
+            && (
+            <div className={styles.adminList}>
+              <div className={styles.top}>
+                <div className={styles.title}>Orders</div>
+                <div className={styles.name}>{profile.contactName}</div>
+              </div>
+              <div className={styles.ordersTable}>
+                <Table
+                  className={styles.ordersTable}
+                  headers={headers}
+                  sortIndices={sortIndices}
+                  data={cards}
+                  dataProps={dataProps}
+                  dataKeyProp={dataKeyProp}
+                  details
+                  selectCard={setCurCard}
+                />
+              </div>
+            </div>
+            )}
+          {curID.length > 0 && (
+          <Details id={curID} base={base} clearSpecificCard={clearSpecificCard} username={username} />
+          )}
+        </>
       )
   );
 }
@@ -59,7 +105,18 @@ export default AdminList;
 
 AdminList.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-  base: PropTypes.objectOf(PropTypes.object).isRequired,
+  base: PropTypes.func.isRequired,
+  profile: PropTypes.shape({
+    role: PropTypes.string,
+    address: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+    phone: PropTypes.string,
+    contactName: PropTypes.string,
+    schoolName: PropTypes.string,
+    zipCode: PropTypes.string,
+  }).isRequired,
+  username: PropTypes.string.isRequired,
 };
 
 // cards.filter((card) => card.fields.Time === `${value}`).map((card, index) => (

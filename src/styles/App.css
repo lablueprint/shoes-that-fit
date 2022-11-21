@@ -3,6 +3,9 @@
   flex-direction: row;
   text-align: center;
   min-height: 100vh;
+  position: relative;
+  width: 100%;
+
 }
 
 .App-logo {
@@ -50,4 +53,5 @@
   flex-direction: column;
   align-items: center;
   width: calc(100% - 250px);
+  margin-left: 250px;
 }

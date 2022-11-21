@@ -26,7 +26,7 @@ function NewShoeForm({ isLoggedIn, base }) {
     base('Records').create([
       {
         fields: {
-          Message: `Added ${delta} ${(delta === 1) ? ('shoe') : ('shoes')} to inventory.`,
+          Message: `Added ${delta} ${delta === 1 ? 'shoe' : 'shoes'} to inventory.`,
         },
       },
     ], (err) => {

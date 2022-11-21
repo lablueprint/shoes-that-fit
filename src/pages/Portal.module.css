@@ -1,0 +1,60 @@
+.stfLogo {
+    max-width: 210px;
+    /* height: auto; */
+    padding-top: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+
+  }
+
+  .sidebar {
+    overflow-x: hidden;     /* Disable horizontal scroll */
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    background: #24275E;
+    z-index: 1;
+    color: white;
+  }
+
+.portalContainer button {
+    background-color: white; /* Green */
+    border: none;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+
+  }
+
+.column {
+display: flex;
+flex-direction: column;
+padding: 40px
+
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    }
+
+.center{
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+    justify-content: center;
+}
+    
+.options {
+    align-items: center;
+    width: 100%;
+    margin-top: 6%;
+}
+
+.portalContainer {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+  }
+  

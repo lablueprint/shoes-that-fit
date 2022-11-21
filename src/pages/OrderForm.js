@@ -25,7 +25,6 @@ function OrderForm({ isLoggedIn, base }) {
   const [contact, setContact] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [date, setDate] = useState('');
   const [note, setNote] = useState('');
 
   const shoeUpdate = (evt) => {
@@ -65,18 +64,6 @@ function OrderForm({ isLoggedIn, base }) {
   }
 
   function pushToAirtable() {
-    console.log({
-      School: schoolName,
-      Address1: address,
-      City: city,
-      State: state,
-      'Zip Code': zip,
-      'Contact Name': contact,
-      'Email Address': email,
-      Phone: phone,
-      Date: date,
-      Orders: JSON.stringify(curcards),
-    });
     base('Orders').create(
       [
         {
@@ -89,7 +76,6 @@ function OrderForm({ isLoggedIn, base }) {
             'Contact Name': contact,
             'Email Address': email,
             Phone: phone,
-            Date: date,
             Notes: note,
             Orders: JSON.stringify(curcards),
           },
@@ -116,7 +102,6 @@ function OrderForm({ isLoggedIn, base }) {
     setContact('');
     setEmail('');
     setPhone('');
-    setDate('');
     setNote('');
   }
 
@@ -254,17 +239,6 @@ function OrderForm({ isLoggedIn, base }) {
                     />
                     <div className={styles.space} />
 
-                    <label htmlFor="school">Date </label>
-                    <input
-                      className={styles.half}
-                      required
-                      type="text"
-                      id="date"
-                      name="date"
-                      value={date}
-                      onChange={(e) => setDate(e.target.value)}
-                    />
-                    <div className={styles.space} />
                   </form>
                   <div style={errorStyle}>{error}</div>
                 </div>
@@ -403,7 +377,6 @@ function OrderForm({ isLoggedIn, base }) {
                     <label htmlFor="school">Teacher / School (if applicable) </label>
                     <input
                       className={styles.full}
-                      required
                       type="string"
                       id="school"
                       name="school"
@@ -414,6 +387,7 @@ function OrderForm({ isLoggedIn, base }) {
                     <input
                       type="submit"
                       id="submit"
+                      className={styles.submit}
                       name="submit"
                       value="Add Request"
                     />
@@ -437,7 +411,6 @@ function OrderForm({ isLoggedIn, base }) {
                       </tr>
                     </thead>
                     <tbody>
-                      {console.log(curcards)}
                       {curcards.length > 0
                   && curcards.map((card, index) => (
                     // eslint-disable-next-line react/no-array-index-key
@@ -472,9 +445,10 @@ function OrderForm({ isLoggedIn, base }) {
                       <div className={styles.michael}>
                         <Link to="/orderhistory">
                           <button
-                            type="button"
+                            type="submit"
                             id="print"
                             name="confirm"
+                            className={styles.bigSubmit}
                             onClick={pushToAirtable}
                           >
                             Confirm Submission

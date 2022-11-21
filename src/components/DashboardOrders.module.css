@@ -1,13 +1,11 @@
 .dashboardComponent {
     background: #FFFFFF;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.09);
-    border-radius: 20px;
 }
 
 .orderDashboardHeader {
     display: flex;
     justify-content: space-between;
-    align-items: end;
     margin-left: 10px;
     margin-right: 10px;
 }
@@ -15,9 +13,9 @@
 .adminDashboardH2 {
     font-family: 'Hartwell';
     font-style: normal;
-    font-weight: 500;
-    font-size: 30px;
-    line-height: 35px;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 37px;
     color: #000000;
 }
 
@@ -41,25 +39,54 @@
     width: 130px
 }
 
+.fulfilledBox {
+    height: 25px;
+    width: 130px;
+    background: #E1EFE7;
+    color: #4C8865;
+    font-weight: 700;
+    font-size: 16px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    border-radius: 31px;
+    text-align: center;
+    display: flex;
+}
+
 .LinkStyles { 
     text-decoration: none;
 
     font-family: 'Hartwell';
     font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 23px;
-    color: #24275E;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 21px;
+    /* identical to box height */
+    color: #000000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
  
  /* table wrapper for continuous border */
  .orderDashboardTable {
-     overflow: hidden;
-     margin-left: 10px;
-     margin-right: 10px;
-     margin-bottom: 10px;
-     border-radius: 20px;
+    overflow-x: auto;
+     /* padding: 10px; */
+     width: 100%;
+     border-collapse: collapse; /* removes gap between cells */
+     background-color: #F9F9F9;   
+     font-family: 'Hartwell';
+     font-style: normal;
+     font-weight: 400;
+     font-size: 18px;
+     line-height: 21px;
+     color: #313131;
+     border-spacing: 5px;
  }
  
  /* table border */

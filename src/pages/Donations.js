@@ -1,291 +1,100 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import {
-  Trash2,
-} from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Printer } from 'lucide-react';
+import printJS from 'print-js';
+import { Table } from '../components';
+import styles from './Donations.module.css';
+
+const Airtable = require('airtable');
+
+const airtableConfig = {
+  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
+  baseKey: process.env.REACT_APP_AIRTABLE_BASE_KEY,
+};
+
+const base = new Airtable({ apiKey: airtableConfig.apiKey, endpointURL: 'http://localhost:3000' })
+  .base(airtableConfig.baseKey);
 
 function Donations() {
-  const [donor, setDonor] = useState({});
   const [donations, setDonations] = useState([]);
-  // const [error, setError] = useState('');
-  const donationFields = ['Quantity', 'Gender', 'Category', 'Wide', 'Size', 'Notes'];
-  const location = useLocation();
+  const [tableEntries, setTableEntries] = useState([]);
+  const tableFields = ['Date', 'Logged By', 'Quantity', 'Donor', 'Preview'];
+  const navigate = useNavigate();
 
+  const getDonations = () => {
+    base('Donors').select({ view: 'Grid view' })
+      .all()
+      .then((records) => {
+        setDonations(records);
+      });
+  };
+
+  useEffect(getDonations, []);
   useEffect(() => {
-    if (location.state) {
-      setDonor(location.state.donor);
-      setDonations(location.state.donations);
-    } else {
-      console.log('No donor/donations field');
-    }
-  }, []);
+    setTableEntries(donations.map((donation) => {
+      const tableEntry = {};
+      const createDate = donation.fields.Created;
+      tableEntry.Date = `${createDate.substring(0, 4)}/${createDate.substring(5, 7)}/${createDate.substring(8, 10)}`;
+      tableEntry['Logged By'] = donation.fields['Logged By'];
+      tableEntry.Quantity = Number(donation.fields['Total Quantity']);
+      tableEntry.Donor = donation.fields.Name;
+      const shoeList = JSON.parse(donation.fields.Donations);
+      let sizes = '';
+      let numSizes = 0;
+      shoeList.forEach((shoeEntry) => {
+        if (numSizes < 5) {
+          const gender = shoeEntry.Gender;
+          const size = shoeEntry.Size;
+          const wide = shoeEntry.Wide === 'W' ? 'W' : '';
+          sizes += (String(gender).substring(0, 1) + String(size) + String(wide));
+          numSizes += 1;
+          if (!(numSizes === 5 || numSizes === shoeList.length)) {
+            sizes += ', ';
+          }
+        }
+      });
+      tableEntry.Preview = sizes;
+      tableEntry.recordID = donation.id;
+      return tableEntry;
+    }));
+  }, [donations]);
 
-  const donorUpdate = (e) => {
+  const printDonations = (e) => {
     e.preventDefault();
-    const tempDonor = {};
-    tempDonor.name = document.getElementById('name').value;
-    tempDonor.phone = document.getElementById('phone').value;
-    tempDonor.email = document.getElementById('email').value;
-    tempDonor.addressline1 = document.getElementById('addressline1').value;
-    const addressline2Element = document.getElementById('addressline2');
-    if (addressline2Element) {
-      tempDonor.addressline2 = addressline2Element.value;
-    } else {
-      tempDonor.addressline2 = '';
-    }
-    tempDonor.city = document.getElementById('city').value;
-    tempDonor.state = document.getElementById('state').value;
-    const zipcode = parseInt(document.getElementById('zipcode').value, 10);
-    if (!zipcode || zipcode < 10000 || zipcode > 99999) {
-      console.log('Bad Zipcode');
-      return;
-    }
-    tempDonor.zipcode = zipcode;
-    setDonor(tempDonor);
+    printJS({
+      printable: tableEntries,
+      properties: tableFields,
+      type: 'json',
+    });
   };
 
-  const addDonation = (e) => {
+  const redirectDonationDetails = (e, d) => {
     e.preventDefault();
-    const donation = {};
-    donation.Quantity = document.getElementById('quantity').value;
-    donation.Gender = document.getElementById('gender').value;
-    if (donation.Gender === 'none') {
-      console.log('Select a gender');
-      return;
-    }
-    donation.Category = document.getElementById('category').value;
-    if (donation.Category === 'none') {
-      console.log('Select a category');
-      return;
-    }
-    donation.Size = document.getElementById('size').value;
-    if (document.getElementById('wide').checked) {
-      donation.Wide = 'W';
-    } else {
-      donation.Wide = '';
-    }
-    donation.Notes = document.getElementById('notes').value;
-    setDonations([...donations, donation]);
-  };
-  const deleteDonation = (e, index) => {
-    e.preventDefault();
-    console.log(index);
-    setDonations(donations.splice(0, index).concat(donations.splice(1)));
+    base('Donors').find(d.recordID, (err, record) => {
+      if (err) { console.error(err); return; }
+      console.log(record);
+      console.log('Retrieved', record.id);
+      // navigate('/');
+      navigate('/donationdetails', { state: { donor: record.fields, recordID: record.id } });
+    });
   };
 
   return (
     <div>
-      <h1>Log a Donation</h1>
-      <h2>Step 1. Add donor info</h2>
-      <table>
-        <tr>
-          <td>
-            {donor.name}
-          </td>
-          <td>
-            {donor.phone}
-          </td>
-          <td>
-            {donor.email}
-          </td>
-          <td>
-            {donor.addressline1}
-          </td>
-          <td>
-            {donor.addressline2}
-          </td>
-          <td>
-            {donor.city}
-          </td>
-          <td>
-            {donor.state}
-          </td>
-          <td>
-            {donor.zipcode}
-          </td>
-        </tr>
-      </table>
-      <form onSubmit={donorUpdate}>
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="name">
-              Donor/organization name:
-              {' '}
-            </label>
-          </div>
-          <input required type="text" id="name" name="name" />
+      <div>
+        <h1 className={styles.header1}>Donations</h1>
+        <div className={styles.headers}>
+          <Link className={styles.logLink} to="/logdonations">
+            <input className={styles.logButton} type="submit" id="submit" name="submit" value="Log a new donation" />
+          </Link>
+          <Printer className={styles.print} onClick={printDonations} />
         </div>
-
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="phone">
-              Phone #:
-              {' '}
-            </label>
-          </div>
-          <input required type="text" id="phone" name="phone" />
-        </div>
-
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="email">
-              Email address:
-              {' '}
-            </label>
-          </div>
-          <input required type="text" id="email" name="email" />
-        </div>
-
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="addressline1">
-              Address line 1:
-              {' '}
-            </label>
-          </div>
-          <input required type="text" id="addressline1" name="addressline1" />
-        </div>
-
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="addressline2">
-              Address line 2 (optional):
-              {' '}
-            </label>
-          </div>
-          <input type="text" id="addressline2" name="addressline2" />
-        </div>
-
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="city">
-              City:
-              {' '}
-            </label>
-          </div>
-          <input required type="text" id="city" name="city" />
-        </div>
-
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="state">
-              State:
-              {' '}
-            </label>
-          </div>
-          <input required type="text" id="state" name="state" />
-        </div>
-
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="zipcode">
-              Zip code:
-              {' '}
-            </label>
-          </div>
-          <input required type="text" id="zipcode" name="zipcode" />
-        </div>
-        <input type="submit" id="save" name="save" value="Save" />
-      </form>
-      <h2>Step 2. Add donation info</h2>
-      <Trash2 />
-      <table>
-        <thead>
-          <tr>
-            {donationFields.map((field) => (
-              <th>{field}</th>
-            ))}
-            <th> Delete </th>
-          </tr>
-        </thead>
-        <tbody>
-          {donations.map((donation, index) => (
-            <tr>
-              {donationFields.map((field) => (
-                <td>{donation[field]}</td>
-              ))}
-              <td><button aria-label="Delete" type="button" onClick={(e) => deleteDonation(e, index)}><Trash2 /></button></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <form onSubmit={addDonation}>
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="quantity">
-              Quantity:
-              {' '}
-            </label>
-          </div>
-          <input required type="number" id="quantity" name="quantity" />
-        </div>
-
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="gender">
-              Gender:
-              {' '}
-            </label>
-          </div>
-          {/* <input required type="text" id="gender" name="gender" /> */}
-          <select name="gender" id="gender">
-            <option value="none" selected disabled hidden>Select an Option</option>
-            <option value="Boys">Boys</option>
-            <option value="Girls">Girls</option>
-          </select>
-        </div>
-
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="category">
-              Category:
-              {' '}
-            </label>
-          </div>
-          {/* <input required type="text" id="category" name="category" /> */}
-          <select name="category" id="category">
-            <option value="none" selected disabled hidden>Select an Option</option>
-            <option value="Infant/Child">Infant/Child</option>
-            <option value="Youth">Youth</option>
-            <option value="Adult">Adult</option>
-          </select>
-        </div>
-
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="size">
-              Size:
-              {' '}
-            </label>
-          </div>
-          <input required type="text" id="size" name="size" />
-        </div>
-
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="wide">
-              Wide:
-              {' '}
-            </label>
-          </div>
-          <input type="checkbox" id="wide" name="wide" />
-        </div>
-
-        <div className="flex-container">
-          <div className="flex-child label">
-            <label htmlFor="notes">
-              Notes:
-              {' '}
-            </label>
-          </div>
-          <textarea required type="text" id="notes" name="notes" />
-        </div>
-        <input type="submit" id="add" name="add" value="Add" />
-      </form>
-      <Link to="/confirmdonation" state={{ valid: true, donor, donations }}>
-        <input type="submit" id="submit" name="submit" value="Save and Continue" />
-      </Link>
-      {/* {error} */}
+      </div>
+      <div>
+        {tableEntries.length > 0
+          ? <Table headers={tableFields} data={tableEntries} checkbox={false} dataKeyProp="ID" details selectCard={redirectDonationDetails} />
+          : <div className={styles.error}>No donations found</div>}
+      </div>
     </div>
   );
 }

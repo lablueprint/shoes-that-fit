@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Airtable from '@calblueprint/airlock';
-import { Nav } from './components';
+import { Nav, NavLogin } from './components';
 import {
   MainInventory,
   NewShoeForm,
@@ -13,15 +13,18 @@ import {
   LoginPage,
   RecordPage,
   AdminDashboard,
+  LogDonations,
   Donations,
   DonationConfirmation,
-  OrderListAdmin,
+  DonationDetails,
   OrderHistory,
   SchoolsForm,
   SchoolsDetail,
   ChangePass,
   RemoveShoeForm,
   Profile,
+  Portal,
+  Schools,
 } from './pages';
 
 const BASE_ID = process.env.REACT_APP_AIRTABLE_BASE_KEY;
@@ -29,13 +32,12 @@ const ENDPOINT_URL = 'http://localhost:8000';
 
 Airtable.configure({
   endpointUrl: ENDPOINT_URL,
-  apiKey: 'airlock',
+  apiKey: process.env.REACT_APP_AIRTABLE_USER_KEY,
 });
 
 const base = Airtable.base(BASE_ID);
 
 function App({
-  // eslint-disable-next-line react/prop-types
   isLoggedIn, username, password, profile, register, reRegister, login, logout,
 }) {
   // useEffect(() => {
@@ -60,52 +62,74 @@ function App({
 
   return (
     <div className="App">
-      <Nav isLoggedIn={isLoggedIn} onLogout={logout} />
-      <div className="App-container">
-        <Routes>
-          <Route
-            path="/admindashboard"
-            element={(
-              <AdminDashboard
-                isLoggedIn={isLoggedIn}
-                username={username}
-                password={password}
-                onLogin={login}
-                profile={profile}
-                register={register}
-                reRegister={reRegister}
-                base={base}
+      {!isLoggedIn ? (
+        <>
+          <NavLogin />
+          <div className="App-container">
+            <Routes>
+              <Route exact path="/" element={<Portal />} />
+              <Route
+                path="/login"
+                element={(
+                  <LoginPage
+                    isLoggedIn={isLoggedIn}
+                    onLogin={login}
+                    base={base}
+                  />
+                )}
               />
-            )}
-          />
-          <Route
-            path="/inventory"
-            element={(
-              <MainInventory
-                isLoggedIn={isLoggedIn}
-                username={username}
-                password={password}
-                base={base}
+            </Routes>
+          </div>
+        </>
+      ) : (
+        <>
+          <Nav isLoggedIn={isLoggedIn} onLogout={logout} profile={profile} />
+          <div className="App-container">
+            <Routes>
+              <Route
+                path="/"
+                element={(
+                  <AdminDashboard
+                    isLoggedIn={isLoggedIn}
+                    username={username}
+                    password={password}
+                    onLogin={login}
+                    profile={profile}
+                    register={register}
+                    reRegister={reRegister}
+                    base={base}
+                  />
+                )}
               />
-            )}
-          />
-          <Route
-            exact
-            path="/"
-            element={(
-              <LoginPage
-                isLoggedIn={isLoggedIn}
-                onLogin={login}
-                base={base}
+              <Route
+                path="/login"
+                element={(
+                  <AdminDashboard
+                    isLoggedIn={isLoggedIn}
+                    username={username}
+                    password={password}
+                    onLogin={login}
+                    profile={profile}
+                    register={register}
+                    reRegister={reRegister}
+                    base={base}
+                  />
+                )}
               />
-            )}
-          />
-          <Route
-            path="/newshoeform"
-            element={(
-              <NewShoeForm
-                isLoggedIn={isLoggedIn}
-                base={base}
+              <Route
+                path="/admindashboard"
+                element={(
+                  <AdminDashboard
+                    isLoggedIn={isLoggedIn}
+                    username={username}
+                    password={password}
+                    onLogin={login}
+                    profile={profile}
+                    register={register}
+                    reRegister={reRegister}
+                    base={base}
+                  />
+                )}
               />
             )}
           />
@@ -124,79 +148,102 @@ function App({
               <OrderForm
                 isLoggedIn={isLoggedIn}
                 base={base}
+              <Route
+                path="/inventory"
+                element={(
+                  <MainInventory
+                    isLoggedIn={isLoggedIn}
+                    username={username}
+                    password={password}
+                    base={base}
+                  />
+                )}
               />
-            )}
-          />
-          <Route
-            path="/adminlist"
-            element={(
-              <AdminList
-                isLoggedIn={isLoggedIn}
-                base={base}
+              <Route
+                path="/newshoeform"
+                element={(
+                  <NewShoeForm
+                    isLoggedIn={isLoggedIn}
+                    base={base}
+                  />
+                )}
               />
-            )}
-          />
-          <Route
-            path="/records"
-            element={(
-              <RecordPage
-                isLoggedIn={isLoggedIn}
-                base={base}
+              <Route
+                path="/removeshoeform"
+                element={(
+                  <RemoveShoeForm
+                    isLoggedIn={isLoggedIn}
+                    base={base}
+                  />
+                )}
               />
-            )}
-          />
-          <Route
-            path="/changePass"
-            element={(
-              <ChangePass
-                isLoggedIn={isLoggedIn}
-                reRegister={reRegister}
-                prevUser={username}
-                prevProfile={profile}
-                prevPass={password}
-                onLogin={login}
-                base={base}
+              <Route
+                path="/adminlist"
+                element={(
+                  <AdminList
+                    isLoggedIn={isLoggedIn}
+                    base={base}
+                    profile={profile}
+                    username={username}
+                  />
+                )}
               />
-            )}
-          />
-          <Route
-            path="/records"
-            element={(
-              <RecordPage
-                isLoggedIn={isLoggedIn}
-                base={base}
+              <Route
+                path="/orderform"
+                element={(
+                  <OrderForm
+                    isLoggedIn={isLoggedIn}
+                    base={base}
+                  />
+                )}
               />
-            )}
-          />
-          <Route
-            path="/changePass"
-            element={(
-              <ChangePass
-                isLoggedIn={isLoggedIn}
-                reRegister={reRegister}
-                prevUser={username}
-                prevProfile={profile}
-                prevPass={password}
-                onLogin={login}
-                base={base}
+              <Route
+                path="/adminlist"
+                element={(
+                  <AdminList
+                    isLoggedIn={isLoggedIn}
+                    base={base}
+                    profile={profile}
+                    username={username}
+                  />
+                )}
               />
-            )}
-          />
-          <Route
-            path="/viewhistory"
-            element={(
-              <OrderListAdmin base={base} />
-              )}
-          />
-          <Route path="/orderhistory" element={<OrderHistory base={base} />} />
-          <Route path="/donations" element={<Donations base={base} />} />
-          <Route path="/confirmdonation" element={<DonationConfirmation base={base} />} />
-          <Route path="/schoolsform" element={<SchoolsForm base={base} />} />
-          <Route path="/schoolsdetail" element={<SchoolsDetail base={base} />} />
-          <Route path="/viewhistory" element={<OrderListAdmin />} />
           <Route path="/profile" element={<Profile username={username} base={base} />} />
-        </Routes>
-      </div>
+              <Route
+                path="/records"
+                element={(
+                  <RecordPage
+                    isLoggedIn={isLoggedIn}
+                    base={base}
+                  />
+                )}
+              />
+              <Route
+                path="/changePass"
+                element={(
+                  <ChangePass
+                    isLoggedIn={isLoggedIn}
+                    reRegister={reRegister}
+                    prevUser={username}
+                    prevProfile={profile}
+                    prevPass={password}
+                    onLogin={login}
+                    base={base}
+                  />
+                )}
+              />
+              <Route path="/orderhistory" element={<OrderHistory base={base} profile={profile} username={username} />} />
+              <Route path="/donations" element={<Donations base={base} />} />
+              <Route path="/donationdetails" element={<DonationDetails />} />
+              <Route path="/logdonations" element={<LogDonations />} />
+              <Route path="/confirmdonation" element={<DonationConfirmation username={username} base={base} />} />
+              <Route path="/schoolsform" element={<SchoolsForm base={base} />} />
+              <Route path="/schoolsdetail" element={<SchoolsDetail base={base} />} />
+              <Route path="/schools" element={<Schools base={base} />} />
+            </Routes>
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -229,7 +276,16 @@ App.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
-  profile: PropTypes.string.isRequired,
+  profile: PropTypes.shape({
+    role: PropTypes.string,
+    address: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+    phone: PropTypes.string,
+    contactName: PropTypes.string,
+    schoolName: PropTypes.string,
+    zipCode: PropTypes.string,
+  }).isRequired,
   login: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
   register: PropTypes.bool.isRequired,
