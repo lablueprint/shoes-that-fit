@@ -14,11 +14,12 @@ import ChangePass from './ChangePass';
 import Schools from './Schools';
 import SchoolsForm from './SchoolsForm';
 import SchoolsDetail from './SchoolsDetail';
+import Profile from './Profile';
 import Portal from './Portal';
 import RemoveShoeForm from './RemoveShoeForm';
 
 export {
   MainInventory, NewShoeForm, AdminList, OrderForm, LoginPage, RecordPage, AdminDashboard,
   LogDonations, DonationConfirmation, Donations, DonationDetails, OrderHistory, Schools,
-  SchoolsForm, SchoolsDetail, ChangePass, Portal, RemoveShoeForm,
+  SchoolsForm, SchoolsDetail, ChangePass, Portal, RemoveShoeForm, Profile,
 };

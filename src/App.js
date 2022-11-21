@@ -21,9 +21,10 @@ import {
   SchoolsForm,
   SchoolsDetail,
   ChangePass,
+  RemoveShoeForm,
+  Profile,
   Portal,
   Schools,
-  RemoveShoeForm,
 } from './pages';
 
 const BASE_ID = process.env.REACT_APP_AIRTABLE_BASE_KEY;
@@ -54,7 +55,6 @@ function App({
   //       return { match: false, found: false };
   //     }
   //   };
-
   //   if (isLoggedIn) {
   //     loginUser(username, password);
   //   }
@@ -131,6 +131,23 @@ function App({
                   />
                 )}
               />
+            )}
+          />
+          <Route
+            path="/removeshoeform"
+            element={(
+              <RemoveShoeForm
+                isLoggedIn={isLoggedIn}
+                base={base}
+              />
+            )}
+          />
+          <Route
+            path="/orderform"
+            element={(
+              <OrderForm
+                isLoggedIn={isLoggedIn}
+                base={base}
               <Route
                 path="/inventory"
                 element={(
@@ -191,6 +208,7 @@ function App({
                   />
                 )}
               />
+          <Route path="/profile" element={<Profile username={username} base={base} />} />
               <Route
                 path="/records"
                 element={(

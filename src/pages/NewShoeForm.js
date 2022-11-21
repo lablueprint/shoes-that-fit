@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
-import Popup from './Popup';
+// import Popup from './Popup';
 import styles from './NewShoeForm.module.css';
 
 function NewShoeForm({ isLoggedIn, base }) {
@@ -34,9 +34,9 @@ function NewShoeForm({ isLoggedIn, base }) {
     });
   }
 
-  const closePopup = () => setPopup(false);
-
+  // const closePopup = () => setPopup(false);
   // base('TestInventory').select().all().then((records) => { records.forEach(cleanRecord); })
+
   const inputForm = (
     <form
       onSubmit={async (evt) => {
@@ -80,7 +80,7 @@ function NewShoeForm({ isLoggedIn, base }) {
                 if (err) { console.log(err); }
               });
               setSuccess(true);
-              setPopupMessage(`New quantity: ${totalQuantity}`);
+              setPopupMessage(`New Quantity: ${totalQuantity}`);
               setPopup(true);
               return;
             }
@@ -119,40 +119,38 @@ function NewShoeForm({ isLoggedIn, base }) {
       }}
     >
       <div className={styles.container}>
-        <div>
-          <h2>Add Inventory</h2>
+        <div className={styles.title}>
+          <h1>Add Inventory</h1>
         </div>
         <div className={styles.fields}>
-          <div>
-            <label>
-              <h4>Location</h4>
-              <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
-            </label>
+          <div className={styles.field}>
+            <h4>Location</h4>
+            <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
           </div>
-          <div>
-            <label>
-              <h4>Part Name</h4>
-              <input type="text" value={part} onChange={(e) => setPart(e.target.value)} />
-            </label>
+          <div className={styles.field}>
+            <h4>Part</h4>
+            <input type="text" value={part} onChange={(e) => setPart(e.target.value)} />
           </div>
-          <div>
-            <label>
-              <h4>Wide width?</h4>
-              <input className={styles.check} type="checkbox" onChange={(e) => setWide(e.target.checked)} />
-            </label>
+          <div className={styles.field}>
+            <h4>Wide Width</h4>
+            <input className={styles.check} type="checkbox" onChange={(e) => setWide(e.target.checked)} />
           </div>
-          <div>
-            <label>
-              <h4>Quantity</h4>
-              <input type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
-            </label>
+          <div className={styles.field}>
+            <h4>Quantity</h4>
+            <input type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
           </div>
         </div>
-        <div className={styles.submitBtn}>
+        <div className={styles.submitForm}>
           <input
             value="Add to inventory"
             type="submit"
+            className={styles.submitBtn}
           />
+        </div>
+        <div className={styles.message}>
+          {popup
+            ? <p className={success ? styles.success : styles.error}>{popupMessage}</p> : ''}
+
         </div>
       </div>
     </form>
@@ -162,14 +160,16 @@ function NewShoeForm({ isLoggedIn, base }) {
     !isLoggedIn
       ? (<Navigate to="/" />)
       : (
-        <div>
-          {popup && (
-          <Popup
-            closePopup={closePopup}
-            success={success}
-            message={popupMessage}
-          />
-          )}
+        <div className={styles.main}>
+          {/* {popup && (
+            <div>
+              <Popup
+                closePopup={closePopup}
+                success={success}
+                message={popupMessage}
+              />
+            </div>
+          )} */}
           {inputForm}
         </div>
       )
